@@ -1,11 +1,16 @@
 package com.ud.artesanias_bogota.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
 
 @Entity
-@Table(name = "productos ")
+@Table(name = "productos", schema = "artesanias_bogota")
+//@NamedEntityGraph(
+//        name = "producto.categoriaProducto",
+//        attributeNodes = @NamedAttributeNode("categoriaProducto")
+//)
 public class Producto {
 
     @Id
@@ -15,8 +20,9 @@ public class Producto {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
+    @Lob
     @Column(name = "imagen", nullable = false)
-    private Object imagen;  //TODO validar tipo de objeto, creo que se guarda en base64
+    private byte[] imagen;
 
     @Column(name = "precio_unitario", nullable = false)
     private Long precioUnitario; // TODO Validar estructura en la DB, si utilizamos mejor un bigDecimal
@@ -30,9 +36,31 @@ public class Producto {
     @Column(name = "categorias_productos_id", nullable = false)
     private int idCategoriaProducto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /**
+     * TODO
+     * Tenemos un error en donde se crea un bucle infinito entre la relacion CategoriaProducto - Producto
+     * Deberia solucionarse con el fetch LAZY, pero no es asi
+     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las CategoriaProducto automaticamente desde el producto cuando lo necesitemos
+     */
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "categorias_productos_id", insertable = false, updatable = false)
+    @JsonIgnore
     private CategoriaProducto categoriaProducto;
+
+    /**
+     * TODO relacionar los siguiente parametros
+     */
+    @Column(name = "color_productos_id", nullable = false)
+    private int colorProductosId;
+    @Column(name = "oficio_id", nullable = false)
+    private int oficioId;
+    @Column(name = "coleccion_productos_id", nullable = false)
+    private int coleccionProductosId;
+    @Column(name = "artistas_productos_id", nullable = false)
+    private int artistasProductosId;
+    /**
+     *
+     */
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "idProducto")
     private Set<FacturaHasProducto> facturasProducto;
@@ -59,11 +87,11 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public Object getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 
-    public void setImagen(Object imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 
@@ -121,5 +149,40 @@ public class Producto {
 
     public void setProductoPuntosVentas(Set<ProductoHasPuntoVenta> productoPuntosVentas) {
         this.productoPuntosVentas = productoPuntosVentas;
+    }
+
+    /**
+     *
+     */
+    public int getColorProductosId() {
+        return colorProductosId;
+    }
+
+    public void setColorProductosId(int colorProductosId) {
+        this.colorProductosId = colorProductosId;
+    }
+
+    public int getOficioId() {
+        return oficioId;
+    }
+
+    public void setOficioId(int oficioId) {
+        this.oficioId = oficioId;
+    }
+
+    public int getColeccionProductosId() {
+        return coleccionProductosId;
+    }
+
+    public void setColeccionProductosId(int coleccionProductosId) {
+        this.coleccionProductosId = coleccionProductosId;
+    }
+
+    public int getArtistasProductosId() {
+        return artistasProductosId;
+    }
+
+    public void setArtistasProductosId(int artistasProductosId) {
+        this.artistasProductosId = artistasProductosId;
     }
 }

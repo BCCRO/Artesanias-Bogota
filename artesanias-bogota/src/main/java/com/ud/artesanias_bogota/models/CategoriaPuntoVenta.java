@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name="categorias_puntos_venta")
+@Table(name="categorias_puntos_venta", schema = "artesanias_bogota")
 public class CategoriaPuntoVenta {
 
     @Id

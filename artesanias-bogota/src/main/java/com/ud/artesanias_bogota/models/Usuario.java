@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name="usuarios")
+@Table(name="usuarios", schema = "artesanias_bogota")
 public class Usuario {
 
     @Id
@@ -37,8 +37,8 @@ public class Usuario {
     @Column(name="direccion", nullable = false)
     private String direccion;
 
-    @Column(name="contrasena", nullable = false)
-    private String contrasena;
+    @Column(name="contrasenia", nullable = false)
+    private String contrasenia;
 
     @Column(name="email", nullable = false, unique = true)
     private String email;
@@ -113,12 +113,12 @@ public class Usuario {
         this.direccion = direccion;
     }
 
-    public String getContrasena() {
-        return contrasena;
+    public String getContrasenia() {
+        return contrasenia;
     }
 
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 
     public String getEmail() {

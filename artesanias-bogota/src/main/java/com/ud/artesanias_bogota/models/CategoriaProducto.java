@@ -1,11 +1,16 @@
 package com.ud.artesanias_bogota.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
 
 @Entity
-@Table(name = "categorias_productos")
+@Table(name = "categorias_productos", schema = "artesanias_bogota")
+//@NamedEntityGraph(
+//        name = "categoriaProducto.producto",
+//        attributeNodes = @NamedAttributeNode("productos")
+//)
 public class CategoriaProducto {
 
     @Id
@@ -18,7 +23,7 @@ public class CategoriaProducto {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "id")
     private Set<Producto> productos;
 
     public CategoriaProducto() {
