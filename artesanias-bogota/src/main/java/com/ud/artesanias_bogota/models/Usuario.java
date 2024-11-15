@@ -1,14 +1,29 @@
 package com.ud.artesanias_bogota.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+
 @Entity
-@Table(name="usuarios", schema = "artesanias_bogota")
-public class Usuario {
+@Table(name="usuarios")
+public class Usuario implements UserDetails{
 
     @Id
     @Column(name = "documento", unique = true)
@@ -43,105 +58,25 @@ public class Usuario {
     @Column(name="email", nullable = false, unique = true)
     private String email;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "documentoUsuario")
+    @Column()
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
     private Set<RolHasUsuario> rolesUsuario;
 
-    public Usuario() {
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+      return rolesUsuario.stream()
+            .map(rol -> new SimpleGrantedAuthority(rol.getRol().getRol()))
+            .toList();
     }
 
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
+    @Override
+    public String getPassword() {
+      return getContrasenia();
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public Long getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(Long telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getPrimerNombre() {
-        return primerNombre;
-    }
-
-    public void setPrimerNombre(String primerNombre) {
-        this.primerNombre = primerNombre;
-    }
-
-    public String getSegundoNombre() {
-        return segundoNombre;
-    }
-
-    public void setSegundoNombre(String segundoNombre) {
-        this.segundoNombre = segundoNombre;
-    }
-
-    public String getPrimerApellido() {
-        return primerApellido;
-    }
-
-    public void setPrimerApellido(String primerApellido) {
-        this.primerApellido = primerApellido;
-    }
-
-    public String getSegundoApellido() {
-        return segundoApellido;
-    }
-
-    public void setSegundoApellido(String segundoApellido) {
-        this.segundoApellido = segundoApellido;
-    }
-
-    public Date getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getContrasenia() {
-        return contrasenia;
-    }
-
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getDocumento() {
-        return documento;
-    }
-
-    public void setDocumento(String documento) {
-        this.documento = documento;
-    }
-
-    public Set<RolHasUsuario> getRolesUsuario() {
-        return rolesUsuario;
-    }
-
-    public void setRolesUsuario(Set<RolHasUsuario> rolesUsuario) {
-        this.rolesUsuario = rolesUsuario;
+    @Override
+    public String getUsername() {
+      return getEmail();
     }
 }
