@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InternalServerErrorResponse {
+public class InternalServerErrorResponse{
+  int statusCode;
   String message;
   Exception error;
 }

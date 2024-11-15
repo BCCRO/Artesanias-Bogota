@@ -2,12 +2,15 @@ package com.login_module.login_module.Auth;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import com.login_module.login_module.error.InternalServerErrorResponse;
+import com.login_module.login_module.error.ResponseException;
 import com.login_module.login_module.jwt.JwtService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,30 +21,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequiredArgsConstructor
 public class AuthController {
   
-  private final AuthService authService;
-  private final JwtService jwtService;
-  
+  private final AuthService authService; 
   @PostMapping("/login")
-  public ResponseEntity<?> login(@RequestBody LoginRequest request){
+  public ResponseEntity<?> login(@RequestBody LoginRequest request ){
     try {
       return ResponseEntity.ok(authService.login(request));
-    } catch (Exception e) {
-      InternalServerErrorResponse response = new InternalServerErrorResponse();
-      response.setMessage("Something went wrong");
-      response.setError(e);
-      return ResponseEntity.internalServerError().body(response);
-    }
-  }
+    } catch (ResponseException e) {
+      switch (e.getStatusCode()) {
+        case 404:
 
-  @PostMapping("/register")
-  public ResponseEntity<?> userRegister(@RequestBody RegisterRequest request) {
-      try {
-        return ResponseEntity.ok(authService.register(request));
-      } catch (Exception e) {
+          return  ResponseEntity.status(404).body(e);
+        case 403:
+          return  ResponseEntity.ok(e);
+        default:
         return ResponseEntity.internalServerError().body(e);
       }
       
-      
+    }
   }
-  
 }

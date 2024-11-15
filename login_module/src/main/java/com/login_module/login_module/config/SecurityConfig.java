@@ -32,9 +32,7 @@ public class SecurityConfig {
     .authorizeHttpRequests(authRequest-> 
       authRequest
         .requestMatchers("auth/**").permitAll()
-        .anyRequest().authenticated()
         )
-    .formLogin(withDefaults())
     .sessionManagement(sessionManager->
     sessionManager
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
