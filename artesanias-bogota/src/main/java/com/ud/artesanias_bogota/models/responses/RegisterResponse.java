@@ -1,4 +1,4 @@
-package com.login_module.login_module.error;
+package com.ud.artesanias_bogota.models.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InternalServerErrorResponse{
+public class RegisterResponse {
   int statusCode;
   String message;
-  Exception error;
+  String userId;
+  String userName;
+  Exception e;
 }

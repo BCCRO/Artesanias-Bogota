@@ -1,6 +1,7 @@
-package com.login_module.login_module.Auth;
+package com.ud.artesanias_bogota.models.request;
 
 import java.sql.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+public class UserRequest {
   String documento;
   Date fechaNacimiento;
   Long telefono;
@@ -23,4 +24,5 @@ public class RegisterRequest {
   String direccion;
   String contrasenia;
   String email;
+  List<String> roles;
 }

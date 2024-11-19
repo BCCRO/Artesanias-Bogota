@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name="roles", schema = "artesanias_bogota")
+@Table(name="roles")
 public class Rol {
 
     @Id

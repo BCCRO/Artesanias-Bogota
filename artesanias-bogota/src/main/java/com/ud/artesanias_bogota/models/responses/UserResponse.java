@@ -1,5 +1,6 @@
-package com.login_module.login_module.Auth;
+package com.ud.artesanias_bogota.models.responses;
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -11,8 +12,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthResponse{
-  String token;
+public class UserResponse {
+  String name;
+  String documento;
+  Long telefono;
   String email;
+  Date fechaCreacion;
+  Date fechaNacimiento;
+  String direccion;
   List<String> roles;
 }
