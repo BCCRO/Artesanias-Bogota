@@ -1,6 +1,7 @@
 package com.ud.artesanias_bogota.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.Set;
 //        name = "producto.categoriaProducto",
 //        attributeNodes = @NamedAttributeNode("categoriaProducto")
 //)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})  // TODO Provisional, resolver con el configurator https://stackoverflow.com/questions/52656517/no-serializer-found-for-class-org-hibernate-proxy-pojo-bytebuddy-bytebuddyinterc
 public class Producto {
 
     @Id
@@ -20,9 +22,9 @@ public class Producto {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Lob
-    @Column(name = "imagen", nullable = false)
-    private byte[] imagen;
+//    @Lob
+    @Column(name = "imagen")
+    private String  imagen;     // TODO Lo dejamos como String para evitatrnos dolores de cabeza
 
     @Column(name = "precio_unitario", nullable = false)
     private Long precioUnitario; // TODO Validar estructura en la DB, si utilizamos mejor un bigDecimal
@@ -42,9 +44,9 @@ public class Producto {
      * Deberia solucionarse con el fetch LAZY, pero no es asi
      * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las CategoriaProducto automaticamente desde el producto cuando lo necesitemos
      */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "categorias_productos_id", insertable = false, updatable = false)
-    @JsonIgnore
     private CategoriaProducto categoriaProducto;
 
     /**
@@ -62,9 +64,23 @@ public class Producto {
      *
      */
 
+    /**
+     * TODO
+     * Tenemos un error en donde se crea un bucle infinito entre la relacion FacturaHasProducto - Producto
+     * Deberia solucionarse con el fetch LAZY, pero no es asi
+     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las FacturaHasProducto automaticamente desde el producto cuando lo necesitemos
+     */
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "idProducto")
     private Set<FacturaHasProducto> facturasProducto;
 
+    /**
+     * TODO
+     * Tenemos un error en donde se crea un bucle infinito entre la relacion ProductoHasPuntoVenta - Producto
+     * Deberia solucionarse con el fetch LAZY, pero no es asi
+     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las ProductoHasPuntoVenta automaticamente desde el producto cuando lo necesitemos
+     */
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "idProducto")
     private Set<ProductoHasPuntoVenta> productoPuntosVentas;
 
@@ -87,11 +103,11 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public byte[] getImagen() {
+    public String getImagen() {
         return imagen;
     }
 
-    public void setImagen(byte[] imagen) {
+    public void setImagen(String imagen) {
         this.imagen = imagen;
     }
 

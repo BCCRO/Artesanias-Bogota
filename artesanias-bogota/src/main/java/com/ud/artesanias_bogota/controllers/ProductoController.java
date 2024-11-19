@@ -43,7 +43,7 @@ public class ProductoController {
 
         Optional<Producto> producto = productoService.findProductoById(id);
 
-        if(producto.isEmpty()) ResponseEntity.noContent().build();
+        if(producto.isEmpty()) return ResponseEntity.noContent().build();
 
         return ResponseEntity.ok(producto.get());
     }

@@ -1,5 +1,8 @@
 package com.ud.artesanias_bogota.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ud.artesanias_bogota.models.dtos.FacturaHasProductoDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +16,13 @@ public class FacturaHasProducto {
     @Column(name = "facturas_id", nullable = false)
     private Long idFactura;
 
+    /**
+     * TODO
+     * Tenemos un error en donde se crea un bucle infinito entre la relacion FacturaHasProducto - Factura
+     * Deberia solucionarse con el fetch LAZY, pero no es asi
+     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las Factura automaticamente desde FacturaHasProducto cuando lo necesitemos
+     */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "facturas_id", insertable = false, updatable = false)
     private Factura factura;
@@ -28,6 +38,12 @@ public class FacturaHasProducto {
     private int cantidad;
 
     public FacturaHasProducto() {
+    }
+
+    public FacturaHasProducto(FacturaHasProductoDTO dto) {
+        this.idFactura = dto.getIdFactura();
+        this.idProducto = dto.getIdProducto();
+        this.cantidad = dto.getCantidad();
     }
 
     public Long getId() {

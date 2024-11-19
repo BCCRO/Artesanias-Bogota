@@ -1,5 +1,6 @@
 package com.ud.artesanias_bogota.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -28,12 +29,28 @@ public class Factura {
 
     @Column(name="usuarios_documento", nullable = false)
     private String idUsuarioDocumento;
+
+    /**
+     * TODO
+     * Tenemos un error en donde se crea un bucle infinito entre la relacion Usuario - Factura
+     * Deberia solucionarse con el fetch LAZY, pero no es asi
+     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las Usuario automaticamente desde Factura cuando lo necesitemos
+     */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuarios_documento", insertable = false, updatable = false)
     private Usuario usuarioDocumento;
 
     @Column(name="transacciones_id", nullable = false)
     private Long transaccionId;
+
+    /**
+     * TODO
+     * Tenemos un error en donde se crea un bucle infinito entre la relacion Transaccion - Factura
+     * Deberia solucionarse con el fetch LAZY, pero no es asi
+     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las Transaccion automaticamente desde el producto cuando lo necesitemos
+     */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "transacciones_id", insertable = false, updatable = false)
     private Transaccion transaccion;

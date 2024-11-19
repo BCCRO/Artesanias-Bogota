@@ -21,6 +21,9 @@ public class ProductoService {
 
     public Producto createProducto(ProductoDTO productoDto){
 
+        /**
+         * Lo dejamos como String para evitarnos errores en la serializcion del jpa
+         */
 //        Serializamos la img base 64
         byte[] imagenBytes;
         String base64Data = productoDto.getImagen();
@@ -37,7 +40,7 @@ public class ProductoService {
 
         Producto producto = new Producto();
         producto.setNombre(productoDto.getNombre());
-        producto.setImagen(imagenBytes);
+        producto.setImagen(base64Data);
         producto.setPrecioUnitario(productoDto.getPrecioUnitario());
         producto.setDescripcion(productoDto.getDescripcion());
         producto.setCalificacion(productoDto.getCalificacion());
