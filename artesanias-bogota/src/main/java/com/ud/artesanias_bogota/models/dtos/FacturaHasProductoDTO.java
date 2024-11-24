@@ -2,11 +2,20 @@ package com.ud.artesanias_bogota.models.dtos;
 
 public class FacturaHasProductoDTO {
 
+    private Long idPuntoVenta;
     private Long idFactura;
     private Long idProducto;
     private int cantidad;
 
     public FacturaHasProductoDTO() {
+    }
+
+    public Long getIdPuntoVenta() {
+        return idPuntoVenta;
+    }
+
+    public void setIdPuntoVenta(Long idPuntoVenta) {
+        this.idPuntoVenta = idPuntoVenta;
     }
 
     public Long getIdFactura() {

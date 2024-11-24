@@ -26,6 +26,9 @@ public class FacturaHasProductoService {
     @Autowired
     private ProductoRepository productoRepository;
 
+    @Autowired
+    private ProductoHasPuntoVentaService productoHasPuntoVentaService;
+
     private void actualizarTotalFactura(Long idFactura, Long idProducto, int cantidad){
         Optional<Factura> facturaOpt = facturaRepository.findById(idFactura);
         Optional<Producto> productoOpt = productoRepository.findById(idProducto);
@@ -53,19 +56,21 @@ public class FacturaHasProductoService {
         }
     }
 
-    public void anadirProductoFactura(Long idFactura, Long idProducto, int cantidad){
+    public void anadirProductoFactura(Long idPuntoVenta, Long idFactura, Long idProducto, int cantidad){
         FacturaHasProducto facturaHasProducto = new FacturaHasProducto();
         facturaHasProducto.setIdFactura(idFactura);
         facturaHasProducto.setIdProducto(idProducto);
         facturaHasProducto.setCantidad(cantidad);
         facturaHasProductoRepository.save(facturaHasProducto);
 
+        productoHasPuntoVentaService.restarUnidadProductoPuntoVenta(idProducto, idPuntoVenta);
         actualizarTotalFactura(idFactura, idProducto, cantidad);
     }
 
     public void anadirProductosFactura(List<FacturaHasProductoDTO> listadoProductos){
 
         Iterable<FacturaHasProducto> iterable = listadoProductos.stream().map( dto -> {
+                            productoHasPuntoVentaService.restarUnidadProductoPuntoVenta(dto.getIdProducto(), dto.getIdPuntoVenta());
                             actualizarTotalFactura(dto.getIdFactura(), dto.getIdProducto(), dto.getCantidad());    //Aprovechamos el bucle para actualizar el total, TODO probables problemas de rendimiento
                             return new FacturaHasProducto(dto);
                         })                                          //Mapeamos DTO a Entidad

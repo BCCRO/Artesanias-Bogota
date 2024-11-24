@@ -1,11 +1,14 @@
 package com.ud.artesanias_bogota.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Set;
 
 @Entity
 @Table(name="puntos_venta", schema = "artesanias_bogota")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})  // TODO Provisional, resolver con el configurator https://stackoverflow.com/questions/52656517/no-serializer-found-for-class-org-hibernate-proxy-pojo-bytebuddy-bytebuddyinterc
 public class PuntoVenta {
 
     @Id
@@ -24,6 +27,13 @@ public class PuntoVenta {
     @Column(name="departamento", nullable = false)
     private String departamento;
 
+    /**
+     * TODO
+     * Tenemos un error en donde se crea un bucle infinito entre la relacion PuntoVenta - ProductoHasPuntoVenta
+     * Deberia solucionarse con el fetch LAZY, pero no es asi
+     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las ProductoHasPuntoVenta automaticamente desde el PuntoVenta cuando lo necesitemos
+     */
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "idPuntoVenta")
     private Set<ProductoHasPuntoVenta> puntoVentaProductos;
 

@@ -24,6 +24,9 @@ public class ProductoHasPuntoVenta {
     @JoinColumn(name = "puntos_venta_id", insertable = false, updatable = false)
     private PuntoVenta puntoVenta;
 
+    @Column(name="cantidad", nullable = false)
+    private int cantidad;
+
     public ProductoHasPuntoVenta() {
     }
 
@@ -65,5 +68,13 @@ public class ProductoHasPuntoVenta {
 
     public void setPuntoVenta(PuntoVenta puntoVenta) {
         this.puntoVenta = puntoVenta;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 }

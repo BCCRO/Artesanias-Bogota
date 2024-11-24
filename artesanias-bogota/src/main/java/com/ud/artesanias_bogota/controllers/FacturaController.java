@@ -52,7 +52,8 @@ public class FacturaController {
     public ResponseEntity<Void> agregarProducto(@RequestBody FacturaHasProductoDTO facturaHasProductoDTO){
 
         try{
-            facturaHasProductoService.anadirProductoFactura(facturaHasProductoDTO.getIdFactura(), +
+            facturaHasProductoService.anadirProductoFactura(facturaHasProductoDTO.getIdPuntoVenta(),
+                    facturaHasProductoDTO.getIdFactura(),
                     facturaHasProductoDTO.getIdProducto(),
                     facturaHasProductoDTO.getCantidad());
         }
