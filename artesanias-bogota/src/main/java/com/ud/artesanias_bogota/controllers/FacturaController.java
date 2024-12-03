@@ -12,6 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 @RestController
 @RequestMapping("/api/facturas")
@@ -21,6 +28,17 @@ public class FacturaController {
     private FacturaService facturaService;
     @Autowired
     private FacturaHasProductoService facturaHasProductoService;
+
+
+    @GetMapping("")
+    public ResponseEntity<?> getAllFacturas() {
+      List<Factura> facturas = facturaService.obtenerFacturas();
+      if (facturas.isEmpty()){
+        return ResponseEntity.noContent().build();
+      }
+        return ResponseEntity.ok(facturas);
+    }
+    
 
     @GetMapping(value = "/factura/{id}", produces = "application/json")
     public ResponseEntity<Factura> getProductById(@PathVariable Long id){
@@ -76,6 +94,16 @@ public class FacturaController {
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("update/state/{id}/{estado}")
+    public ResponseEntity putMethodName(@PathVariable("id") String facturaId, @PathVariable String estado) {
+      
+      Boolean resultado = facturaService.actualizarEstado(facturaId,estado.toUpperCase());
+      if (!resultado) {
+        return ResponseEntity.internalServerError().body("Error al actualizar el estado");
+      }
+      return ResponseEntity.ok("Se actualizo correctamente el estado");
     }
 
 }

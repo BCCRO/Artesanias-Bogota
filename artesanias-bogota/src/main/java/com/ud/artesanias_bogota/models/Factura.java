@@ -30,6 +30,9 @@ public class Factura {
     @Column(name="usuarios_documento", nullable = false)
     private String idUsuarioDocumento;
 
+    @Column(name ="estado", nullable = false)
+    private String estado;
+
     /**
      * TODO
      * Tenemos un error en donde se crea un bucle infinito entre la relacion Usuario - Factura
@@ -139,5 +142,12 @@ public class Factura {
 
     public void setProductosFacturas(Set<FacturaHasProducto> productosFacturas) {
         this.productosFacturas = productosFacturas;
+    }
+
+    public String getEstado(){
+      return this.estado;
+    }
+    public void setEstado(String estado){
+      this.estado = estado;
     }
 }
