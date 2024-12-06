@@ -3,7 +3,7 @@ package com.login_module.login_module.User;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="rol_has_usuario")
+@Table(name="rol_has_usuario", schema="artesanias_bogota")
 public class RolHasUsuario {
 
     @Id
