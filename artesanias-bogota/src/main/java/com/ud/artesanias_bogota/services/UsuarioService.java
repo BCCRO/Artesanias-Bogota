@@ -1,21 +1,18 @@
 package com.ud.artesanias_bogota.services;
 
 import java.util.List;
-import java.util.Optional;
+
 import java.util.stream.Collectors;
 
-import org.hibernate.query.NativeQuery.ReturnProperty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.mercadopago.resources.user.User;
 import com.ud.artesanias_bogota.models.Rol;
 import com.ud.artesanias_bogota.models.RolHasUsuario;
 import com.ud.artesanias_bogota.models.Usuario;
-import com.ud.artesanias_bogota.models.request.UserRequest;
+import com.ud.artesanias_bogota.models.dtos.UsuarioDTO;
 import com.ud.artesanias_bogota.models.responses.RegisterResponse;
-import com.ud.artesanias_bogota.models.responses.UserResponse;
 import com.ud.artesanias_bogota.repositories.RolHasUserRepository;
 import com.ud.artesanias_bogota.repositories.RolRepository;
 import com.ud.artesanias_bogota.repositories.UsuarioRepository;
@@ -32,9 +29,12 @@ public class UsuarioService {
   private final RolRepository rolRepo;
   private final RolHasUserRepository userRolRepo;
 
-  public List<UserResponse> getAllUsers(){
-    return userRepo.findAll().stream().map(usuario -> UserResponse.builder()
-    .name(usuario.getPrimerNombre() +" "+ usuario.getSegundoNombre() + " " + usuario.getPrimerApellido() + " " + usuario.getSegundoApellido())
+  public List<UsuarioDTO> getAllUsers(){
+    return userRepo.findAll().stream().map(usuario -> UsuarioDTO.builder()
+    .primerNombre(usuario.getPrimerNombre())
+    .segundoNombre(usuario.getSegundoNombre())
+    .primerApellido(usuario.getPrimerApellido())
+    .segundoApellido(usuario.getSegundoApellido())
     .documento(usuario.getDocumento())
     .email(usuario.getEmail())
     .fechaCreacion(usuario.getFechaCreacion())
@@ -45,25 +45,30 @@ public class UsuarioService {
 
   }
 
-  public UserResponse getUser(String id){
+  public UsuarioDTO getUser(String id){
     try {
       Usuario usuario = userRepo.findById(id).orElseThrow();
-      return UserResponse.builder()
-      .name(usuario.getPrimerNombre() +" "+ usuario.getSegundoNombre() + " " + usuario.getPrimerApellido() + " " + usuario.getSegundoApellido())
+      return UsuarioDTO.builder()
+      .primerNombre(usuario.getPrimerNombre())
+      .primerApellido(usuario.getPrimerApellido())
+      .segundoNombre(usuario.getSegundoNombre())
+      .segundoApellido(usuario.getSegundoApellido())
       .documento(usuario.getDocumento())
       .email(usuario.getEmail())
       .fechaCreacion(usuario.getFechaCreacion())
       .fechaNacimiento(usuario.getFechaNacimiento())
-      .direccion(usuario.getDireccion()).telefono(usuario.getTelefono())
+      .direccion(usuario.getDireccion())
+      .telefono(usuario.getTelefono())
       .roles(usuario.getAuthorities().stream().map(GrantedAuthority:: getAuthority).toList())
       .build();
     } catch (Exception e) {
-      return UserResponse.builder().name("User not found").build();
+      return UsuarioDTO.builder()
+      .primerNombre("Usuario no encontrado").build();
     }
     
   }
   
-  public RegisterResponse create(UserRequest request){
+  public RegisterResponse create(UsuarioDTO request){
     try {
       if (!userRepo.findById(request.getDocumento()).isEmpty()){
         throw new RuntimeException("Usuario ya existente en la base de datos");
@@ -115,7 +120,7 @@ public class UsuarioService {
   }
 
   @Transactional
-  public UserResponse updateUser(String id,UserRequest request){
+  public UsuarioDTO updateUser(String id,UsuarioDTO request){
       Usuario usuario = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
             if (request.getPrimerNombre() != null) {
@@ -158,8 +163,11 @@ public class UsuarioService {
                 });
             }
             userRepo.save(usuario);
-            return UserResponse.builder()
-                .name(buildFullName(usuario))
+            return UsuarioDTO.builder()
+                .primerNombre(usuario.getPrimerNombre())
+                .primerApellido(usuario.getPrimerApellido())
+                .segundoNombre(usuario.getSegundoNombre())
+                .segundoApellido(usuario.getSegundoApellido())
                 .documento(usuario.getDocumento())
                 .email(usuario.getEmail())
                 .fechaCreacion(usuario.getFechaCreacion())
@@ -172,10 +180,11 @@ public class UsuarioService {
                 .build();
   }
   
-  public boolean deleteUser(String id){
+  public boolean changeUserStatus(String id){
     try {
       Usuario user = userRepo.findById(id).orElseThrow();
-      userRepo.delete(user);
+      user.chageStatus();
+      userRepo.save(user);
       return true;
     } catch (Exception e) {
       return false;
