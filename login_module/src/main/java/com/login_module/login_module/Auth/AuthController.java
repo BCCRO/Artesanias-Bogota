@@ -2,15 +2,11 @@ package com.login_module.login_module.Auth;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpStatusCodeException;
 
-import com.login_module.login_module.error.InternalServerErrorResponse;
 import com.login_module.login_module.error.ResponseException;
-import com.login_module.login_module.jwt.JwtService;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
