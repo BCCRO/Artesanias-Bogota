@@ -1,6 +1,6 @@
-package com.ud.artesanias_bogota.models.request;
+package com.ud.artesanias_bogota.models.dtos;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequest {
+public class UsuarioDTO {
   String documento;
   Date fechaNacimiento;
   Long telefono;
@@ -24,5 +24,6 @@ public class UserRequest {
   String direccion;
   String contrasenia;
   String email;
+  Boolean isActive;
   List<String> roles;
 }

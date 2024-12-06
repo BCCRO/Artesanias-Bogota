@@ -3,7 +3,7 @@ package com.ud.artesanias_bogota.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="rol_has_usuario")
+@Table(name="rol_has_usuario", schema = "artesanias_bogota")
 public class RolHasUsuario {
 
     @Id

@@ -7,10 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -60,7 +58,8 @@ public class Usuario implements UserDetails{
     @Column(name="email", nullable = false, unique = true)
     private String email;
 
-    @Column()
+    @Column(name="activo", nullable = false)
+    private boolean activo;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
     private Set<RolHasUsuario> rolesUsuario;
@@ -80,5 +79,9 @@ public class Usuario implements UserDetails{
     @Override
     public String getUsername() {
       return getEmail();
+    }
+
+    public void chageStatus(){
+      this.activo = !this.activo;
     }
 }
