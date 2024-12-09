@@ -25,7 +25,6 @@ public class AuthController {
     } catch (ResponseException e) {
       switch (e.getStatusCode()) {
         case 404:
-
           return  ResponseEntity.status(404).body(e);
         case 403:
           return  ResponseEntity.ok(e);
