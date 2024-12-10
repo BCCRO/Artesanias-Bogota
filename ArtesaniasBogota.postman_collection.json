@@ -1,0 +1,63 @@
+{
+	"info": {
+		"_postman_id": "31b76b5e-75d4-462a-bc17-11a21d861a2c",
+		"name": "ArtesaniasBogota",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38247252"
+	},
+	"item": [
+		{
+			"name": "CrearPreferPruebaMercadoPago",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "crearProducto",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"producto_prueba2\",\r\n    \"imagen\": \"\",\r\n    \"precioUnitario\": 1000,\r\n    \"descripcion\": \"descripcion_prueba\",\r\n    \"calificacion\": 3,\r\n    \"idCategoriaProducto\": 1,\r\n    \"colorProductosId\": 1,\r\n    \"oficioId\": 1,\r\n    \"coleccionProductosId\": 1,\r\n    \"artistasProductosId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/productos/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"productos",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscarProductos",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "buscarProductoById",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
