@@ -1,0 +1,181 @@
+{
+	"info": {
+		"_postman_id": "31b76b5e-75d4-462a-bc17-11a21d861a2c",
+		"name": "ArtesaniasBogota",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "38247252"
+	},
+	"item": [
+		{
+			"name": "CrearPreferPruebaMercadoPago",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "localhost:8080/api/pagos/crear-preferencia/prueba"
+			},
+			"response": []
+		},
+		{
+			"name": "crearProducto",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"producto_prueba2\",\r\n    \"imagen\": \"data:image/jpeg;base64,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\",\r\n    \"precioUnitario\": 1000,\r\n    \"descripcion\": \"descripcion_prueba\",\r\n    \"calificacion\": 3,\r\n    \"idCategoriaProducto\": 1,\r\n    \"colorProductosId\": 1,\r\n    \"oficioId\": 1,\r\n    \"coleccionProductosId\": 1,\r\n    \"artistasProductosId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/api/productos/create"
+			},
+			"response": []
+		},
+		{
+			"name": "buscarProductos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/api/productos/productos"
+			},
+			"response": []
+		},
+		{
+			"name": "buscarProductoById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/api/productos/producto/1"
+			},
+			"response": []
+		},
+		{
+			"name": "crearFactura",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"documentoUsuario\": \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/api/facturas/crear"
+			},
+			"response": []
+		},
+		{
+			"name": "anadirProductoFactura",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"idPuntoVenta\": 1,\r\n        \"idFactura\": 1,\r\n        \"idProducto\": 1,\r\n        \"cantidad\": 1\r\n    },\r\n    {\r\n        \"idPuntoVenta\": 1,\r\n        \"idFactura\": 1,\r\n        \"idProducto\": 2,\r\n        \"cantidad\": 1\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/api/facturas/agregar-productos"
+			},
+			"response": []
+		},
+		{
+			"name": "anadirProductoFactura",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n    \"idPuntoVenta\": 1,\r\n    \"idFactura\": 1,\r\n    \"idProducto\": 2,\r\n    \"cantidad\": 1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/api/facturas/agregar-producto"
+			},
+			"response": []
+		},
+		{
+			"name": "getFactura",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/api/facturas/factura/1"
+			},
+			"response": []
+		},
+		{
+			"name": "crearPagoByFactura",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/api/pagos/crear-preferencia/by-factura/1"
+			},
+			"response": []
+		},
+		{
+			"name": "crearPagoByFacturaError",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/api/pagos/crear-preferencia/by-factura/2"
+			},
+			"response": []
+		},
+		{
+			"name": "getInventario",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/api/inventario/obtener-inventario"
+			},
+			"response": []
+		},
+		{
+			"name": "getInventarioByProducto",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/api/inventario/obtener-inventario-by-producto/1"
+			},
+			"response": []
+		},
+		{
+			"name": "getInventarioByPuntoVenta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/api/inventario/obtener-inventario-by-puntoventa/1"
+			},
+			"response": []
+		},
+		{
+			"name": "updateInventario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idProducto\": 1,\r\n    \"idPuntoVenta\": 1,\r\n    \"cantidad\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/api/inventario/actualizar-inventario/producto-puntoventa"
+			},
+			"response": []
+		}
+	]
+}
