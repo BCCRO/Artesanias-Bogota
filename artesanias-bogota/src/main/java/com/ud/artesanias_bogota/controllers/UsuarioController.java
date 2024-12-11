@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -73,6 +72,16 @@ public class UsuarioController {
       }
       return ResponseEntity.ok(res);
   }
+
+  @PostMapping(value="/create/cliente",produces="application/json")
+  public ResponseEntity<?> createUsuarioCliente(@RequestBody UsuarioDTO request) {
+      RegisterResponse res = userService.createCliente(request);
+      if (res.getStatusCode() != 200) {
+        return ResponseEntity.internalServerError().body(res);
+      }
+      return ResponseEntity.ok(res);
+  }
+
 
   @PutMapping("/status/{id}")
   public ResponseEntity<?> requestMethodName(@PathVariable String id) {
