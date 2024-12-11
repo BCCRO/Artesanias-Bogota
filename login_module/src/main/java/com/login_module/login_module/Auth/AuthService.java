@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.login_module.login_module.User.UserRepository;
-
+import com.login_module.login_module.User.Usuario;
 import com.login_module.login_module.error.ResponseException;
 import com.login_module.login_module.jwt.JwtService;
 
@@ -25,19 +25,27 @@ public class AuthService {
   private final AuthenticationManager authManager;     
 
   public AuthResponse login(LoginRequest request) {
-    
+    //System.out.println("Entre con"+request.getEmail());
       if (userRepo.findByEmail(request.getEmail()).isEmpty()) {
+        System.out.println("User not found");
         throw new ResponseException("User not found", 404);
       }
-      if (!authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())).isAuthenticated()) {
-        throw new ResponseException("Bad credentials", 403);
-      }
       authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-      UserDetails user = userRepo.findByEmail(request.getEmail()).orElseThrow();
+      Usuario user = userRepo.findByEmail(request.getEmail()).orElseThrow();
       String token = jwtService.getToken(user);
       return AuthResponse.builder()
       .token(token)
-      .email(user.getUsername())
+      .primerNombre(user.getPrimerNombre())
+      .primerApellido(user.getPrimerApellido())
+      .segundoNombre(user.getSegundoNombre())
+      .segundoApellido(user.getSegundoApellido())
+      .documento(user.getDocumento())
+      .email(user.getEmail())
+      .fechaCreacion(user.getFechaCreacion())
+      .fechaNacimiento(user.getFechaNacimiento())
+      .direccion(user.getDireccion())
+      .telefono(user.getTelefono())
+      .isActive(user.isActivo())
       .roles(getRoleNames(user)).build();
     
     

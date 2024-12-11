@@ -11,8 +11,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.login_module.login_module.jwt.JwtAuthFilter;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -31,13 +29,8 @@ public class SecurityConfig {
       .disable())
     .authorizeHttpRequests(authRequest-> 
       authRequest
-        .requestMatchers("auth/**").permitAll()
+        .requestMatchers("/auth/**").permitAll()
         )
-    .sessionManagement(sessionManager->
-    sessionManager
-      .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-    .authenticationProvider(authProvider)
-    .addFilterBefore(jwtAuthFilter,UsernamePasswordAuthenticationFilter.class)
     .build();
   }
 
