@@ -1,5 +1,6 @@
 package com.ud.artesanias_bogota.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import java.util.stream.Collectors;
@@ -40,6 +41,7 @@ public class UsuarioService {
     .fechaCreacion(usuario.getFechaCreacion())
     .fechaNacimiento(usuario.getFechaNacimiento())
     .direccion(usuario.getDireccion()).telefono(usuario.getTelefono())
+    .isActive(usuario.isActivo())
     .roles(usuario.getAuthorities().stream().map(GrantedAuthority:: getAuthority).toList())
     .build()).collect(Collectors.toList());
 
@@ -59,7 +61,9 @@ public class UsuarioService {
       .fechaNacimiento(usuario.getFechaNacimiento())
       .direccion(usuario.getDireccion())
       .telefono(usuario.getTelefono())
-      .roles(usuario.getAuthorities().stream().map(GrantedAuthority:: getAuthority).toList())
+      .isActive(usuario.isActivo())
+      .roles(usuario.getAuthorities()
+      .stream().map(GrantedAuthority:: getAuthority).toList())
       .build();
     } catch (Exception e) {
       return UsuarioDTO.builder()
@@ -86,6 +90,7 @@ public class UsuarioService {
       .direccion(request.getDireccion())
       .contrasenia(passEncode.encode(request.getContrasenia()))
       .email(request.getEmail())
+      .activo(true)
       .build();
       List<Rol> roles = request.getRoles().stream().map(rol -> rolRepo.findByRolIgnoreCase(rol).orElseThrow(()-> new RuntimeException("Rol no encontrado: "+rol)))
       .toList();
@@ -118,6 +123,60 @@ public class UsuarioService {
         .build();
       }
   }
+
+  public RegisterResponse createCliente(UsuarioDTO request){
+    try {
+      if (!userRepo.findById(request.getDocumento()).isEmpty()){
+        throw new RuntimeException("Usuario ya existente en la base de datos");
+      }
+      Usuario usuario = Usuario.builder()
+      .documento(request.getDocumento())
+      .fechaNacimiento(request.getFechaNacimiento())
+      .telefono(request.getTelefono())
+      .primerNombre(request.getPrimerNombre())
+      .segundoNombre(request.getSegundoNombre())
+      .primerApellido(request.getPrimerApellido())
+      .segundoApellido(request.getSegundoApellido())
+      .fechaCreacion(request.getFechaCreacion())
+      .direccion(request.getDireccion())
+      .contrasenia(passEncode.encode(request.getContrasenia()))
+      .email(request.getEmail())
+      .activo(true)
+      .build();
+      Rol cliente = rolRepo.findByRolIgnoreCase("cliente")
+        .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+      List<Rol> roles = new ArrayList<>();
+      roles.add(cliente);
+      userRepo.save(usuario);
+      roles.forEach(rol -> {
+        RolHasUsuario rolUsuario = new RolHasUsuario(usuario,rol);
+        userRolRepo.save(rolUsuario);
+      });
+      
+      return RegisterResponse.builder()
+        .statusCode(200)
+        .userId(usuario.getDocumento())
+        .userName(buildFullName(usuario))
+        .message("Usuario creado correctamente")
+        .build();
+    } catch (Exception e) {
+      if (e.getMessage().equals("Usuario ya existente en la base de datos")) {
+        return RegisterResponse.builder()
+        .statusCode(409)
+        .message("Ya existe un usuario con el mismo documento ingresado")
+        .e(e)
+        .build();
+      }
+      return RegisterResponse.builder()
+        .statusCode(500)
+        .userId(null)
+        .userName(null)
+        .message("Something went wrong")
+        .e(e)
+        .build();
+      }
+  }
+
 
   @Transactional
   public UsuarioDTO updateUser(String id,UsuarioDTO request){
