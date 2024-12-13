@@ -34,10 +34,18 @@ private static final String SECRET_KEY = "8e5a564ea09a55809097ac5fc4fc81e38a1c9c
     return http
     .csrf(csrf -> csrf.disable())
     .authorizeHttpRequests(authRequest->
+            /**
+             * TODO configurarlo mejor, un solo requestMatchers para los endpoints permitidos y luego validar por roles
+             */
       authRequest
+        .requestMatchers("/api/productos/productos")
+              .permitAll()
+        .requestMatchers("/api/usuarios/create/cliente")
+              .permitAll()
         .requestMatchers("/**")
-              .authenticated()
 //              .permitAll()
+              .authenticated()
+
     )
     .oauth2ResourceServer(oauth2 -> oauth2
             .jwt(jwt -> jwt.decoder(jwtDecoder())) // Configura el decoder JWT
