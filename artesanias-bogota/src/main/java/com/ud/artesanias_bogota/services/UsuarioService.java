@@ -74,8 +74,16 @@ public class UsuarioService {
   
   public RegisterResponse create(UsuarioDTO request){
     try {
-      if (!userRepo.findById(request.getDocumento()).isEmpty()){
-        throw new RuntimeException("Usuario ya existente en la base de datos");
+      if (userRepo.existsByDocumento(request.getDocumento())) {
+        throw new IllegalArgumentException("Ya existe un usuario con el documento proporcionado");
+      }
+      // Validar si el email ya está registrado
+      if (userRepo.existsByEmail(request.getEmail())) {
+        throw new IllegalArgumentException("Ya existe un usuario con el email proporcionado");
+      }
+      // Validar si el teléfono ya está registrado
+      if(userRepo.existsByTelefono(request.getTelefono())) {
+        throw new IllegalArgumentException("Ya existe un usuario con el teléfono proporcionado");
       }
       System.out.println(request.getRoles());
       Usuario usuario = Usuario.builder()
@@ -92,7 +100,7 @@ public class UsuarioService {
       .email(request.getEmail())
       .activo(true)
       .build();
-      List<Rol> roles = request.getRoles().stream().map(rol -> rolRepo.findByRolIgnoreCase(rol).orElseThrow(()-> new RuntimeException("Rol no encontrado: "+rol)))
+      List<Rol> roles = request.getRoles().stream().map(rol -> rolRepo.findByRolIgnoreCase(rol).orElseThrow(()-> new IllegalArgumentException("Rol no existente: "+rol)))
       .toList();
       userRepo.save(usuario);
       roles.forEach(rol -> {
@@ -106,29 +114,35 @@ public class UsuarioService {
         .userName(buildFullName(usuario))
         .message("Usuario creado correctamente")
         .build();
-    } catch (Exception e) {
-      if (e.getMessage().equals("Usuario ya existente en la base de datos")) {
-        return RegisterResponse.builder()
-        .statusCode(409)
-        .message("Ya existe un usuario con el mismo documento ingresado")
-        .e(e)
-        .build();
-      }
+    } catch(IllegalArgumentException e){
+      return RegisterResponse.builder()
+                .statusCode(409)
+                .message(e.getMessage())
+                .build();
+    }catch (Exception e) {
       return RegisterResponse.builder()
         .statusCode(500)
         .userId(null)
         .userName(null)
-        .message("Something went wrong")
-        .e(e)
+        .message("Ocurrio un error inesperado")
         .build();
       }
   }
 
   public RegisterResponse createCliente(UsuarioDTO request){
     try {
-      if (!userRepo.findById(request.getDocumento()).isEmpty()){
-        throw new RuntimeException("Usuario ya existente en la base de datos");
-      }
+        // Validar si el documento ya está registrado
+        if (userRepo.existsByDocumento(request.getDocumento())) {
+          throw new IllegalArgumentException("Ya existe un usuario con el documento proporcionado");
+        }
+        // Validar si el email ya está registrado
+        if (userRepo.existsByEmail(request.getEmail())) {
+          throw new IllegalArgumentException("Ya existe un usuario con el email proporcionado");
+        }
+        // Validar si el teléfono ya está registrado
+        if (userRepo.existsByTelefono(request.getTelefono())) {
+          throw new IllegalArgumentException("Ya existe un usuario con el teléfono proporcionado");
+        }
       Usuario usuario = Usuario.builder()
       .documento(request.getDocumento())
       .fechaNacimiento(request.getFechaNacimiento())
@@ -159,24 +173,20 @@ public class UsuarioService {
         .userName(buildFullName(usuario))
         .message("Usuario creado correctamente")
         .build();
-    } catch (Exception e) {
-      if (e.getMessage().equals("Usuario ya existente en la base de datos")) {
+    }catch(IllegalArgumentException e){
         return RegisterResponse.builder()
-        .statusCode(409)
-        .message("Ya existe un usuario con el mismo documento ingresado")
-        .e(e)
-        .build();
-      }
+                .statusCode(409)
+                .message(e.getMessage())
+                .build();
+    }catch (Exception e) {
       return RegisterResponse.builder()
         .statusCode(500)
         .userId(null)
         .userName(null)
-        .message("Something went wrong")
-        .e(e)
+        .message("Ocurrio un error inesperado")
         .build();
       }
   }
-
 
   @Transactional
   public UsuarioDTO updateUser(String id,UsuarioDTO request){
@@ -198,13 +208,19 @@ public class UsuarioService {
                 usuario.setFechaNacimiento(request.getFechaNacimiento());
             }
             if (request.getTelefono() != null) {
-                usuario.setTelefono(request.getTelefono());
+              if (userRepo.existsByTelefono(request.getTelefono())) {
+                throw new IllegalArgumentException("Ya existe un usuario con el teléfono proporcionado");
+              }
+              usuario.setTelefono(request.getTelefono());
             }
             if (request.getDireccion() != null) {
                 usuario.setDireccion(request.getDireccion());
             }
             if (request.getEmail() != null) {
-                usuario.setEmail(request.getEmail());
+              if (userRepo.existsByTelefono(request.getTelefono())) {
+                throw new IllegalArgumentException("Ya existe un usuario con el teléfono proporcionado");
+              }
+              usuario.setEmail(request.getEmail());
             }
             if (request.getRoles() != null) {
                 usuario.getRolesUsuario().stream().forEach(rol->userRolRepo.delete(rol));
@@ -240,16 +256,11 @@ public class UsuarioService {
   }
   
   public boolean changeUserStatus(String id){
-    try {
-      Usuario user = userRepo.findById(id).orElseThrow();
+      Usuario user = userRepo.findById(id).orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
       user.chageStatus();
       userRepo.save(user);
       return true;
-    } catch (Exception e) {
-      return false;
-    }
-
-
+    
   }
 
   private String buildFullName(Usuario usuario) {
