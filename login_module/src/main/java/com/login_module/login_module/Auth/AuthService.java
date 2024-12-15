@@ -25,7 +25,6 @@ public class AuthService {
   private final AuthenticationManager authManager;     
 
   public AuthResponse login(LoginRequest request) {
-    //System.out.println("Entre con"+request.getEmail());
       if (userRepo.findByEmail(request.getEmail()).isEmpty()) {
         System.out.println("User not found");
         throw new ResponseException("User not found", 404);

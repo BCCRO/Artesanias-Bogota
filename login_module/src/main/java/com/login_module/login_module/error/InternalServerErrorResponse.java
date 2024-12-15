@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 public class InternalServerErrorResponse{
   int statusCode;
   String message;
-  Exception error;
 }

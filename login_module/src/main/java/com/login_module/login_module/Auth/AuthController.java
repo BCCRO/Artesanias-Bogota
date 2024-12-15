@@ -29,20 +29,18 @@ public class AuthController {
         case 404:
           return  ResponseEntity.status(404).body(InternalServerErrorResponse.builder()
             .statusCode(404)
-            .message("User not found")
-            .error(e).build());
+            .message("Usuario no encontrado")
+            .build());
         default:
           return ResponseEntity.internalServerError().body(InternalServerErrorResponse.builder()
             .statusCode(500)
-            .message("Something Went Wrong :(")
-            .error(e).build());
+            .message("Ocurrio un error desconocido").build());
         }
     }catch (AuthenticationException e){
-      System.out.println(e);
       return  ResponseEntity.status(403).body(InternalServerErrorResponse.builder()
         .statusCode(403)
         .message("Wrong Password")
-        .error(e).build() );
+        .build());
     }
   }
 }
