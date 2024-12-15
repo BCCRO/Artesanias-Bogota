@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterResponse {
+public class ServerErrorResponse {
   int statusCode;
   String message;
-  String userId;
-  String userName;
 }
