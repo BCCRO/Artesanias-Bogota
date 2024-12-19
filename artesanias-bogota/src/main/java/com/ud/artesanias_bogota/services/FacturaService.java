@@ -37,9 +37,8 @@ public class FacturaService {
       return facturaRepository.findAll();
     }
 
-    public Boolean actualizarEstado(String id, String estado){
+    public boolean actualizarEstado(String id, String estado){
       try {
-        System.out.println(estado);
         // Verificar si el estado es válido
         if (!estado.equals("P") && !estado.equals("C") && !estado.equals("E")) {
             throw new IllegalArgumentException("Estado inválido");
@@ -61,5 +60,4 @@ public class FacturaService {
     }
     return false;
   }
-
 }

@@ -78,4 +78,23 @@ public class FacturaHasProductoService {
         facturaHasProductoRepository.saveAll(iterable);
     }
 
+    public boolean removeItem(Long idFactura, Long idProducto){
+    if(facturaRepository.existsById(idProducto)){
+      throw new IllegalArgumentException("La factura no existe",new Exception("404"));
+    }
+    if(!facturaHasProductoRepository.existsByIdFacturaAndIdProducto(idFactura,idProducto)){
+      throw new IllegalArgumentException("El producto no corresponde a esa factura",new Exception("404"));
+    }
+
+    FacturaHasProducto factura = facturaHasProductoRepository.findByIdFacturaAndIdProducto(idFactura,idProducto).orElseThrow();
+    try {
+      facturaHasProductoRepository.delete(factura);
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
+    
+    
+  }
+
 }
