@@ -17,8 +17,12 @@ public class Transaccion {
     @Column(name="fecha", nullable = false)
     private Date fecha;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="fecha_actualizacion")
+    private Date fechaActualizacion;
+
     @Column(name="estado", nullable = false)
-    private int estado;
+    private String estado;
 
     @Column(name = "id_portal_pagos")
     private Long idPortalPagos;
@@ -52,11 +56,19 @@ public class Transaccion {
         this.fecha = fecha;
     }
 
-    public int getEstado() {
+    public Date getFechaActualizacion() {
+        return fechaActualizacion;
+    }
+
+    public void setFechaActualizacion(Date fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
+    }
+
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(int estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 

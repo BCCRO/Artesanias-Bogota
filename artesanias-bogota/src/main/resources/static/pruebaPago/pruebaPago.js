@@ -6,7 +6,7 @@ const bricksBuilder = mp.bricks();
 
 mp.bricks().create("wallet", "wallet_container", {
     initialization: {
-        preferenceId: "2079614828-2921f86a-cb24-4ba1-a89b-f9183d3a9063",
+        preferenceId: "2079614828-68c72db4-4932-4c0f-91e0-0f9f738822f8",
     },
  customization: {
   texts: {

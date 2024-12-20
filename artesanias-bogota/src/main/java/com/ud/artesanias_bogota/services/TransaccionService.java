@@ -1,5 +1,6 @@
 package com.ud.artesanias_bogota.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +23,15 @@ public class TransaccionService {
     return transaccionRepository.findAll();  
   }
 
-  public boolean createTransaccion(Transaccion transaccion){
-    if(transaccionRepository.existsById(transaccion.getId())){
+  public void createTransaccion(Transaccion transaccion){
+    if(transaccion.getId() != null && transaccionRepository.existsById(transaccion.getId())){
       throw new IllegalArgumentException("La transaccion ya existe");
     }
+    System.out.println(transaccion);
     try {
-      transaccionRepository.save(transaccion);
-      return true;
+      transaccionRepository.saveAndFlush(transaccion);
     } catch (Exception e) {
-      return false;
+      System.out.println(e.getMessage());   //TODO mover a logger
     }
   }
 
@@ -47,13 +48,15 @@ public class TransaccionService {
     }
   }
 
-  public boolean updateEstadoTransaccion(Long id, String estado){
+  public boolean updateEstadoTransaccion(Long id, String estado, Long idTransaccionPortalPagos){
     if(!transaccionRepository.existsById(id)){
       throw new IllegalArgumentException("No existe una transaccion con el id otorgado");
     }
     try {
       Transaccion transaccion = transaccionRepository.findById(id).orElseThrow();
       transaccion.setEstado(estado);
+      transaccion.setIdPortalPagos(idTransaccionPortalPagos);
+      transaccion.setFechaActualizacion(new Date());
       transaccionRepository.save(transaccion);
       return true;
     } catch (Exception e) {

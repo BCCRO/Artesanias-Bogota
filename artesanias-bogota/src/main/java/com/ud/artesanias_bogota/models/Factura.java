@@ -44,7 +44,7 @@ public class Factura {
     @JoinColumn(name = "usuarios_documento", insertable = false, updatable = false)
     private Usuario usuarioDocumento;
 
-    @Column(name="transacciones_id", nullable = false)
+    @Column(name="transacciones_id")
     private Long transaccionId;
 
     /**

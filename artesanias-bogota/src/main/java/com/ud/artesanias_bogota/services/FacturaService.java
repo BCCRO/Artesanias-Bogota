@@ -24,7 +24,8 @@ public class FacturaService {
         factura.setTotalImpuesto(0L);
         factura.setTotaldescuento(0L);
         factura.setIdUsuarioDocumento(documentoUsuario);
-        factura.setTransaccionId(1L);   // Quemado, la transaccion 1 hace referencia a pendiente por pago (sin transaccion)
+        factura.setEstado("CR");            //CR = CARRITO
+//        factura.setTransaccionId(1L);   // Quemado, la transaccion 1 hace referencia a pendiente por pago (sin transaccion)
 
         return facturaRepository.save(factura);
     }
@@ -40,14 +41,15 @@ public class FacturaService {
     public boolean actualizarEstado(String id, String estado){
       try {
         // Verificar si el estado es válido
-        if (!estado.equals("P") && !estado.equals("C") && !estado.equals("E")) {
-            throw new IllegalArgumentException("Estado inválido");
-        }
+//        if (!estado.equals("P") && !estado.equals("C") && !estado.equals("E")) {
+//            throw new IllegalArgumentException("Estado inválido");
+//        }
         // Buscar la factura
         Factura factura = facturaRepository.findById(Long.parseLong(id))
             .orElseThrow(() -> new RuntimeException("No encontrado"));
 
         // Actualizar el estado
+          System.out.println("--------" + estado);
         factura.setEstado(estado);
         facturaRepository.save(factura); // Guardar los cambios
         return true;
@@ -59,5 +61,9 @@ public class FacturaService {
         }
     }
     return false;
+  }
+
+  public void actualizarFactura(Factura factura){
+      facturaRepository.save(factura);
   }
 }

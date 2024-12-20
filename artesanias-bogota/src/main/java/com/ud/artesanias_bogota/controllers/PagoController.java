@@ -21,16 +21,14 @@ public class PagoController {
     @Autowired
     PagoService pagoService;
 
-    
-
     @PostMapping("/crear-preferencia/prueba")
     public void createTestPreference() throws MPException, MPApiException {
         pagoService.createTestPreference();
     }
 
     @GetMapping("/crear-preferencia/by-factura/{idFactura}")
-    public ResponseEntity<Preference> createLinkPago(@PathVariable Long idFactura) throws MPException, MPApiException {
-        Preference preference = pagoService.createPreferenceByFactura(idFactura);
+    public ResponseEntity<String> createLinkPago(@PathVariable Long idFactura) throws Exception {
+        String preference = pagoService.createPreferenceByFactura(idFactura);
 
         if(preference == null) {
             ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatusCode.valueOf(500));
@@ -41,21 +39,16 @@ public class PagoController {
         return ResponseEntity.ok(preference);
     }
 
-<<<<<<< HEAD
-    @PostMapping("/webhook/prueba")
-    public void pruebaWebhook(@RequestBody Object body) throws MPException, MPApiException {
-        System.out.println(body);
-    }
-
-=======
-    @PostMapping("/webhook")
+    @PostMapping("/webhook/pagos")
     public ResponseEntity<?> postMethodName(@RequestBody PaymentNotification notification) {
 
-      Long dataId = notification.getData() != null ? notification.getData().getId() : null;
+        Long dataId = notification.getData() != null ? notification.getData().getId() : null;
 
-        if (dataId != null) { 
+        if (dataId != null) {
+            System.out.println("Se recibio el evento de pago con id: " + dataId); //TODO pasar a logger
           try {
-            return ResponseEntity.ok(pagoService.consultarPreference(dataId).getResponse().getContent());
+              pagoService.consultarPayment(dataId);
+            return ResponseEntity.ok().build();
           } catch (Exception e) {
             System.err.println(e);
             return ResponseEntity.ok().build();
@@ -77,5 +70,4 @@ public class PagoController {
     }
     
 
->>>>>>> c591ac0338a268b2a863f804f969b96270da46d7
 }
