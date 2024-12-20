@@ -1,21 +1,21 @@
 package com.ud.artesanias_bogota.services;
 
 import com.mercadopago.MercadoPagoConfig;
+import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
 import com.mercadopago.client.preference.PreferenceClient;
 import com.mercadopago.client.preference.PreferenceItemRequest;
 import com.mercadopago.client.preference.PreferenceRequest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.preference.Preference;
+import com.mercadopago.resources.preference.PreferenceBackUrls;
 import com.ud.artesanias_bogota.models.Factura;
 import com.ud.artesanias_bogota.models.Producto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PagoService {
@@ -42,8 +42,22 @@ public class PagoService {
                         .build();
         List<PreferenceItemRequest> items = new ArrayList<>();
         items.add(itemRequest);
+
+        PreferenceBackUrlsRequest preferenceBackUrlsRequest = PreferenceBackUrlsRequest.builder()
+                .success("http://127.0.0.1:8081/pruebaPago/pruebaPago.html")
+                .pending("http://127.0.0.1:8081/pruebaPago/pruebaPago.html")
+                .failure("http://127.0.0.1:8081/pruebaPago/pruebaPago.html")
+                .build();
+
+        Map<String, Object> metadataMap = new HashMap<>();
+        metadataMap.put("idFactura", "987654321");
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
-                .items(items).build();
+                .items(items)
+                .backUrls(preferenceBackUrlsRequest)
+                .notificationUrl("https://0f28-191-109-68-23.ngrok-free.app/api/pagos/webhook/prueba")
+                .metadata(metadataMap)
+                .build();
+
         PreferenceClient client = new PreferenceClient();
         Preference preference = client.create(preferenceRequest);
         System.out.println(preference.getId());

@@ -1,0 +1,161 @@
+{
+    "accounts_info": null,
+    "acquirer_reconciliation": [],
+    "additional_info": {
+        "ip_address": "191.109.68.23",
+        "items": [
+            {
+                "category_id": "prueba",
+                "description": "prueba",
+                "id": "1234",
+                "quantity": "1",
+                "title": "ProdPrueba",
+                "unit_price": "1000"
+            }
+        ]
+    },
+    "authorization_code": null,
+    "binary_mode": false,
+    "brand_id": null,
+    "build_version": "3.83.0-rc-3",
+    "call_for_authorize_id": null,
+    "captured": true,
+    "card": {},
+    "charges_details": [
+        {
+            "accounts": {
+                "from": "collector",
+                "to": "mp"
+            },
+            "amounts": {
+                "original": 991.2,
+                "refunded": 0
+            },
+            "client_id": 0,
+            "date_created": "2024-12-18T09:33:59.000-04:00",
+            "id": "96718866362-001",
+            "last_updated": "2024-12-18T09:33:59.000-04:00",
+            "metadata": {
+                "source": "rule-engine"
+            },
+            "name": "mercadopago_fee",
+            "refund_charges": [],
+            "reserve_id": null,
+            "type": "fee"
+        }
+    ],
+    "charges_execution_info": {
+        "internal_execution": {
+            "date": "2024-12-18T09:33:59.274-04:00",
+            "execution_id": "01JFCZKBHS2M4W5Z8MVE76QKN8"
+        }
+    },
+    "collector_id": 2079614828,
+    "corporation_id": null,
+    "counter_currency": null,
+    "coupon_amount": 0,
+    "currency_id": "COP",
+    "date_approved": "2024-12-18T09:33:59.000-04:00",
+    "date_created": "2024-12-18T09:33:59.000-04:00",
+    "date_last_updated": "2024-12-18T09:34:07.000-04:00",
+    "date_of_expiration": "2024-12-21T09:33:59.000-04:00",
+    "deduction_schema": null,
+    "description": "ProdPrueba",
+    "differential_pricing_id": null,
+    "external_reference": null,
+    "fee_details": [
+        {
+            "amount": 991.2,
+            "fee_payer": "collector",
+            "type": "mercadopago_fee"
+        }
+    ],
+    "financing_group": null,
+    "id": 96718866362,
+    "installments": 1,
+    "integrator_id": null,
+    "issuer_id": "2013",
+    "live_mode": true,
+    "marketplace_owner": null,
+    "merchant_account_id": null,
+    "merchant_number": null,
+    "metadata": {},
+    "money_release_date": "2024-12-18T09:33:59.000-04:00",
+    "money_release_schema": null,
+    "money_release_status": "released",
+    "net_amount": 1000,
+    "notification_url": "https://234b-191-109-68-23.ngrok-free.app/api/pagos/webhook/prueba",
+    "operation_type": "regular_payment",
+    "order": {
+        "id": "26262399173",
+        "type": "mercadopago"
+    },
+    "payer": {
+        "email": "test_user_1112161722@testuser.com",
+        "entity_type": null,
+        "first_name": null,
+        "id": "2076915959",
+        "identification": {
+            "number": "11111111",
+            "type": "C.C."
+        },
+        "last_name": null,
+        "operator_id": null,
+        "phone": {
+            "number": null,
+            "extension": null,
+            "area_code": null
+        },
+        "type": null
+    },
+    "payment_method": {
+        "id": "account_money",
+        "issuer_id": "2013",
+        "type": "account_money"
+    },
+    "payment_method_id": "account_money",
+    "payment_type_id": "account_money",
+    "platform_id": null,
+    "point_of_interaction": {
+        "business_info": {
+            "branch": "Merchant Services",
+            "sub_unit": "checkout_pro",
+            "unit": "online_payments"
+        },
+        "transaction_data": {
+            "e2e_id": null
+        },
+        "type": "CHECKOUT"
+    },
+    "pos_id": null,
+    "processing_mode": "aggregator",
+    "refunds": [],
+    "release_info": null,
+    "shipping_amount": 0,
+    "sponsor_id": null,
+    "statement_descriptor": null,
+    "status": "approved",
+    "status_detail": "accredited",
+    "store_id": null,
+    "tags": null,
+    "taxes": [
+        {
+            "type": "IVA",
+            "value": null
+        }
+    ],
+    "taxes_amount": 0,
+    "transaction_amount": 1000,
+    "transaction_amount_refunded": 0,
+    "transaction_details": {
+        "acquirer_reference": null,
+        "external_resource_url": null,
+        "financial_institution": null,
+        "installment_amount": 0,
+        "net_received_amount": 8.8,
+        "overpaid_amount": 0,
+        "payable_deferral_period": null,
+        "payment_method_reference_id": null,
+        "total_paid_amount": 1000
+    }
+}

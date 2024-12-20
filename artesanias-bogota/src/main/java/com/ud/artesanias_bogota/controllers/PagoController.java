@@ -35,4 +35,9 @@ public class PagoController {
         return ResponseEntity.ok(preference);
     }
 
+    @PostMapping("/webhook/prueba")
+    public void pruebaWebhook(@RequestBody Object body) throws MPException, MPApiException {
+        System.out.println(body);
+    }
+
 }
