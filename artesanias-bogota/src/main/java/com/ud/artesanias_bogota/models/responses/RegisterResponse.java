@@ -14,5 +14,4 @@ public class RegisterResponse {
   String message;
   String userId;
   String userName;
-  Exception e;
 }

@@ -10,4 +10,7 @@ import com.ud.artesanias_bogota.models.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario,String>{
   Optional <Usuario> findByEmail(String email);
+  boolean existsByDocumento(String documento);
+  boolean existsByTelefono(Long telefono);
+  boolean existsByEmail(String email);
 }

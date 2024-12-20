@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ud.artesanias_bogota.models.dtos.UsuarioDTO;
 import com.ud.artesanias_bogota.models.responses.RegisterResponse;
+import com.ud.artesanias_bogota.models.responses.ServerErrorResponse;
 import com.ud.artesanias_bogota.services.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
@@ -41,24 +42,32 @@ public class UsuarioController {
       }
       return ResponseEntity.status(404).body("Usuario no encontrado");
       
-    } catch (Exception e) {
+    }catch (Exception e) {
       return ResponseEntity.internalServerError().body(null);
     }
       
   }
   
-
   @PutMapping("/update")
   public ResponseEntity<?> putMethodName(@RequestParam String id, @RequestBody UsuarioDTO request) {
     try {
-            UsuarioDTO updatedUser = userService.updateUser(id, request);
-            return ResponseEntity.ok(updatedUser);
-        } catch (RuntimeException e) {
-            if (e.getMessage().equals("Usuario no encontrado")){
-              return ResponseEntity.internalServerError().body("Usuario no encontrado");
-            }
-            return ResponseEntity.internalServerError().body("Something went wrong");
+      UsuarioDTO updatedUser = userService.updateUser(id, request);
+      return ResponseEntity.ok(updatedUser);
+    } catch(IllegalArgumentException e){
+      return ResponseEntity.status(409).body(ServerErrorResponse.builder()
+        .statusCode(409)
+        .message(e.getMessage())
+      );
+    }catch (RuntimeException e) {
+      if (e.getMessage().equals("Usuario no encontrado")){
+          return ResponseEntity.status(404).body(ServerErrorResponse.builder()
+        .statusCode(404)
+        .message("Usuario no encontrado"));
         }
+        return ResponseEntity.internalServerError().body(ServerErrorResponse.builder()
+        .statusCode(500)
+        .message("Ocurrio un error inesperado"));
+      }
       
   }
   
@@ -76,19 +85,21 @@ public class UsuarioController {
   @PostMapping(value="/create/cliente",produces="application/json")
   public ResponseEntity<?> createUsuarioCliente(@RequestBody UsuarioDTO request) {
       RegisterResponse res = userService.createCliente(request);
-      if (res.getStatusCode() != 200) {
-        return ResponseEntity.internalServerError().body(res);
-      }
-      return ResponseEntity.ok(res);
+      return ResponseEntity.status(res.getStatusCode()).body(res);
   }
 
 
   @PutMapping("/status/{id}")
   public ResponseEntity<?> requestMethodName(@PathVariable String id) {
-      if (!userService.changeUserStatus(id)) {
-        return ResponseEntity.internalServerError().body("Hubo un error");
-      }
+    try {
       return ResponseEntity.ok("El estado del usuario se ha cambiado con exito");
+    } catch(RuntimeException e){
+      return ResponseEntity.status(404).body(ServerErrorResponse.builder()
+        .statusCode(404)
+        .message("El Usuario con la id '"+id+"' no se encuentra registrado"));
+    }catch (Exception e) {
+      return ResponseEntity.internalServerError().body("Ocurrio un error inesperado");
+    }
   }
   
   

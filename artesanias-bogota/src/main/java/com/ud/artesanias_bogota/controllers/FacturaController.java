@@ -4,6 +4,7 @@ import com.ud.artesanias_bogota.models.Factura;
 import com.ud.artesanias_bogota.models.FacturaHasProducto;
 import com.ud.artesanias_bogota.models.dtos.FacturaDTO;
 import com.ud.artesanias_bogota.models.dtos.FacturaHasProductoDTO;
+import com.ud.artesanias_bogota.models.responses.ServerErrorResponse;
 import com.ud.artesanias_bogota.services.FacturaHasProductoService;
 import com.ud.artesanias_bogota.services.FacturaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class FacturaController {
     @Autowired
     private FacturaHasProductoService facturaHasProductoService;
 
+    
+
 
     @GetMapping("")
     public ResponseEntity<?> getAllFacturas() {
@@ -41,7 +44,7 @@ public class FacturaController {
     
 
     @GetMapping(value = "/factura/{id}", produces = "application/json")
-    public ResponseEntity<Factura> getProductById(@PathVariable Long id){
+    public ResponseEntity<Factura> getFacturaById(@PathVariable Long id){
 
         Optional<Factura> factura = facturaService.obtenerFactura(id);
 
@@ -96,8 +99,8 @@ public class FacturaController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("update/state/{id}/{estado}")
-    public ResponseEntity putMethodName(@PathVariable("id") String facturaId, @PathVariable String estado) {
+    @PutMapping(value="/update/state/{id}/{estado}", produces = "application/json")
+    public ResponseEntity<?> putMethodName(@PathVariable("id") String facturaId, @PathVariable String estado) {
       
       Boolean resultado = facturaService.actualizarEstado(facturaId,estado.toUpperCase());
       if (!resultado) {
@@ -105,5 +108,26 @@ public class FacturaController {
       }
       return ResponseEntity.ok("Se actualizo correctamente el estado");
     }
+
+    @PutMapping(value="/remove-item/{idFactura}/{idItem}", produces = "application/json")
+    public ResponseEntity<?> removeItem(@PathVariable Long idFactura, @PathVariable Long idItem) {
+        try {
+          boolean res = facturaHasProductoService.removeItem(idFactura,idItem);
+          
+          if(!res){
+            throw new Exception();
+          }
+          return ResponseEntity.ok("Producto eliminado correctamente");
+        } catch(IllegalArgumentException e){
+          return ResponseEntity.status(Integer.parseInt(e.getCause().getMessage()))
+          .body(ServerErrorResponse.builder().statusCode(Integer.parseInt(e.getCause().getMessage())).message(e.getMessage()).build());
+        }catch (Exception e) {
+          return ResponseEntity.status(500)
+          .body(ServerErrorResponse.builder().statusCode(500).message("Hubo un error inesperado").build());
+        }  
+        
+    }
+
+
 
 }
