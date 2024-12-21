@@ -74,12 +74,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/facturas",
+					"raw": "http://localhost:8081/api/facturas",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"api",
 						"facturas"
@@ -451,11 +451,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/productos/create",
+					"raw": "localhost:8081/api/productos/create",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"api",
 						"productos",
@@ -599,11 +599,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/facturas/agregar-producto",
+					"raw": "localhost:8081/api/facturas/agregar-producto",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"api",
 						"facturas",
@@ -619,15 +619,36 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/facturas/factura/1",
+					"raw": "localhost:8081/api/facturas/factura/1",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"api",
 						"facturas",
 						"factura",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getEstadoTransaccion",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/pagos/consultar-estado-transaccion/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"pagos",
+						"consultar-estado-transaccion",
 						"1"
 					]
 				}
@@ -662,11 +683,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/pagos/crear-preferencia/by-factura/2",
+					"raw": "localhost:8081/api/pagos/crear-preferencia/by-factura/2",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"api",
 						"pagos",
@@ -684,11 +705,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/inventario/obtener-inventario",
+					"raw": "localhost:8081/api/inventario/obtener-inventario",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"api",
 						"inventario",
@@ -704,11 +725,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/inventario/obtener-inventario-by-producto/1",
+					"raw": "localhost:8081/api/inventario/obtener-inventario-by-producto/1",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"api",
 						"inventario",
@@ -725,11 +746,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/inventario/obtener-inventario-by-puntoventa/1",
+					"raw": "localhost:8081/api/inventario/obtener-inventario-by-puntoventa/1",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"api",
 						"inventario",
@@ -755,11 +776,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/inventario/actualizar-inventario/producto-puntoventa",
+					"raw": "localhost:8081/api/inventario/actualizar-inventario/producto-puntoventa",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"api",
 						"inventario",
