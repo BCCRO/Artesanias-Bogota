@@ -1,0 +1,823 @@
+{
+	"info": {
+		"_postman_id": "5a92c8f0-d261-4acb-9dd9-4e95cc34616b",
+		"name": "ArtesaniasBogota",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39775930"
+	},
+	"item": [
+		{
+			"name": "Remove a product",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuLnBlcmV6QGV4YW1wbGUuY29tIiwiaWF0IjoxNzM0NTQ1NTA0LCJleHAiOjE3MzQ1NDY5NDR9.fFZzogJbRzjser53OhEbSYzo_7RoqG7VD71obfVh5ao",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/facturas/remove-item/1/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"facturas",
+						"remove-item",
+						"1",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth email",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"toEmail\":\"hjballent@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/email_auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"email_auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Factura con id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/facturas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"facturas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change User State",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful DELETE request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/usuarios/status/1001402113",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"usuarios",
+						"status",
+						"1001402113"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"primerNombre\": \"Juan\",\n    \"segundoNombre\": \"Carlos\",\n    \"primerApellido\": \"Pérez\",\n    \"segundoApellido\": \"Gómez\",\n    \"fechaNacimiento\": \"1985-06-15\",\n    \"telefono\": \"3101234567\",\n    \"direccion\": \"Calle 123 #45-67\",\n    \"email\": \"juan.perez@example.com\",\n    \"roles\": [\"Admin\",\"Cliente\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/usuarios/update?id=1001402110",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"usuarios",
+						"update"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1001402110"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"documento\": \"1001402120\",\n  \"fechaNacimiento\": \"1990-01-01\",\n  \"telefono\": 3118853590,\n  \"primerNombre\": \"Pepe\",\n  \"segundoNombre\": \"juan\",\n  \"primerApellido\": \"Lopez\",\n  \"segundoApellido\": \"López\",\n  \"fechaCreacion\": \"2024-11-03\",\n  \"direccion\": \"Calle Falsa 321\",\n  \"contrasenia\": \"password123\",\n  \"email\":\"emailejemplo4@example.com\",\n  \"role\":[\"Cliente\",\"Empleado\",\"Admin\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/usuarios/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"usuarios",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Cliente User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"documento\": \"10014021231\",\n  \"fechaNacimiento\": \"1990-01-01\",\n  \"telefono\": 3118853590,\n  \"primerNombre\": \"Pepe\",\n  \"segundoNombre\": \"juan\",\n  \"primerApellido\": \"Lopez\",\n  \"segundoApellido\": \"López\",\n  \"fechaCreacion\": \"2024-11-03\",\n  \"direccion\": \"Calle Falsa 321\",\n  \"contrasenia\": \"password123\",\n    \"email\":\"emailejemplo6@example.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/usuarios/create/cliente",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"usuarios",
+						"create",
+						"cliente"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/usuarios/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"usuarios",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User By Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/usuarios?id=1001402110",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"usuarios"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1001402110"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CrearPreferPruebaMercadoPago",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/pagos/crear-preferencia/prueba",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"pagos",
+						"crear-preferencia",
+						"prueba"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPaymentInfo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "APP_USR-1559532781124737-110509-afae2c6da54175fa335091864c35ca06-2079614828",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.mercadopago.com/v1/payments/96422998051",
+					"protocol": "https",
+					"host": [
+						"api",
+						"mercadopago",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"96422998051"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get preference",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "APP_USR-1559532781124737-110509-afae2c6da54175fa335091864c35ca06-2079614828",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.mercadopago.com/checkout/preferences/2079614828-d15159b1-a463-4006-9e91-5c8e92df2420",
+					"protocol": "https",
+					"host": [
+						"api",
+						"mercadopago",
+						"com"
+					],
+					"path": [
+						"checkout",
+						"preferences",
+						"2079614828-d15159b1-a463-4006-9e91-5c8e92df2420"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "crearProducto",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"producto_prueba2\",\r\n    \"imagen\": \"data:image/jpeg;base64,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\",\r\n    \"precioUnitario\": 1000,\r\n    \"descripcion\": \"descripcion_prueba\",\r\n    \"calificacion\": 3,\r\n    \"idCategoriaProducto\": 1,\r\n    \"colorProductosId\": 1,\r\n    \"oficioId\": 1,\r\n    \"coleccionProductosId\": 1,\r\n    \"artistasProductosId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/productos/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"productos",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscarProductos",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuLnBlcmV6QGV4YW1wbGUuY29tIiwiaWF0IjoxNzM0MDExNjI2LCJleHAiOjE3MzQwMTMwNjZ9.8WUOXF7ITS81pMYnGVRW6-SbODE3GlbAhjbdDCLEYQ4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/productos/productos",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"productos",
+						"productos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscarProductoById",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuLnBlcmV6QGV4YW1wbGUuY29tIiwiaWF0IjoxNzM0MDExNjI2LCJleHAiOjE3MzQwMTMwNjZ9.8WUOXF7ITS81pMYnGVRW6-SbODE3GlbAhjbdDCLEYQ4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/productos/producto/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"productos",
+						"producto",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "crearFactura",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"documentoUsuario\": \"1000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/facturas/crear",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"facturas",
+						"crear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "anadirProductoFactura",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"idPuntoVenta\": 1,\r\n        \"idFactura\": 6,\r\n        \"idProducto\": 1,\r\n        \"cantidad\": 1\r\n    },\r\n    {\r\n        \"idPuntoVenta\": 1,\r\n        \"idFactura\": 6,\r\n        \"idProducto\": 2,\r\n        \"cantidad\": 1\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/facturas/agregar-productos",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"facturas",
+						"agregar-productos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "anadirProductoFactura",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n    \"idPuntoVenta\": 1,\r\n    \"idFactura\": 1,\r\n    \"idProducto\": 2,\r\n    \"cantidad\": 1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/facturas/agregar-producto",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"facturas",
+						"agregar-producto"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getFactura",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/facturas/factura/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"facturas",
+						"factura",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getEstadoTransaccion",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/pagos/consultar-estado-transaccion/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"pagos",
+						"consultar-estado-transaccion",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "crearPagoByFactura",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/pagos/crear-preferencia/by-factura/6",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"pagos",
+						"crear-preferencia",
+						"by-factura",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "crearPagoByFacturaError",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/pagos/crear-preferencia/by-factura/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"pagos",
+						"crear-preferencia",
+						"by-factura",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getInventario",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/inventario/obtener-inventario",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"inventario",
+						"obtener-inventario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getInventarioByProducto",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/inventario/obtener-inventario-by-producto/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"inventario",
+						"obtener-inventario-by-producto",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getInventarioByPuntoVenta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/inventario/obtener-inventario-by-puntoventa/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"inventario",
+						"obtener-inventario-by-puntoventa",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateInventario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idProducto\": 1,\r\n    \"idPuntoVenta\": 1,\r\n    \"cantidad\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/inventario/actualizar-inventario/producto-puntoventa",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"inventario",
+						"actualizar-inventario",
+						"producto-puntoventa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"juan.perez@example.com\",\r\n    \"password\": \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
