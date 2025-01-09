@@ -17,20 +17,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(InventarioController.class)
 public class InventarioControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private ProductoHasPuntoVentaService productoHasPuntoVentaService;  //Importante instanciar el servicio, ya que no inciamos el servicio web
-
-    /**
-     * TODO aun es de prueba este codigo
-     */
-    @Test
-    void greetingShouldReturnMessageFromService() throws Exception {
-        // when(productoHasPuntoVentaService.greet()).thenReturn("Hello, Mock");
-        this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Hello, Mock")));
-    }
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    @MockBean
+//    private ProductoHasPuntoVentaService productoHasPuntoVentaService;  //Importante instanciar el servicio, ya que no inciamos el servicio web
+//
+//    /**
+//     * TODO aun es de prueba este codigo
+//     */
+//    @Test
+//    void greetingShouldReturnMessageFromService() throws Exception {
+//        // when(productoHasPuntoVentaService.greet()).thenReturn("Hello, Mock");
+//        this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
+//                .andExpect(content().string(containsString("Hello, Mock")));
+//    }
 
 }

@@ -38,7 +38,7 @@ public class PagoService {
     @Value("${servidor.redirect.endpoint}")
     private String REDIRECT_URL = "/pruebaPago/pruebaPago.html";
     @Value("${servidor.back}")
-    private String SERVIDOR_BACK = "https://e3a9-191-109-68-23.ngrok-free.app";
+    private String SERVIDOR_BACK = "https://0907-191-109-68-23.ngrok-free.app";
     @Value("${servidor.webhook.pagos.endpoint}")
     private String WEBHOOK_PAGOS = "/api/pagos/webhook/pagos";
 
