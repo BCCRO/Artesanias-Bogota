@@ -38,6 +38,9 @@ public class Producto {
     @Column(name = "categorias_productos_id", nullable = false)
     private int idCategoriaProducto;
 
+    @Column(name="estado", nullable = true)
+    private String estado;
+
     /**
      * TODO
      * Tenemos un error en donde se crea un bucle infinito entre la relacion CategoriaProducto - Producto
@@ -200,5 +203,12 @@ public class Producto {
 
     public void setArtistasProductosId(int artistasProductosId) {
         this.artistasProductosId = artistasProductosId;
+    }
+
+    public void setEstado(String estado){
+      this.estado = estado;
+    }
+    public String getEstado(){
+      return this.estado;
     }
 }
