@@ -19,6 +19,15 @@ services:
     networks:
       - app-network
 
+  pago_service:
+    build:
+      context: ./pago-module
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
