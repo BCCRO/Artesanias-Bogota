@@ -31,7 +31,9 @@ public class ProductoHasPuntoVentaService {
 
         Optional<ProductoHasPuntoVenta> productoHasPuntoVentaResponse = productoHasPuntoVentaRepository.findProductoHasVentaByIdProductoAndIdPuntoVenta(idProducto, idPuntoVenta);
 
-        if(productoHasPuntoVentaResponse.isPresent()){
+        if(productoHasPuntoVentaResponse.isPresent()
+                && (productoHasPuntoVentaResponse.get().getCantidad() > 0)
+        ){
             ProductoHasPuntoVenta productoHasPuntoVenta = productoHasPuntoVentaResponse.get();
             int cantidadActual = productoHasPuntoVenta.getCantidad();
             int nuevaCantidad = cantidadActual - 1;
@@ -40,7 +42,12 @@ public class ProductoHasPuntoVentaService {
 
             productoHasPuntoVentaRepository.save(productoHasPuntoVenta);
         }
-        else throw new RuntimeException(String.format("No se encontro el producto: %s para el punto de venta: %s", idProducto, idPuntoVenta));
+        else {
+            System.out.println(String.format("No se encontro el producto: %s en el punto de venta: %s", idProducto, idPuntoVenta));
+            /**
+             * TODO debemos invocar nuevamente el api para buscar el punto mas cercano y buscar la 2 mejor coincidencia
+             */
+        }
 
     }
 

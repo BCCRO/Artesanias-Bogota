@@ -70,7 +70,12 @@ public class FacturaController {
     }
 
     @PostMapping(value = "/agregar-producto", produces = "application/json")
-    public ResponseEntity<Void> agregarProducto(@RequestBody FacturaHasProductoDTO facturaHasProductoDTO){
+    public ResponseEntity<?> agregarProducto(@RequestBody FacturaHasProductoDTO facturaHasProductoDTO){
+
+        /**
+         * TODO Debemos seleccionar el punto de venta dinamicamente con la API
+         * y eliminarla del DTO
+         */
 
         try{
             facturaHasProductoService.anadirProductoFactura(facturaHasProductoDTO.getIdPuntoVenta(),
@@ -79,21 +84,23 @@ public class FacturaController {
                     facturaHasProductoDTO.getCantidad());
         }
         catch (Exception ex){
-            System.out.println(String.format("Error anadiendo un producto a la factura: %s - Error: %s", facturaHasProductoDTO.getIdFactura(), ex.getMessage())); // TODO Cambiar a logger
-            return ResponseEntity.internalServerError().build();
+            String errorMsg = String.format("Error anadiendo un producto a la factura: %s - Error: %s", facturaHasProductoDTO.getIdFactura(), ex.getMessage());
+            System.out.println(errorMsg); // TODO Cambiar a logger
+            return ResponseEntity.internalServerError().body(errorMsg);
         }
 
         return ResponseEntity.ok().build();
     }
     @PostMapping(value = "/agregar-productos", produces = "application/json")
-    public ResponseEntity<Void> agregarProductos(@RequestBody List<FacturaHasProductoDTO> ListProductos){
+    public ResponseEntity<?> agregarProductos(@RequestBody List<FacturaHasProductoDTO> ListProductos){
 
         try{
             facturaHasProductoService.anadirProductosFactura(ListProductos);
         }
         catch (Exception ex){
-            System.out.println(String.format("Error anadiendo los productos : %s", ex.getMessage())); // TODO Cambiar a logger
-            return ResponseEntity.internalServerError().build();
+            String errorMsg = String.format("Error anadiendo los productos : %s", ex.getMessage());
+            System.out.println(errorMsg); // TODO Cambiar a logger
+            return ResponseEntity.internalServerError().body(errorMsg);
         }
 
         return ResponseEntity.ok().build();

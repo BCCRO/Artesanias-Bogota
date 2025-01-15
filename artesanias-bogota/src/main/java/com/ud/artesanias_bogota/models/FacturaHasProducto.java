@@ -37,6 +37,12 @@ public class FacturaHasProducto {
     @Column(name = "cantidad", nullable = false)
     private int cantidad;
 
+    /**
+     * Omito el Join para evitar el erro del bucle infinito
+     */
+    @Column(name = "punto_venta_id", nullable = false)
+    private Long idPuntoVenta;
+
     public FacturaHasProducto() {
     }
 
@@ -44,6 +50,7 @@ public class FacturaHasProducto {
         this.idFactura = dto.getIdFactura();
         this.idProducto = dto.getIdProducto();
         this.cantidad = dto.getCantidad();
+        this.idPuntoVenta = dto.getIdPuntoVenta();
     }
 
     public Long getId() {
@@ -92,5 +99,13 @@ public class FacturaHasProducto {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Long getIdPuntoVenta() {
+        return idPuntoVenta;
+    }
+
+    public void setIdPuntoVenta(Long idPuntoVenta) {
+        this.idPuntoVenta = idPuntoVenta;
     }
 }

@@ -2,6 +2,8 @@ package com.ud.artesanias_bogota.models;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name="productos_has_puntos_venta", schema = "artesanias_bogota")
 public class ProductoHasPuntoVenta {
@@ -26,6 +28,10 @@ public class ProductoHasPuntoVenta {
 
     @Column(name="cantidad", nullable = false)
     private int cantidad;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="fecha_actualizacion")
+    private Date fechaActualizacion;
 
     public ProductoHasPuntoVenta() {
     }
@@ -76,5 +82,13 @@ public class ProductoHasPuntoVenta {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Date getFechaActualizacion() {
+        return fechaActualizacion;
+    }
+
+    public void setFechaActualizacion(Date fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
     }
 }

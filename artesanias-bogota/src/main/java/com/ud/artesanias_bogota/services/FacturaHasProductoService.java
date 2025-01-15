@@ -61,6 +61,7 @@ public class FacturaHasProductoService {
         facturaHasProducto.setIdFactura(idFactura);
         facturaHasProducto.setIdProducto(idProducto);
         facturaHasProducto.setCantidad(cantidad);
+        facturaHasProducto.setIdPuntoVenta(idPuntoVenta);
         facturaHasProductoRepository.save(facturaHasProducto);
 
         productoHasPuntoVentaService.restarUnidadProductoPuntoVenta(idProducto, idPuntoVenta);
