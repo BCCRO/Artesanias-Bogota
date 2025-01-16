@@ -1,4 +1,4 @@
-package com.login_module.login_module.jwt;
+package com.ud.login_module.jwt;
 
 import java.security.Key;
 import java.util.Date;

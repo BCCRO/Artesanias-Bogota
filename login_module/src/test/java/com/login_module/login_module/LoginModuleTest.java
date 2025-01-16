@@ -15,10 +15,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.login_module.login_module.Auth.AuthController;
-import com.login_module.login_module.Auth.AuthResponse;
-import com.login_module.login_module.Auth.AuthService;
-import com.login_module.login_module.Auth.LoginRequest;
+import com.ud.login_module.Auth.AuthController;
+import com.ud.login_module.Auth.AuthResponse;
+import com.ud.login_module.Auth.AuthService;
+import com.ud.login_module.Auth.LoginRequest;
 
 @WebMvcTest(AuthController.class)
 public class LoginModuleTest {

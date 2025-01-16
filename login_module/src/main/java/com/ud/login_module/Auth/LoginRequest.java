@@ -1,4 +1,4 @@
-package com.login_module.login_module.Auth;
+package com.ud.login_module.Auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

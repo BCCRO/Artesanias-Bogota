@@ -1,4 +1,4 @@
-package com.ud.login_module.Auth;
+package com.ud.login_module.models.dtos;
 
 import java.util.Date;
 import java.util.List;
@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthResponse{
-  String token;
+public class UsuarioDTO {
   String documento;
   Date fechaNacimiento;
   Long telefono;
@@ -23,6 +22,7 @@ public class AuthResponse{
   String segundoApellido;
   Date fechaCreacion;
   String direccion;
+  String contrasenia;
   String email;
   Boolean isActive;
   List<String> roles;

@@ -1,8 +1,7 @@
-package com.login_module.login_module.error;
+package com.ud.login_module.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
 
 @Getter
 @AllArgsConstructor

@@ -1,5 +1,4 @@
-package com.ud.login_module.User;
-
+package com.ud.login_module.models;
 
 import jakarta.persistence.*;
 

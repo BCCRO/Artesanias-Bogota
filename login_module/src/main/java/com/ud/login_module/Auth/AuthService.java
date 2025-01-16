@@ -1,4 +1,4 @@
-package com.login_module.login_module.Auth;
+package com.ud.login_module.Auth;
 
 import java.util.List;
 
@@ -6,13 +6,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import org.springframework.stereotype.Service;
 
-import com.login_module.login_module.User.UserRepository;
-import com.login_module.login_module.User.Usuario;
-import com.login_module.login_module.error.ResponseException;
-import com.login_module.login_module.jwt.JwtService;
+import com.ud.login_module.User.UserRepository;
+import com.ud.login_module.User.Usuario;
+import com.ud.login_module.error.ResponseException;
+import com.ud.login_module.jwt.JwtService;
 
 import lombok.RequiredArgsConstructor;
 

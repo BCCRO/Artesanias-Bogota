@@ -1,18 +1,16 @@
-package com.login_module.login_module.Auth;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.login_module.login_module.error.InternalServerErrorResponse;
-import com.login_module.login_module.error.ResponseException;
-
-import lombok.RequiredArgsConstructor;
+package com.ud.login_module.Auth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.ud.login_module.error.InternalServerErrorResponse;
+import com.ud.login_module.error.ResponseException;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/auth")
