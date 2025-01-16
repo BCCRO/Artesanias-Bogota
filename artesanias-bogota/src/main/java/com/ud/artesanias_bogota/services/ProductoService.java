@@ -1,48 +1,32 @@
 package com.ud.artesanias_bogota.services;
 
 import com.ud.artesanias_bogota.models.Producto;
-import com.ud.artesanias_bogota.models.Rol;
-import com.ud.artesanias_bogota.models.RolHasUsuario;
-import com.ud.artesanias_bogota.models.dtos.ProductoCategoriaProductoDTO;
 import com.ud.artesanias_bogota.models.dtos.ProductoDTO;
-import com.ud.artesanias_bogota.models.dtos.UsuarioDTO;
 import com.ud.artesanias_bogota.repositories.ProductoRepository;
-
-import org.apache.velocity.runtime.Runtime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Base64;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+/**
+ * Servicio para la gestión de productos.
+ * Proporciona métodos para crear, actualizar, consultar y desactivar productos.
+ */
 @Service
 public class ProductoService {
 
     @Autowired
-    ProductoRepository productoRepository;
+    private ProductoRepository productoRepository;
 
-    public Producto createProducto(ProductoDTO productoDto){
-
-        /**
-         * Lo dejamos como String para evitarnos errores en la serializcion del jpa
-         */
-//        Serializamos la img base 64
-//        byte[] imagenBytes;
-//        String base64Data = productoDto.getImagen();
-//        if(base64Data == null){
-//            imagenBytes = new byte[0]; // TODO error
-//        }
-//        else{
-//            if (base64Data.contains(",")) {
-//                base64Data = base64Data.split(",")[1];
-//            }
-//            // Decodificar la cadena base64 en byte[]
-//            imagenBytes = Base64.getDecoder().decode(base64Data);
-//        }
-
+    /**
+     * Crea un nuevo producto a partir de un DTO.
+     *
+     * @param productoDto el objeto DTO con los datos del producto a crear.
+     * @return el producto creado.
+     */
+    public Producto createProducto(ProductoDTO productoDto) {
+        // Serialización de imagen (actualmente manejado como String Base64)
         String base64Data = productoDto.getImagen();
 
         Producto producto = new Producto();
@@ -52,78 +36,77 @@ public class ProductoService {
         producto.setDescripcion(productoDto.getDescripcion());
         producto.setCalificacion(productoDto.getCalificacion());
         producto.setIdCategoriaProducto(productoDto.getIdCategoriaProducto());
-
         producto.setArtistasProductosId(productoDto.getArtistasProductosId());
         producto.setColorProductosId(productoDto.getColorProductosId());
         producto.setColeccionProductosId(productoDto.getColeccionProductosId());
         producto.setOficioId(productoDto.getOficioId());
 
-
         return productoRepository.save(producto);
-
     }
 
-    public Optional<Producto> findProductoById(Long idProducto){
+    /**
+     * Busca un producto por su ID.
+     *
+     * @param idProducto el identificador del producto.
+     * @return un {@link Optional} con el producto, si existe.
+     */
+    public Optional<Producto> findProductoById(Long idProducto) {
         return productoRepository.findById(idProducto);
     }
 
-    public List<Producto> findAllProducto(){
-      System.out.println("Paso algo raro");
-        List<Producto> productos = productoRepository.findAll();
-
-//        List<ProductoCategoriaProductoDTO> productosDTO = productos.stream().map(ProductoCategoriaProductoDTO::new).collect(Collectors.toList());
-
-        return productos;
-//        return productoRepository.findAllWithCategoriaPadre();
+    /**
+     * Obtiene una lista de todos los productos.
+     *
+     * @return lista de productos.
+     */
+    public List<Producto> findAllProducto() {
+        return productoRepository.findAll();
     }
 
-    public Producto updateProducto(Long id, ProductoDTO newProducto) throws Exception{
-      Producto producto = productoRepository.findById(id).orElseThrow(()->new RuntimeException("product not found"));
+    /**
+     * Actualiza los datos de un producto existente.
+     *
+     * @param id          el identificador del producto a actualizar.
+     * @param newProducto un objeto DTO con los nuevos datos del producto.
+     * @return el producto actualizado.
+     * @throws Exception si no se encuentra el producto.
+     */
+    public Producto updateProducto(Long id, ProductoDTO newProducto) throws Exception {
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-      if (newProducto.getNombre() != null) {
-        producto.setNombre(newProducto.getNombre());
-      }
-      if (newProducto.getImagen() != null) {
-        producto.setImagen(newProducto.getImagen());
-      }
-      if (newProducto.getPrecioUnitario() != null) {
-        producto.setPrecioUnitario(newProducto.getPrecioUnitario());
-      }
-      if (newProducto.getDescripcion() != null) {
-        producto.setDescripcion(newProducto.getDescripcion());
-      }
-      if (newProducto.getCalificacion() != 0) {
-        producto.setCalificacion(newProducto.getCalificacion());
-      }
-      if (newProducto.getIdCategoriaProducto() != 0) {
-        producto.setIdCategoriaProducto(newProducto.getIdCategoriaProducto());
-      }
-      if (newProducto.getColorProductosId() != 0) {
-        producto.setColorProductosId(newProducto.getColorProductosId());
-      }
-      if (newProducto.getOficioId() != 0) {
-        producto.setOficioId(newProducto.getOficioId());;
-      }
-      if (newProducto.getColeccionProductosId() != 0) {
-        producto.setColeccionProductosId(newProducto.getColeccionProductosId());
-      }
-      if (newProducto.getArtistasProductosId() != 0) {
-        producto.setArtistasProductosId(newProducto.getArtistasProductosId());;
-      }
-            productoRepository.save(producto);
-            return producto;
+        if (newProducto.getNombre() != null) producto.setNombre(newProducto.getNombre());
+        if (newProducto.getImagen() != null) producto.setImagen(newProducto.getImagen());
+        if (newProducto.getPrecioUnitario() != null) producto.setPrecioUnitario(newProducto.getPrecioUnitario());
+        if (newProducto.getDescripcion() != null) producto.setDescripcion(newProducto.getDescripcion());
+        if (newProducto.getCalificacion() != 0) producto.setCalificacion(newProducto.getCalificacion());
+        if (newProducto.getIdCategoriaProducto() != 0) producto.setIdCategoriaProducto(newProducto.getIdCategoriaProducto());
+        if (newProducto.getColorProductosId() != 0) producto.setColorProductosId(newProducto.getColorProductosId());
+        if (newProducto.getOficioId() != 0) producto.setOficioId(newProducto.getOficioId());
+        if (newProducto.getColeccionProductosId() != 0) producto.setColeccionProductosId(newProducto.getColeccionProductosId());
+        if (newProducto.getArtistasProductosId() != 0) producto.setArtistasProductosId(newProducto.getArtistasProductosId());
 
-    }
-
-    public boolean deactivate(Long id, String estado) throws Exception{
-      Producto producto = productoRepository.findById(id).orElseThrow(()->new RuntimeException("No encontrado"));
-      producto.setEstado(estado);
-      try {
         productoRepository.save(producto);
-      } catch (Exception e) {
-        throw new Exception(e.getMessage());
-      }
-      return true;
+        return producto;
     }
 
+    /**
+     * Cambia el estado de un producto, lo que equivale a desactivarlo o reactivarlo.
+     *
+     * @param id     el identificador del producto.
+     * @param estado el nuevo estado del producto.
+     * @return {@code true} si el cambio de estado fue exitoso.
+     * @throws Exception si no se encuentra el producto o si ocurre un error al guardar.
+     */
+    public boolean deactivate(Long id, String estado) throws Exception {
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        producto.setEstado(estado);
+        try {
+            productoRepository.save(producto);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+        return true;
+    }
 }

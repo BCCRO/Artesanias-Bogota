@@ -1,57 +1,74 @@
 package com.ud.artesanias_bogota.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ud.artesanias_bogota.models.dtos.FacturaHasProductoDTO;
 import jakarta.persistence.*;
 
+/**
+ * Entidad que representa la relación entre facturas y productos en el sistema.
+ * Está mapeada a la tabla "facturas_has_productos" en el esquema "artesanias_bogota".
+ */
 @Entity
 @Table(name = "facturas_has_productos", schema = "artesanias_bogota")
 public class FacturaHasProducto {
 
+    // Identificador único de la relación.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Identificador de la factura asociada.
     @Column(name = "facturas_id", nullable = false)
     private Long idFactura;
 
     /**
-     * TODO
-     * Tenemos un error en donde se crea un bucle infinito entre la relacion FacturaHasProducto - Factura
-     * Deberia solucionarse con el fetch LAZY, pero no es asi
-     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las Factura automaticamente desde FacturaHasProducto cuando lo necesitemos
+     * Relación con la entidad Factura.
+     * Utiliza LAZY fetch para evitar la carga automática de la entidad completa.
      */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "facturas_id", insertable = false, updatable = false)
     private Factura factura;
 
+    // Identificador del producto asociado.
     @Column(name = "productos_id", nullable = false)
     private Long idProducto;
 
+    // Relación con la entidad Producto.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productos_id", insertable = false, updatable = false)
     private Producto producto;
 
+    // Cantidad del producto en la factura.
     @Column(name = "cantidad", nullable = false)
     private int cantidad;
 
     /**
-     * Omito el Join para evitar el erro del bucle infinito
+     * Identificador del punto de venta asociado.
+     * Nota: Se omite la relación @ManyToOne para evitar bucles en la serialización.
      */
     @Column(name = "punto_venta_id", nullable = false)
     private Long idPuntoVenta;
 
+    /**
+     * Constructor vacío necesario para frameworks.
+     */
     public FacturaHasProducto() {
     }
 
+    /**
+     * Constructor que inicializa la entidad a partir de un DTO.
+     * 
+     * @param dto Objeto FacturaHasProductoDTO con los datos necesarios.
+     */
     public FacturaHasProducto(FacturaHasProductoDTO dto) {
         this.idFactura = dto.getIdFactura();
         this.idProducto = dto.getIdProducto();
         this.cantidad = dto.getCantidad();
         this.idPuntoVenta = dto.getIdPuntoVenta();
     }
+
+    // Métodos getter y setter.
 
     public Long getId() {
         return id;

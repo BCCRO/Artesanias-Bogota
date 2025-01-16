@@ -15,73 +15,112 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * Entidad que representa un usuario en el sistema.
+ * Implementa la interfaz `UserDetails` para la integración con Spring Security.
+ * Está mapeada a la tabla "usuarios" en el esquema "artesanias_bogota".
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
-@Table(name="usuarios", schema = "artesanias_bogota")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})  // TODO Provisional, resolver con el configurator https://stackoverflow.com/questions/52656517/no-serializer-found-for-class-org-hibernate-proxy-pojo-bytebuddy-bytebuddyinterc
-public class Usuario implements UserDetails{
+@Table(name = "usuarios", schema = "artesanias_bogota")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Evita problemas de serialización con proxies de Hibernate.
+public class Usuario implements UserDetails {
 
+    // Documento único que identifica al usuario.
     @Id
     @Column(name = "documento", unique = true)
     private String documento;
 
+    // Fecha de nacimiento del usuario.
     @Temporal(TemporalType.DATE)
-    @Column(name="fecha_nacimiento", nullable = false)
+    @Column(name = "fecha_nacimiento", nullable = false)
     private Date fechaNacimiento;
 
-    @Column(name="telefono", nullable = false, unique = true)
+    // Teléfono único del usuario.
+    @Column(name = "telefono", nullable = false, unique = true)
     private Long telefono;
 
-    @Column(name="primer_nombre", nullable = false)
+    // Nombre y apellidos del usuario.
+    @Column(name = "primer_nombre", nullable = false)
     private String primerNombre;
-    @Column(name="segundo_nombre")
+
+    @Column(name = "segundo_nombre")
     private String segundoNombre;
-    @Column(name="primer_apellido", nullable = false)
+
+    @Column(name = "primer_apellido", nullable = false)
     private String primerApellido;
-    @Column(name="segundo_apellido", nullable = false)
+
+    @Column(name = "segundo_apellido", nullable = false)
     private String segundoApellido;
 
+    // Fecha de creación del registro del usuario.
     @Temporal(TemporalType.DATE)
-    @Column(name="fecha_creacion", nullable = false)
+    @Column(name = "fecha_creacion", nullable = false)
     private Date fechaCreacion;
 
-    @Column(name="direccion", nullable = false)
+    // Dirección física del usuario.
+    @Column(name = "direccion", nullable = false)
     private String direccion;
 
-    @Column(name="contrasenia", nullable = false)
+    // Contraseña del usuario, necesaria para la autenticación.
+    @Column(name = "contrasenia", nullable = false)
     private String contrasenia;
 
-    @Column(name="email", nullable = false, unique = true)
+    // Email único del usuario.
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name="activo", nullable = false)
+    // Indica si el usuario está activo o inactivo.
+    @Column(name = "activo", nullable = false)
     private boolean activo;
 
+    // Relación uno a muchos con los roles asociados al usuario.
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
     private Set<RolHasUsuario> rolesUsuario;
 
+    // Métodos de la interfaz UserDetails.
+
+    /**
+     * Obtiene los roles del usuario como una colección de autoridades para Spring Security.
+     *
+     * @return colección de roles como autoridades.
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-      return rolesUsuario.stream()
-            .map(rol -> new SimpleGrantedAuthority(rol.getRol().getRol()))
-            .toList();
+        return rolesUsuario.stream()
+                .map(rol -> new SimpleGrantedAuthority(rol.getRol().getRol()))
+                .toList();
     }
 
+    /**
+     * Obtiene la contraseña del usuario.
+     *
+     * @return la contraseña del usuario.
+     */
     @Override
     public String getPassword() {
-      return getContrasenia();
+        return getContrasenia();
     }
 
+    /**
+     * Obtiene el nombre de usuario (email) para la autenticación.
+     *
+     * @return el email del usuario.
+     */
     @Override
     public String getUsername() {
-      return getEmail();
+        return getEmail();
     }
 
-    public void chageStatus(){
-      this.activo = !this.activo;
+    // Métodos adicionales.
+
+    /**
+     * Cambia el estado del usuario (activo/inactivo).
+     */
+    public void chageStatus() {
+        this.activo = !this.activo;
     }
 }
