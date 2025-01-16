@@ -1,7 +1,5 @@
 package com.ud.pago_module.models.dtos;
 
-import jakarta.persistence.Column;
-
 public class ProductoDTO {
 
     private String nombre;

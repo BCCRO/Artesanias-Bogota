@@ -1,7 +1,6 @@
 package com.ud.pago_module.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ud.pago_module.models.dtos.FacturaHasProductoDTO;
 
 import jakarta.persistence.*;

@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.ud.pago_module.models.Factura;
-import com.ud.pago_module.models.FacturaHasProducto;
 import com.ud.pago_module.models.dtos.FacturaDTO;
 import com.ud.pago_module.models.dtos.FacturaHasProductoDTO;
 import com.ud.pago_module.models.responses.ServerErrorResponse;

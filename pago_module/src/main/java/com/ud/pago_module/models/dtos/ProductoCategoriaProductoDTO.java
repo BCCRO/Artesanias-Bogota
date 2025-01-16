@@ -1,7 +1,5 @@
 package com.ud.pago_module.models.dtos;
 
-import java.util.HashSet;
-
 import com.ud.pago_module.models.CategoriaProducto;
 import com.ud.pago_module.models.Producto;
 

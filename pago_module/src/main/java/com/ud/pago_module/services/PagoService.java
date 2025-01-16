@@ -8,11 +8,8 @@ import com.mercadopago.client.preference.PreferenceItemRequest;
 import com.mercadopago.client.preference.PreferenceRequest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.net.MPResource;
-import com.mercadopago.net.MPResponse;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.preference.Preference;
-import com.mercadopago.resources.preference.PreferenceBackUrls;
 import com.ud.pago_module.models.Factura;
 import com.ud.pago_module.models.Producto;
 import com.ud.pago_module.models.Transaccion;
@@ -23,8 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class PagoService {

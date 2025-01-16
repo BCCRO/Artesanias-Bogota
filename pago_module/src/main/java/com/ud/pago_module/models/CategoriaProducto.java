@@ -1,6 +1,5 @@
 package com.ud.pago_module.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;

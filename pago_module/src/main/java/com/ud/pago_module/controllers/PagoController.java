@@ -2,7 +2,6 @@ package com.ud.pago_module.controllers;
 
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.preference.Preference;
 import com.ud.pago_module.models.Transaccion;
 import com.ud.pago_module.models.request.PaymentNotification;
 import com.ud.pago_module.services.PagoService;

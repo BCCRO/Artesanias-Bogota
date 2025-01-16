@@ -9,7 +9,9 @@ import java.util.Optional;
 
 
 public interface TransaccionRepository  extends JpaRepository<Transaccion, Long> {
+  @SuppressWarnings("null")
   public Optional<Transaccion> findById(Long id);
 
+  @SuppressWarnings("null")
   public List<Transaccion> findAll();
 }

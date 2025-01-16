@@ -8,6 +8,7 @@ import com.ud.pago_module.models.Rol;
 
 @Repository
 public interface RolRepository extends JpaRepository<Rol,Long>{
+  @SuppressWarnings("null")
   Optional<Rol> findById(Long id);
   Optional<Rol> findByRolIgnoreCase(String rol);
 }
