@@ -77,4 +77,8 @@ public class Usuario implements UserDetails{
     public String getUsername() {
       return getEmail();
     }
+
+    public void chageStatus() {
+        this.activo = !this.activo;
+    }
 }

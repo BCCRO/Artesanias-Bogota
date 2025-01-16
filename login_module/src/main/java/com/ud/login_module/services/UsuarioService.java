@@ -5,13 +5,13 @@ import java.util.List;
 
 import java.util.stream.Collectors;
 
+import com.ud.login_module.User.Rol;
+import com.ud.login_module.User.RolHasUsuario;
+import com.ud.login_module.User.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ud.login_module.models.Rol;
-import com.ud.login_module.models.RolHasUsuario;
-import com.ud.login_module.models.Usuario;
 import com.ud.login_module.models.dtos.UsuarioDTO;
 import com.ud.login_module.models.responses.RegisterResponse;
 import com.ud.login_module.repositories.RolHasUserRepository;

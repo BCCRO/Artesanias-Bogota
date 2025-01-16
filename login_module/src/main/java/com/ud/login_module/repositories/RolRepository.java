@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ud.login_module.models.Rol;
+import com.ud.login_module.User.Rol;
 
 @Repository
 public interface RolRepository extends JpaRepository<Rol,Long>{

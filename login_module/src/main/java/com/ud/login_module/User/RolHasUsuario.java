@@ -18,13 +18,20 @@ public class RolHasUsuario {
     private Usuario usuario;
 
     @Column(name="id_rol", nullable = false)
-    private int idRol;
+    private Long idRol;
 
     @ManyToOne
     @JoinColumn(name="id_rol", insertable = false, updatable = false)
     private Rol rol;
 
     public RolHasUsuario() {
+    }
+
+    public RolHasUsuario(Usuario usuario, Rol rol) {
+        this.usuario = usuario;
+        this.rol = rol;
+        this.documentoUsuario = usuario.getDocumento();
+        this.idRol = rol.getId();
     }
 
     public Long getId() {
@@ -51,11 +58,11 @@ public class RolHasUsuario {
         this.usuario = usuario;
     }
 
-    public int getIdRol() {
+    public Long getIdRol() {
         return idRol;
     }
 
-    public void setIdRol(int idRol) {
+    public void setIdRol(Long idRol) {
         this.idRol = idRol;
     }
 
