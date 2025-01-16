@@ -30,18 +30,20 @@ public class ProductoService {
          * Lo dejamos como String para evitarnos errores en la serializcion del jpa
          */
 //        Serializamos la img base 64
-        byte[] imagenBytes;
+//        byte[] imagenBytes;
+//        String base64Data = productoDto.getImagen();
+//        if(base64Data == null){
+//            imagenBytes = new byte[0]; // TODO error
+//        }
+//        else{
+//            if (base64Data.contains(",")) {
+//                base64Data = base64Data.split(",")[1];
+//            }
+//            // Decodificar la cadena base64 en byte[]
+//            imagenBytes = Base64.getDecoder().decode(base64Data);
+//        }
+
         String base64Data = productoDto.getImagen();
-        if(base64Data == null){
-            imagenBytes = new byte[0]; // TODO error
-        }
-        else{
-            if (base64Data.contains(",")) {
-                base64Data = base64Data.split(",")[1];
-            }
-            // Decodificar la cadena base64 en byte[]
-            imagenBytes = Base64.getDecoder().decode(base64Data);
-        }
 
         Producto producto = new Producto();
         producto.setNombre(productoDto.getNombre());
@@ -49,7 +51,13 @@ public class ProductoService {
         producto.setPrecioUnitario(productoDto.getPrecioUnitario());
         producto.setDescripcion(productoDto.getDescripcion());
         producto.setCalificacion(productoDto.getCalificacion());
-        producto.setIdCategoriaProducto(producto.getIdCategoriaProducto());
+        producto.setIdCategoriaProducto(productoDto.getIdCategoriaProducto());
+
+        producto.setArtistasProductosId(productoDto.getArtistasProductosId());
+        producto.setColorProductosId(productoDto.getColorProductosId());
+        producto.setColeccionProductosId(productoDto.getColeccionProductosId());
+        producto.setOficioId(productoDto.getOficioId());
+
 
         return productoRepository.save(producto);
 
