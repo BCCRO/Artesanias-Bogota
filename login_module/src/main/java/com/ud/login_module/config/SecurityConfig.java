@@ -30,6 +30,8 @@ public class SecurityConfig {
     .authorizeHttpRequests(authRequest-> 
       authRequest
         .requestMatchers("/auth/**").permitAll()
+              .requestMatchers("/**") // Permite el acceso a todos los endpoints.
+              .permitAll()
         )
     .build();
   }

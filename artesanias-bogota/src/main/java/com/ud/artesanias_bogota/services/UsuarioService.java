@@ -142,11 +142,13 @@ public class UsuarioService {
         .message("Usuario creado correctamente")
         .build();
     } catch (IllegalArgumentException e) {
+      System.out.println(e.getMessage());
       return RegisterResponse.builder()
         .statusCode(409)
         .message(e.getMessage())
         .build();
     } catch (Exception e) {
+      System.out.println(e.getMessage());
       return RegisterResponse.builder()
         .statusCode(500)
         .message("Ocurrió un error inesperado")
