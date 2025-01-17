@@ -72,12 +72,12 @@
             <version>42.5.4</version>
         </dependency>
         
-        <!-- Jakarta Mail -->
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>jakarta.mail</artifactId>
-            <version>1.6.7</version>
-        </dependency>
+<!--        &lt;!&ndash; Jakarta Mail &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.sun.mail</groupId>-->
+<!--            <artifactId>jakarta.mail</artifactId>-->
+<!--            <version>1.6.7</version>-->
+<!--        </dependency>-->
         <!---Mercado Pago-->
         <dependency>
             <groupId>com.mercadopago</groupId>

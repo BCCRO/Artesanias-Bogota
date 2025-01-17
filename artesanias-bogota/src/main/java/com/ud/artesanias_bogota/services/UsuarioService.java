@@ -1,5 +1,6 @@
 package com.ud.artesanias_bogota.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -150,6 +151,65 @@ public class UsuarioService {
         .statusCode(500)
         .message("Ocurrió un error inesperado")
         .build();
+    }
+  }
+
+  public RegisterResponse createCliente(UsuarioDTO request){
+    try {
+      // Validar si el documento ya está registrado
+      if (userRepo.existsByDocumento(request.getDocumento())) {
+        throw new IllegalArgumentException("Ya existe un usuario con el documento proporcionado");
+      }
+      // Validar si el email ya está registrado
+      if (userRepo.existsByEmail(request.getEmail())) {
+        throw new IllegalArgumentException("Ya existe un usuario con el email proporcionado");
+      }
+      // Validar si el teléfono ya está registrado
+      if (userRepo.existsByTelefono(request.getTelefono())) {
+        throw new IllegalArgumentException("Ya existe un usuario con el teléfono proporcionado");
+      }
+      Usuario usuario = Usuario.builder()
+              .documento(request.getDocumento())
+              .fechaNacimiento(request.getFechaNacimiento())
+              .telefono(request.getTelefono())
+              .primerNombre(request.getPrimerNombre())
+              .segundoNombre(request.getSegundoNombre())
+              .primerApellido(request.getPrimerApellido())
+              .segundoApellido(request.getSegundoApellido())
+              .fechaCreacion(request.getFechaCreacion())
+              .direccion(request.getDireccion())
+              .contrasenia(passEncode.encode(request.getContrasenia()))
+              .email(request.getEmail())
+              .activo(true)
+              .build();
+      Rol cliente = rolRepo.findByRolIgnoreCase("cliente")
+              .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+      List<Rol> roles = new ArrayList<>();
+      roles.add(cliente);
+      userRepo.save(usuario);
+      roles.forEach(rol -> {
+        RolHasUsuario rolUsuario = new RolHasUsuario(usuario,rol);
+        userRolRepo.save(rolUsuario);
+      });
+
+      return RegisterResponse.builder()
+              .statusCode(200)
+              .userId(usuario.getDocumento())
+              .userName(buildFullName(usuario))
+              .message("Usuario creado correctamente")
+              .build();
+    }catch(IllegalArgumentException e){
+      return RegisterResponse.builder()
+              .statusCode(409)
+              .message(e.getMessage())
+              .build();
+    }catch (Exception e) {
+      return RegisterResponse.builder()
+              .statusCode(500)
+              .userId(null)
+              .userName(null)
+              .message("Ocurrio un error inesperado")
+              .build();
     }
   }
 

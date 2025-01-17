@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th='http://www.thymeleaf.org'>
+
+<head>
+  <title>Email Verification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      text-align: center;
+      padding: 10px 0;
+      color: #E04E4E;
+      font-size: 24px;
+    }
+
+    .content {
+      line-height: 1.6;
+      font-size: 16px;
+      color: #333333;
+      text-align: center;
+    }
+
+    .code {
+      font-size: 32px;
+      font-weight: bold;
+      color: #E04E4E;
+      letter-spacing: 4px;
+      margin: 20px 0;
+      display: inline-block;
+      background-color: #f0f0f0;
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+
+    .footer {
+      font-size: 12px;
+      color: #888888;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      Verify Your Email Address
+    </div>
+    <div class="content">
+      <p>Hello,</p>
+      <p>Thank you for signing up. To complete the process, please use the code below to verify your email address:</p>
+      <div class="code" th:text='${code}'></div>
+      <p>If you didn’t request this email, you can safely ignore it.</p>
+      <p>Best regards,<br>Artesanias Bogotá Team</p>
+    </div>
+    <div class="footer" th:text='${year}'>
+      Artesanias Bogotá LTDA. All rights reserved.
+    </div>
+  </div>
+</body>
+
+</html>
