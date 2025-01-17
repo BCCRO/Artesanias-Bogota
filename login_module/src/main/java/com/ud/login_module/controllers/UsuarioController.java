@@ -45,7 +45,7 @@ public class UsuarioController {
       
   }
   
-  @PutMapping("/update")
+  @PutMapping(value="/update", produces="application/json")
   public ResponseEntity<?> putMethodName(@RequestParam String id, @RequestBody UsuarioDTO request) {
     try {
       UsuarioDTO updatedUser = userService.updateUser(id, request);
@@ -54,16 +54,19 @@ public class UsuarioController {
       return ResponseEntity.status(409).body(ServerErrorResponse.builder()
         .statusCode(409)
         .message(e.getMessage())
+        .build()
       );
     }catch (RuntimeException e) {
       if (e.getMessage().equals("Usuario no encontrado")){
           return ResponseEntity.status(404).body(ServerErrorResponse.builder()
         .statusCode(404)
-        .message("Usuario no encontrado"));
+        .message("Usuario no encontrado")
+        .build());
         }
-        return ResponseEntity.internalServerError().body(ServerErrorResponse.builder()
+      return ResponseEntity.internalServerError().body(ServerErrorResponse.builder()
         .statusCode(500)
-        .message("Ocurrio un error inesperado"));
+        .message("Ocurrio un error inesperado")
+        .build());
       }
       
   }
@@ -93,7 +96,8 @@ public class UsuarioController {
     } catch(RuntimeException e){
       return ResponseEntity.status(404).body(ServerErrorResponse.builder()
         .statusCode(404)
-        .message("El Usuario con la id '"+id+"' no se encuentra registrado"));
+        .message("El Usuario con la id '"+id+"' no se encuentra registrado")
+        .build());
     }catch (Exception e) {
       return ResponseEntity.internalServerError().body("Ocurrio un error inesperado");
     }
