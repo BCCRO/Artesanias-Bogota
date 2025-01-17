@@ -16,7 +16,7 @@ public class TransaccionService {
   private TransaccionRepository transaccionRepository;
 
   public Transaccion getTransaccion(Long idTransaccion){
-    return transaccionRepository.findById(idTransaccion).orElseThrow();
+    return transaccionRepository.findById(idTransaccion).orElseThrow(()->new RuntimeException("Transaccion no encontrada"));
   }
 
   public List<Transaccion> getTransacciones(){

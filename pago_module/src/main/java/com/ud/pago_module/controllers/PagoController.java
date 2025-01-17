@@ -63,6 +63,8 @@ public class PagoController {
       try {
         Transaccion status = pagoService.consultarEstado(facturaId);
         return ResponseEntity.ok(status);
+      }catch (RuntimeException e){
+        return ResponseEntity.status(404).body(e.getMessage());
       } catch (Exception e) {
         return ResponseEntity.internalServerError().body("Algo inesperado sucedio");
       }

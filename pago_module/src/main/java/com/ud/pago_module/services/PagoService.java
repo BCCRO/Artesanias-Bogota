@@ -254,15 +254,11 @@ public class PagoService {
       }
     }
 
-    public Transaccion consultarEstado(Long id){
+    public Transaccion consultarEstado(Long id) throws Exception{
       //TODO: Consultar Estado transaccion
-      Factura factura = facturaService.obtenerFactura(id).orElseThrow();
+      Factura factura = facturaService.obtenerFactura(id).orElseThrow(()-> new RuntimeException("Factura no encontrada"));
       Transaccion transaccion = transaccionService.getTransaccion(factura.getTransaccionId());
-      try {
-        return transaccion;
-      } catch (Exception e) {
-        throw new RuntimeException("Sucedio un error al consultar el estado");
-      }
+      return transaccion;
     }
 
 
