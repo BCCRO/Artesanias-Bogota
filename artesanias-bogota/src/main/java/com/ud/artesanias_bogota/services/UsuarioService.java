@@ -9,11 +9,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ud.artesanias_bogota.models.Rol;
-import com.ud.artesanias_bogota.models.RolHasUsuario;
 import com.ud.artesanias_bogota.models.Usuario;
 import com.ud.artesanias_bogota.models.dtos.UsuarioDTO;
 import com.ud.artesanias_bogota.models.responses.RegisterResponse;
-import com.ud.artesanias_bogota.repositories.RolHasUserRepository;
+//import com.ud.artesanias_bogota.repositories.RolHasUserRepository;
 import com.ud.artesanias_bogota.repositories.RolRepository;
 import com.ud.artesanias_bogota.repositories.UsuarioRepository;
 
@@ -31,7 +30,7 @@ public class UsuarioService {
   private final PasswordEncoder passEncode;
   private final UsuarioRepository userRepo;
   private final RolRepository rolRepo;
-  private final RolHasUserRepository userRolRepo;
+//  private final RolHasUserRepository userRolRepo;
 
   /**
    * Obtiene una lista de todos los usuarios registrados en el sistema.
@@ -52,10 +51,11 @@ public class UsuarioService {
         .direccion(usuario.getDireccion())
         .telefono(usuario.getTelefono())
         .isActive(usuario.isActivo())
-        .roles(usuario.getAuthorities()
-          .stream()
-          .map(GrantedAuthority::getAuthority)
-          .toList())
+              .rol(usuario.getIdRol())
+//        .roles(usuario.getAuthorities()
+//          .stream()
+//          .map(GrantedAuthority::getAuthority)
+//          .toList())
         .build())
       .collect(Collectors.toList());
   }
@@ -81,10 +81,11 @@ public class UsuarioService {
         .direccion(usuario.getDireccion())
         .telefono(usuario.getTelefono())
         .isActive(usuario.isActivo())
-        .roles(usuario.getAuthorities()
-          .stream()
-          .map(GrantedAuthority::getAuthority)
-          .toList())
+              .rol(usuario.getIdRol())
+//        .roles(usuario.getAuthorities()
+//          .stream()
+//          .map(GrantedAuthority::getAuthority)
+//          .toList())
         .build();
     } catch (Exception e) {
       return UsuarioDTO.builder().primerNombre("Usuario no encontrado").build();
@@ -121,19 +122,20 @@ public class UsuarioService {
         .direccion(request.getDireccion())
         .contrasenia(passEncode.encode(request.getContrasenia()))
         .email(request.getEmail())
+              .idRol(request.getRol())
         .activo(true)
         .build();
 
-      List<Rol> roles = request.getRoles().stream()
-        .map(rol -> rolRepo.findByRolIgnoreCase(rol)
-          .orElseThrow(() -> new IllegalArgumentException("Rol no existente: " + rol)))
-        .toList();
+//      List<Rol> roles = request.getRol().stream()
+//        .map(rol -> rolRepo.findByRolIgnoreCase(rol)
+//          .orElseThrow(() -> new IllegalArgumentException("Rol no existente: " + rol)))
+//        .toList();
 
       userRepo.save(usuario);
-      roles.forEach(rol -> {
-        RolHasUsuario rolUsuario = new RolHasUsuario(usuario, rol);
-        userRolRepo.save(rolUsuario);
-      });
+//      roles.forEach(rol -> {
+//        RolHasUsuario rolUsuario = new RolHasUsuario(usuario, rol);
+//        rolRepo.save(rolUsuario);
+//      });
 
       return RegisterResponse.builder()
         .statusCode(200)
@@ -182,17 +184,18 @@ public class UsuarioService {
               .direccion(request.getDireccion())
               .contrasenia(passEncode.encode(request.getContrasenia()))
               .email(request.getEmail())
+              .idRol(2)       //TODO Quemado
               .activo(true)
               .build();
-      Rol cliente = rolRepo.findByRolIgnoreCase("cliente")
-              .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
-      List<Rol> roles = new ArrayList<>();
-      roles.add(cliente);
+//      Rol cliente = rolRepo.findByRolIgnoreCase("cliente")
+//              .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+//      List<Rol> roles = new ArrayList<>();
+//      roles.add(cliente);
       userRepo.save(usuario);
-      roles.forEach(rol -> {
-        RolHasUsuario rolUsuario = new RolHasUsuario(usuario,rol);
-        userRolRepo.save(rolUsuario);
-      });
+//      roles.forEach(rol -> {
+//        RolHasUsuario rolUsuario = new RolHasUsuario(usuario,rol);
+//        userRolRepo.save(rolUsuario);
+//      });
 
       return RegisterResponse.builder()
               .statusCode(200)
@@ -232,6 +235,7 @@ public class UsuarioService {
     if (request.getPrimerApellido() != null) usuario.setPrimerApellido(request.getPrimerApellido());
     if (request.getSegundoApellido() != null) usuario.setSegundoApellido(request.getSegundoApellido());
     if (request.getFechaNacimiento() != null) usuario.setFechaNacimiento(request.getFechaNacimiento());
+    if (request.getRol() != null) usuario.setIdRol(request.getRol());
     if (request.getTelefono() != null) {
       if (userRepo.existsByTelefono(request.getTelefono())) {
         throw new IllegalArgumentException("Ya existe un usuario con el teléfono proporcionado");
@@ -245,17 +249,17 @@ public class UsuarioService {
       }
       usuario.setEmail(request.getEmail());
     }
-    if (request.getRoles() != null) {
-      usuario.getRolesUsuario().forEach(rol -> userRolRepo.delete(rol));
-      List<Rol> roles = request.getRoles().stream()
-        .map(rol -> rolRepo.findByRolIgnoreCase(rol)
-          .orElseThrow(() -> new RuntimeException("Rol no encontrado: " + rol)))
-        .toList();
-      roles.forEach(rol -> {
-        RolHasUsuario rolUsuario = new RolHasUsuario(usuario, rol);
-        userRolRepo.save(rolUsuario);
-      });
-    }
+//    if (request.getRoles() != null) {
+//      usuario.getRolesUsuario().forEach(rol -> userRolRepo.delete(rol));
+//      List<Rol> roles = request.getRoles().stream()
+//        .map(rol -> rolRepo.findByRolIgnoreCase(rol)
+//          .orElseThrow(() -> new RuntimeException("Rol no encontrado: " + rol)))
+//        .toList();
+//      roles.forEach(rol -> {
+//        RolHasUsuario rolUsuario = new RolHasUsuario(usuario, rol);
+//        userRolRepo.save(rolUsuario);
+//      });
+//    }
     userRepo.save(usuario);
     return UsuarioDTO.builder()
       .primerNombre(usuario.getPrimerNombre())
@@ -265,9 +269,10 @@ public class UsuarioService {
       .documento(usuario.getDocumento())
       .email(usuario.getEmail())
       .direccion(usuario.getDireccion())
-      .roles(usuario.getRolesUsuario().stream()
-        .map(rol -> rol.getRol().getRol())
-        .toList())
+            .rol(usuario.getIdRol())
+//      .roles(usuario.getRolesUsuario().stream()
+//        .map(rol -> rol.getRol().getRol())
+//        .toList())
       .build();
   }
 

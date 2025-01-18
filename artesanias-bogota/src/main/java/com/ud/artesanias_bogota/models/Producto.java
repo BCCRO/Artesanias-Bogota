@@ -61,18 +61,18 @@ public class Producto {
     @JoinColumn(name = "categorias_productos_id", insertable = false, updatable = false)
     private CategoriaProducto categoriaProducto;
 
-    // Identificadores adicionales relacionados con el producto.
-    @Column(name = "color_productos_id", nullable = false)
-    private int colorProductosId;
-
-    @Column(name = "oficio_id", nullable = false)
-    private int oficioId;
-
-    @Column(name = "coleccion_productos_id", nullable = false)
-    private int coleccionProductosId;
-
-    @Column(name = "artistas_productos_id", nullable = false)
-    private int artistasProductosId;
+//    // Identificadores adicionales relacionados con el producto.
+//    @Column(name = "color_productos_id", nullable = false)
+//    private int colorProductosId;
+//
+//    @Column(name = "oficio_id", nullable = false)
+//    private int oficioId;
+//
+//    @Column(name = "coleccion_productos_id", nullable = false)
+//    private int coleccionProductosId;
+//
+//    @Column(name = "artistas_productos_id", nullable = false)
+//    private int artistasProductosId;
 
     /**
      * Relación con las facturas asociadas al producto.
@@ -181,37 +181,37 @@ public class Producto {
         this.productoPuntosVentas = productoPuntosVentas;
     }
 
-    public int getColorProductosId() {
-        return colorProductosId;
-    }
-
-    public void setColorProductosId(int colorProductosId) {
-        this.colorProductosId = colorProductosId;
-    }
-
-    public int getOficioId() {
-        return oficioId;
-    }
-
-    public void setOficioId(int oficioId) {
-        this.oficioId = oficioId;
-    }
-
-    public int getColeccionProductosId() {
-        return coleccionProductosId;
-    }
-
-    public void setColeccionProductosId(int coleccionProductosId) {
-        this.coleccionProductosId = coleccionProductosId;
-    }
-
-    public int getArtistasProductosId() {
-        return artistasProductosId;
-    }
-
-    public void setArtistasProductosId(int artistasProductosId) {
-        this.artistasProductosId = artistasProductosId;
-    }
+//    public int getColorProductosId() {
+//        return colorProductosId;
+//    }
+//
+//    public void setColorProductosId(int colorProductosId) {
+//        this.colorProductosId = colorProductosId;
+//    }
+//
+//    public int getOficioId() {
+//        return oficioId;
+//    }
+//
+//    public void setOficioId(int oficioId) {
+//        this.oficioId = oficioId;
+//    }
+//
+//    public int getColeccionProductosId() {
+//        return coleccionProductosId;
+//    }
+//
+//    public void setColeccionProductosId(int coleccionProductosId) {
+//        this.coleccionProductosId = coleccionProductosId;
+//    }
+//
+//    public int getArtistasProductosId() {
+//        return artistasProductosId;
+//    }
+//
+//    public void setArtistasProductosId(int artistasProductosId) {
+//        this.artistasProductosId = artistasProductosId;
+//    }
 
     public String getEstado() {
         return estado;

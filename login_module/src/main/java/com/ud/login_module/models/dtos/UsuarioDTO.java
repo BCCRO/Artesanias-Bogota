@@ -55,5 +55,5 @@ public class UsuarioDTO {
   Boolean isActive;
 
   // Lista de roles asignados al usuario.
-  List<String> roles;
+  Integer rol;
 }

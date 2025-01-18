@@ -1,5 +1,6 @@
 package com.ud.artesanias_bogota.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,9 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -78,8 +79,16 @@ public class Usuario implements UserDetails {
     private boolean activo;
 
     // Relación uno a muchos con los roles asociados al usuario.
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
-    private Set<RolHasUsuario> rolesUsuario;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
+//    private Set<RolHasUsuario> rolesUsuario;
+
+
+    @Column(name = "rol", nullable = false)
+    private int idRol;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "rol", insertable = false, updatable = false)
+    private Rol rol;
 
     // Métodos de la interfaz UserDetails.
 
@@ -90,9 +99,11 @@ public class Usuario implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return rolesUsuario.stream()
-                .map(rol -> new SimpleGrantedAuthority(rol.getRol().getRol()))
-                .toList();
+        Collection<SimpleGrantedAuthority> collection = new ArrayList<>();
+
+        collection.add(new SimpleGrantedAuthority(rol.getRol()));
+
+        return collection;
     }
 
     /**
@@ -102,7 +113,7 @@ public class Usuario implements UserDetails {
      */
     @Override
     public String getPassword() {
-        return getContrasenia();
+        return contrasenia;
     }
 
     /**
@@ -112,7 +123,7 @@ public class Usuario implements UserDetails {
      */
     @Override
     public String getUsername() {
-        return getEmail();
+        return email;
     }
 
     // Métodos adicionales.

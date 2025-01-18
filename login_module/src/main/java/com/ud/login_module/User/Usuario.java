@@ -1,10 +1,13 @@
 package com.ud.login_module.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
@@ -75,9 +78,12 @@ public class Usuario implements UserDetails {
     @Column(name = "activo", nullable = false)
     private boolean activo;
 
-    // Relación uno a muchos con la tabla RolHasUsuario.
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "documentoUsuario")
-    private Set<RolHasUsuario> rolesUsuario;
+    @Column(name = "rol", nullable = false)
+    private int idRol;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "rol", insertable = false, updatable = false)
+    private Rol rol;
 
     /**
      * Obtiene las autoridades (roles) del usuario.
@@ -86,9 +92,11 @@ public class Usuario implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return rolesUsuario.stream()
-                .map(rol -> new SimpleGrantedAuthority(rol.getRol().getRol()))
-                .toList();
+        Collection<SimpleGrantedAuthority> collection = new ArrayList<>();
+
+        collection.add(new SimpleGrantedAuthority(rol.getRol()));
+
+        return collection;
     }
 
     /**
@@ -98,7 +106,7 @@ public class Usuario implements UserDetails {
      */
     @Override
     public String getPassword() {
-        return getContrasenia();
+        return contrasenia;
     }
 
     /**
@@ -108,7 +116,7 @@ public class Usuario implements UserDetails {
      */
     @Override
     public String getUsername() {
-        return getEmail();
+        return email;
     }
 
     /**

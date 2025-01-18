@@ -36,10 +36,10 @@ public class ProductoService {
         producto.setDescripcion(productoDto.getDescripcion());
         producto.setCalificacion(productoDto.getCalificacion());
         producto.setIdCategoriaProducto(productoDto.getIdCategoriaProducto());
-        producto.setArtistasProductosId(productoDto.getArtistasProductosId());
-        producto.setColorProductosId(productoDto.getColorProductosId());
-        producto.setColeccionProductosId(productoDto.getColeccionProductosId());
-        producto.setOficioId(productoDto.getOficioId());
+//        producto.setArtistasProductosId(productoDto.getArtistasProductosId());
+//        producto.setColorProductosId(productoDto.getColorProductosId());
+//        producto.setColeccionProductosId(productoDto.getColeccionProductosId());
+//        producto.setOficioId(productoDto.getOficioId());
 
         return productoRepository.save(producto);
     }
@@ -81,10 +81,10 @@ public class ProductoService {
         if (newProducto.getDescripcion() != null) producto.setDescripcion(newProducto.getDescripcion());
         if (newProducto.getCalificacion() != 0) producto.setCalificacion(newProducto.getCalificacion());
         if (newProducto.getIdCategoriaProducto() != 0) producto.setIdCategoriaProducto(newProducto.getIdCategoriaProducto());
-        if (newProducto.getColorProductosId() != 0) producto.setColorProductosId(newProducto.getColorProductosId());
-        if (newProducto.getOficioId() != 0) producto.setOficioId(newProducto.getOficioId());
-        if (newProducto.getColeccionProductosId() != 0) producto.setColeccionProductosId(newProducto.getColeccionProductosId());
-        if (newProducto.getArtistasProductosId() != 0) producto.setArtistasProductosId(newProducto.getArtistasProductosId());
+//        if (newProducto.getColorProductosId() != 0) producto.setColorProductosId(newProducto.getColorProductosId());
+//        if (newProducto.getOficioId() != 0) producto.setOficioId(newProducto.getOficioId());
+//        if (newProducto.getColeccionProductosId() != 0) producto.setColeccionProductosId(newProducto.getColeccionProductosId());
+//        if (newProducto.getArtistasProductosId() != 0) producto.setArtistasProductosId(newProducto.getArtistasProductosId());
 
         productoRepository.save(producto);
         return producto;

@@ -1,5 +1,6 @@
 package com.ud.artesanias_bogota.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -21,6 +22,7 @@ public class ProductoHasPuntoVenta {
     private Long idProducto;
 
     // Relación con la entidad Producto.
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productos_id", insertable = false, updatable = false)
     private Producto producto;
@@ -30,6 +32,7 @@ public class ProductoHasPuntoVenta {
     private Long idPuntoVenta;
 
     // Relación con la entidad PuntoVenta.
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "puntos_venta_id", insertable = false, updatable = false)
     private PuntoVenta puntoVenta;

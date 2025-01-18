@@ -21,8 +21,8 @@ public class Rol {
     private String rol;
 
     // Relación uno a muchos con la entidad RolHasUsuario.
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "idRol")
-    private Set<RolHasUsuario> usuariosRol;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "documento")
+    private Set<Usuario> usuarios;
 
     /**
      * Constructor vacío de la clase Rol.
@@ -74,8 +74,8 @@ public class Rol {
      * 
      * @return un conjunto de relaciones entre rol y usuario.
      */
-    public Set<RolHasUsuario> getUsuariosRol() {
-        return usuariosRol;
+    public Set<Usuario> getUsuariosRol() {
+        return usuarios;
     }
 
     /**
@@ -83,7 +83,7 @@ public class Rol {
      * 
      * @param usuariosRol el conjunto de relaciones a establecer.
      */
-    public void setUsuariosRol(Set<RolHasUsuario> usuariosRol) {
-        this.usuariosRol = usuariosRol;
+    public void setUsuariosRol(Set<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
 }
