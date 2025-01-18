@@ -46,8 +46,6 @@ public class Factura {
     /**
      * Relación con el usuario asociado a la factura.
      * Utiliza LAZY fetch para evitar cargar automáticamente la entidad completa.
-     * 
-     * TODO: Resolver el problema de bucle infinito en la serialización de la relación Usuario-Factura.
      */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -61,8 +59,6 @@ public class Factura {
     /**
      * Relación con la transacción asociada a la factura.
      * Utiliza LAZY fetch para evitar cargar automáticamente la entidad completa.
-     * 
-     * TODO: Resolver el problema de bucle infinito en la serialización de la relación Transacción-Factura.
      */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

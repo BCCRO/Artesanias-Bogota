@@ -1,5 +1,13 @@
 package com.ud.artesanias_bogota.controllers;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ud.artesanias_bogota.models.dtos.UsuarioDTO;
@@ -9,30 +17,17 @@ import com.ud.artesanias_bogota.services.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PutMapping;
-
-/**
- * Controlador REST para la gestión de usuarios.
- * Proporciona endpoints para crear, consultar, actualizar y cambiar el estado de los usuarios.
- */
-@RestController // Indica que esta clase es un controlador REST.
-@RequestMapping("/api/usuarios") // Define el prefijo de las rutas para los endpoints relacionados con usuarios.
-@RequiredArgsConstructor // Genera automáticamente el constructor para la inyección de dependencias.
+@RestController // Declara esta clase como un controlador REST para manejar solicitudes relacionadas con usuarios.
+@RequestMapping("/api/usuarios") // Define la ruta base "/api/usuarios" para las solicitudes dirigidas a este controlador.
+@RequiredArgsConstructor // Genera un constructor para los campos finales (final) utilizando Lombok.
 public class UsuarioController {
-
-  private final UsuarioService userService; // Servicio de gestión de usuarios.
+  
+  // Servicio para manejar la lógica relacionada con usuarios.
+  private final UsuarioService userService;
 
   /**
-   * Obtiene la lista completa de usuarios.
-   * 
-   * @return una lista de usuarios.
+   * Obtiene una lista de todos los usuarios registrados.
+   * @return Una lista de usuarios con estado 200 (OK).
    */
   @GetMapping("/list")
   public ResponseEntity<?> getUsuariosList() {
@@ -40,10 +35,9 @@ public class UsuarioController {
   }
 
   /**
-   * Obtiene un usuario específico por su ID.
-   * 
-   * @param id ID del usuario a consultar.
-   * @return el usuario correspondiente o un estado HTTP 404 si no se encuentra.
+   * Obtiene los detalles de un usuario por su ID.
+   * @param id El ID del usuario a buscar.
+   * @return Los detalles del usuario o un mensaje de error si no se encuentra.
    */
   @GetMapping("")
   public ResponseEntity<?> getMethodName(@RequestParam String id) {
@@ -53,34 +47,32 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
       }
       return ResponseEntity.status(404).body("Usuario no encontrado");
-      
     } catch (Exception e) {
       return ResponseEntity.internalServerError().body(null);
     }
   }
 
   /**
-   * Actualiza los datos de un usuario existente.
-   * 
-   * @param id ID del usuario a actualizar.
-   * @param request DTO con los datos actualizados del usuario.
-   * @return el usuario actualizado o un estado de error si ocurre un problema.
+   * Actualiza los datos de un usuario por su ID.
+   * @param id El ID del usuario a actualizar.
+   * @param request Los datos actualizados del usuario.
+   * @return El usuario actualizado o un mensaje de error.
    */
   @PutMapping("/update")
   public ResponseEntity<?> putMethodName(@RequestParam String id, @RequestBody UsuarioDTO request) {
     try {
       UsuarioDTO updatedUser = userService.updateUser(id, request);
       return ResponseEntity.ok(updatedUser);
-    } catch(IllegalArgumentException e) {
+    } catch (IllegalArgumentException e) {
       return ResponseEntity.status(409).body(ServerErrorResponse.builder()
         .statusCode(409)
         .message(e.getMessage())
       );
     } catch (RuntimeException e) {
-      if (e.getMessage().equals("Usuario no encontrado")) {
+      if ("Usuario no encontrado".equals(e.getMessage())) {
         return ResponseEntity.status(404).body(ServerErrorResponse.builder()
-        .statusCode(404)
-        .message("Usuario no encontrado"));
+          .statusCode(404)
+          .message("Usuario no encontrado"));
       }
       return ResponseEntity.internalServerError().body(ServerErrorResponse.builder()
         .statusCode(500)
@@ -89,10 +81,9 @@ public class UsuarioController {
   }
 
   /**
-   * Crea un nuevo usuario en el sistema.
-   * 
-   * @param request DTO con los datos del usuario a crear.
-   * @return la respuesta del registro del usuario o un estado HTTP 500 en caso de error.
+   * Crea un nuevo usuario.
+   * @param request Los datos del usuario a crear.
+   * @return La respuesta del proceso de registro con un estado adecuado.
    */
   @PostMapping(value = "/create", produces = "application/json")
   public ResponseEntity<?> createUsuario(@RequestBody UsuarioDTO request) {
@@ -104,10 +95,9 @@ public class UsuarioController {
   }
 
   /**
-   * Crea un nuevo usuario cliente.
-   * 
-   * @param request DTO con los datos del usuario cliente a crear.
-   * @return la respuesta del registro del usuario cliente.
+   * Crea un nuevo usuario con rol de cliente.
+   * @param request Los datos del cliente a crear.
+   * @return La respuesta del proceso de registro con un estado adecuado.
    */
   @PostMapping(value = "/create/cliente", produces = "application/json")
   public ResponseEntity<?> createUsuarioCliente(@RequestBody UsuarioDTO request) {
@@ -116,20 +106,22 @@ public class UsuarioController {
   }
 
   /**
-   * Cambia el estado de un usuario.
-   * 
-   * @param id ID del usuario cuyo estado se actualizará.
-   * @return un mensaje de éxito o un mensaje de error si el usuario no se encuentra.
+   * Cambia el estado de un usuario por su ID.
+   * @param id El ID del usuario cuyo estado se desea cambiar.
+   * @return Un mensaje de éxito o error dependiendo del resultado.
    */
   @PutMapping("/status/{id}")
   public ResponseEntity<?> requestMethodName(@PathVariable String id) {
     try {
+      // Llama al servicio para cambiar el estado del usuario.
       return ResponseEntity.ok("El estado del usuario se ha cambiado con éxito");
     } catch (RuntimeException e) {
+      // Retorna un mensaje de error si el usuario no se encuentra.
       return ResponseEntity.status(404).body(ServerErrorResponse.builder()
         .statusCode(404)
-        .message("El Usuario con la ID '" + id + "' no se encuentra registrado"));
+        .message("El usuario con la ID '" + id + "' no se encuentra registrado"));
     } catch (Exception e) {
+      // Retorna un mensaje genérico de error en caso de fallo inesperado.
       return ResponseEntity.internalServerError().body("Ocurrió un error inesperado");
     }
   }

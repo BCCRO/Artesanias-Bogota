@@ -52,7 +52,7 @@ public class TransaccionService {
     try {
       transaccionRepository.saveAndFlush(transaccion);
     } catch (Exception e) {
-      System.out.println(e.getMessage()); // TODO: cambiar a un logger.
+      System.out.println(e.getMessage());
     }
   }
 

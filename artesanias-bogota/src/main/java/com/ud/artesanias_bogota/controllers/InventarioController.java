@@ -1,95 +1,86 @@
 package com.ud.artesanias_bogota.controllers;
 
-import com.ud.artesanias_bogota.models.ProductoHasPuntoVenta;
-import com.ud.artesanias_bogota.models.dtos.ProductoPuntoVentaDTO;
-import com.ud.artesanias_bogota.services.ProductoHasPuntoVentaService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.ud.artesanias_bogota.models.ProductoHasPuntoVenta;
+import com.ud.artesanias_bogota.models.dtos.ProductoPuntoVentaDTO;
+import com.ud.artesanias_bogota.services.ProductoHasPuntoVentaService;
 
-/**
- * Controlador REST para la gestión del inventario.
- * Proporciona endpoints para actualizar y consultar el inventario basado en productos y puntos de venta.
- */
-@RestController // Indica que esta clase es un controlador REST.
-@RequestMapping("/api/inventario") // Define el prefijo de las rutas para los endpoints de inventario.
+@RestController // Declara esta clase como un controlador REST para manejar solicitudes HTTP relacionadas con el inventario.
+@RequestMapping("/api/inventario") // Define la ruta base "/api/inventario" para las solicitudes dirigidas a este controlador.
 public class InventarioController {
 
-    @Autowired // Inyección del servicio que gestiona los productos en puntos de venta.
+    @Autowired // Inyecta la dependencia del servicio que maneja la relación entre productos y puntos de venta.
     private ProductoHasPuntoVentaService productoHasPuntoVentaService;
 
-    /**
-     * Actualiza el inventario de un producto en un punto de venta específico.
-     *
-     * @param productoPuntoVentaDTO DTO que contiene el ID del producto, ID del punto de venta y cantidad a actualizar.
-     * @return una respuesta HTTP 200 si se actualiza correctamente o HTTP 500 en caso de error.
-     */
-    @PostMapping(value = "/actualizar-inventario/producto-puntoventa", produces = "application/json")
+    @PostMapping(value = "/actualizar-inventario/producto-puntoventa", produces = "application/json") // Define un endpoint para actualizar el inventario basado en el producto y el punto de venta.
     public ResponseEntity<String> actualizarInventarioByPorductoAndPuntoVenta(@RequestBody ProductoPuntoVentaDTO productoPuntoVentaDTO) {
         try {
+            // Llama al servicio para actualizar el inventario utilizando los datos proporcionados en el DTO.
             productoHasPuntoVentaService.actualizarInventario(
                 productoPuntoVentaDTO.getIdProducto(),
                 productoPuntoVentaDTO.getIdPuntoVenta(),
                 productoPuntoVentaDTO.getCantidad()
             );
+            // Retorna un mensaje de éxito con estado 200 (OK) si la actualización fue exitosa.
             return ResponseEntity.ok("Se actualizó correctamente el inventario");
         } catch (RuntimeException e) {
+            // Retorna un mensaje de error con estado 500 si ocurre una excepción.
             return ResponseEntity.status(HttpStatusCode.valueOf(500)).body(e.getMessage());
         }
     }
 
-    /**
-     * Obtiene el inventario completo.
-     *
-     * @return una lista de todos los productos con su información de inventario o HTTP 204 si no hay datos.
-     */
-    @GetMapping(value = "/obtener-inventario", produces = "application/json")
+    @GetMapping(value = "/obtener-inventario", produces = "application/json") // Define un endpoint para obtener el inventario completo.
     public ResponseEntity<List<ProductoHasPuntoVenta>> getAllInventario() {
+        // Obtiene la lista de productos asociados a puntos de venta desde el servicio.
         List<ProductoHasPuntoVenta> listProductoPuntoVenta = productoHasPuntoVentaService.getProductosHasPuntoVenta();
 
+        // Verifica si la lista está vacía y retorna un estado 204 (Sin contenido) si no hay datos.
         if (listProductoPuntoVenta.isEmpty()) {
             System.out.println("No se encontró ningún producto en el inventario");
             return ResponseEntity.noContent().build();
         } else {
+            // Retorna la lista de productos con estado 200 (OK) si hay datos disponibles.
             return ResponseEntity.ok(listProductoPuntoVenta);
         }
     }
 
-    /**
-     * Obtiene el inventario de un producto específico por su ID.
-     *
-     * @param idProducto ID del producto a consultar.
-     * @return una lista de productos asociados al ID o HTTP 204 si no hay datos.
-     */
-    @GetMapping(value = "/obtener-inventario-by-producto/{idProducto}", produces = "application/json")
+    @GetMapping(value = "/obtener-inventario-by-producto/{idProducto}", produces = "application/json") // Define un endpoint para obtener inventario por ID de producto.
     public ResponseEntity<List<ProductoHasPuntoVenta>> getInventarioByProducto(@PathVariable Long idProducto) {
+        // Obtiene la lista de inventario filtrada por el ID del producto.
         List<ProductoHasPuntoVenta> listProductoPuntoVenta = productoHasPuntoVentaService.getProductosHasPuntoVentaByIdProducto(idProducto);
 
+        // Verifica si la lista está vacía y retorna un estado 204 (Sin contenido) si no hay datos.
         if (listProductoPuntoVenta.isEmpty()) {
-            System.out.println("No se encontró el producto en el inventario - ID producto: " + idProducto); 
+            System.out.println("No se encontró el producto en el inventario - ID producto: " + idProducto);
             return ResponseEntity.noContent().build();
         } else {
+            // Retorna la lista de productos filtrada con estado 200 (OK).
             return ResponseEntity.ok(listProductoPuntoVenta);
         }
     }
 
-    /**
-     * Obtiene el inventario de un punto de venta específico por su ID.
-     *
-     * @param idPuntoVenta ID del punto de venta a consultar.
-     * @return una lista de productos asociados al punto de venta o HTTP 204 si no hay datos.
-     */
-    @GetMapping(value = "/obtener-inventario-by-puntoventa/{idPuntoVenta}", produces = "application/json")
+    @GetMapping(value = "/obtener-inventario-by-puntoventa/{idPuntoVenta}", produces = "application/json") // Define un endpoint para obtener inventario por ID de punto de venta.
     public ResponseEntity<List<ProductoHasPuntoVenta>> getInventarioByPuntoVenta(@PathVariable Long idPuntoVenta) {
+        // Obtiene la lista de inventario filtrada por el ID del punto de venta.
         List<ProductoHasPuntoVenta> listProductoPuntoVenta = productoHasPuntoVentaService.getProductosHasPuntoVentaByIdPuntoVenta(idPuntoVenta);
 
+        // Verifica si la lista está vacía y retorna un estado 204 (Sin contenido) si no hay datos.
         if (listProductoPuntoVenta.isEmpty()) {
             System.out.println("No se encontró ningún producto para el punto de venta: " + idPuntoVenta);
             return ResponseEntity.noContent().build();
         } else {
+            // Retorna la lista de productos filtrada con estado 200 (OK).
             return ResponseEntity.ok(listProductoPuntoVenta);
         }
     }

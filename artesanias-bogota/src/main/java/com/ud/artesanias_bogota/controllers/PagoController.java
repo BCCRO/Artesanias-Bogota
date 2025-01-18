@@ -1,98 +1,84 @@
 package com.ud.artesanias_bogota.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.ud.artesanias_bogota.models.Transaccion;
 import com.ud.artesanias_bogota.models.request.PaymentNotification;
 import com.ud.artesanias_bogota.services.PagoService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-/**
- * Controlador REST para la gestión de pagos.
- * Integra funcionalidades de MercadoPago para crear preferencias de pago,
- * gestionar notificaciones de pagos (webhook) y consultar el estado de transacciones.
- */
-@RestController // Indica que esta clase es un controlador REST.
-@RequestMapping("/api/pagos") // Define el prefijo de las rutas para los endpoints relacionados con pagos.
+@RestController // Declara esta clase como un controlador REST para manejar solicitudes relacionadas con pagos.
+@RequestMapping("/api/pagos") // Define la ruta base "/api/pagos" para las solicitudes dirigidas a este controlador.
 public class PagoController {
 
-    @Autowired // Inyección del servicio de pagos.
-    private PagoService pagoService;
+    @Autowired // Inyecta la dependencia del servicio de pagos.
+    PagoService pagoService;
 
-    /**
-     * Crea una preferencia de pago de prueba en MercadoPago.
-     * 
-     * @throws MPException si ocurre un error en la configuración de MercadoPago.
-     * @throws MPApiException si ocurre un error con la API de MercadoPago.
-     */
-    @PostMapping("/crear-preferencia/prueba")
+    @PostMapping("/crear-preferencia/prueba") // Define un endpoint para crear una preferencia de prueba.
     public void createTestPreference() throws MPException, MPApiException {
+        // Llama al servicio para crear una preferencia de pago de prueba.
         pagoService.createTestPreference();
     }
 
-    /**
-     * Crea un enlace de pago para una factura específica.
-     * 
-     * @param idFactura ID de la factura para la cual se generará el enlace de pago.
-     * @return el enlace de pago generado o un estado HTTP 500 si la factura no tiene productos.
-     * @throws Exception si ocurre un error al generar la preferencia de pago.
-     */
-    @GetMapping("/crear-preferencia/by-factura/{idFactura}")
+    @GetMapping("/crear-preferencia/by-factura/{idFactura}") // Define un endpoint para crear un enlace de pago a partir de una factura.
     public ResponseEntity<String> createLinkPago(@PathVariable Long idFactura) throws Exception {
+        // Llama al servicio para generar una preferencia de pago basada en la factura.
         String preference = pagoService.createPreferenceByFactura(idFactura);
 
         if (preference == null) {
+            // Devuelve un problema detallado con estado 500 si no hay productos en la factura.
             ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatusCode.valueOf(500));
             problemDetail.setDetail("La factura no tiene productos");
             return ResponseEntity.internalServerError().body(null);
         }
+        // Retorna el enlace de preferencia con estado 200 (OK).
         return ResponseEntity.ok(preference);
     }
 
-    /**
-     * Gestiona las notificaciones de pago enviadas por MercadoPago (webhook).
-     * 
-     * @param notification objeto que contiene los detalles de la notificación de pago.
-     * @return un estado HTTP 200 si se procesa correctamente, incluso si no se encuentra el atributo data.id.
-     */
-    @PostMapping("/webhook/pagos")
+    @PostMapping("/webhook/pagos") // Define un endpoint para manejar notificaciones de pagos desde un webhook.
     public ResponseEntity<?> postMethodName(@RequestBody PaymentNotification notification) {
+        // Obtiene el ID de la notificación desde el objeto recibido.
         Long dataId = notification.getData() != null ? notification.getData().getId() : null;
 
         if (dataId != null) {
-            System.out.println("Se recibió el evento de pago con ID: " + dataId);
+            // Registra el ID de la notificación en la consola para seguimiento.
+            System.out.println("Se recibió el evento de pago con id: " + dataId);
             try {
+                // Consulta el estado del pago usando el servicio de pagos.
                 pagoService.consultarPayment(dataId);
                 return ResponseEntity.ok().build();
             } catch (Exception e) {
-                System.err.println(e); 
+                // Maneja cualquier excepción e imprime el error en la consola.
+                System.err.println(e);
                 return ResponseEntity.ok().build();
             }
         } else {
-            System.err.println("El atributo data.id no está presente"); 
+            // Maneja el caso donde el atributo `data.id` no está presente en la notificación.
+            System.err.println("El atributo data.id no está presente");
             return ResponseEntity.ok().build();
         }
     }
 
-    /**
-     * Consulta el estado de pago de una factura específica.
-     * 
-     * @param facturaId ID de la factura a consultar.
-     * @return el estado de la transacción asociada a la factura o un estado HTTP 500 en caso de error.
-     */
-    @GetMapping("/consultar-estado-transaccion/{facturaId}")
+    @GetMapping("/consultar-estado-transaccion/{facturaId}") // Define un endpoint para consultar el estado de una transacción por ID de factura.
     public ResponseEntity<?> getEstadoPago(@PathVariable Long facturaId) {
         try {
+            // Llama al servicio para consultar el estado de la transacción.
             Transaccion status = pagoService.consultarEstado(facturaId);
+            // Retorna el estado de la transacción con estado 200 (OK).
             return ResponseEntity.ok(status);
         } catch (Exception e) {
+            // Maneja errores y retorna un mensaje genérico con estado 500 (Error interno del servidor).
             return ResponseEntity.internalServerError().body("Algo inesperado sucedió");
         }
     }
 }
-
