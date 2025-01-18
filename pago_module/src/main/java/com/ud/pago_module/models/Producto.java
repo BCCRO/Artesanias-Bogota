@@ -3,89 +3,85 @@ package com.ud.pago_module.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-
 import java.util.Set;
 
+/**
+ * Entidad que representa un producto en el sistema.
+ * Contiene información relacionada con el producto, su categoría, relaciones con facturas y puntos de venta.
+ */
 @Entity
-@Table(name = "productos", schema = "artesanias_bogota")
-//@NamedEntityGraph(
-//        name = "producto.categoriaProducto",
-//        attributeNodes = @NamedAttributeNode("categoriaProducto")
-//)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})  // TODO Provisional, resolver con el configurator https://stackoverflow.com/questions/52656517/no-serializer-found-for-class-org-hibernate-proxy-pojo-bytebuddy-bytebuddyinterc
+@Table(name = "productos", schema = "artesanias_bogota") // Especifica la tabla y el esquema de la base de datos.
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Evita errores relacionados con la inicialización de Hibernate.
 public class Producto {
 
+    // Identificador único del producto.
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Estrategia de generación automática para la clave primaria.
     private Long id;
 
+    // Nombre del producto.
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
-//    @Lob
+    // URL o representación de la imagen del producto.
     @Column(name = "imagen")
-    private String  imagen;     // TODO Lo dejamos como String para evitatrnos dolores de cabeza
+    private String imagen;
 
+    // Precio unitario del producto.
     @Column(name = "precio_unitario", nullable = false)
-    private Long precioUnitario; // TODO Validar estructura en la DB, si utilizamos mejor un bigDecimal
+    private Long precioUnitario;
 
+    // Descripción del producto.
     @Column(name = "descripcion")
     private String descripcion;
 
+    // Calificación del producto (ejemplo: de 1 a 5 estrellas).
     @Column(name = "calificacion", nullable = false)
     private int calificacion;
 
+    // Identificador de la categoría del producto.
     @Column(name = "categorias_productos_id", nullable = false)
     private int idCategoriaProducto;
 
-    /**
-     * TODO
-     * Tenemos un error en donde se crea un bucle infinito entre la relacion CategoriaProducto - Producto
-     * Deberia solucionarse con el fetch LAZY, pero no es asi
-     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las CategoriaProducto automaticamente desde el producto cuando lo necesitemos
-     */
-    @JsonIgnore
+    // Relación con la categoría del producto.
+    @JsonIgnore // Evita la serialización de esta relación para prevenir problemas de bucles infinitos.
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "categorias_productos_id", insertable = false, updatable = false)
     private CategoriaProducto categoriaProducto;
 
-    /**
-     * TODO relacionar los siguiente parametros
-     */
+    // Identificador del color asociado al producto.
     @Column(name = "color_productos_id", nullable = false)
     private int colorProductosId;
+
+    // Identificador del oficio asociado al producto.
     @Column(name = "oficio_id", nullable = false)
     private int oficioId;
+
+    // Identificador de la colección asociada al producto.
     @Column(name = "coleccion_productos_id", nullable = false)
     private int coleccionProductosId;
+
+    // Identificador del artista asociado al producto.
     @Column(name = "artistas_productos_id", nullable = false)
     private int artistasProductosId;
-    /**
-     *
-     */
 
-    /**
-     * TODO
-     * Tenemos un error en donde se crea un bucle infinito entre la relacion FacturaHasProducto - Producto
-     * Deberia solucionarse con el fetch LAZY, pero no es asi
-     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las FacturaHasProducto automaticamente desde el producto cuando lo necesitemos
-     */
+    // Relación uno a muchos con la entidad FacturaHasProducto.
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "idProducto")
     private Set<FacturaHasProducto> facturasProducto;
 
-    /**
-     * TODO
-     * Tenemos un error en donde se crea un bucle infinito entre la relacion ProductoHasPuntoVenta - Producto
-     * Deberia solucionarse con el fetch LAZY, pero no es asi
-     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las ProductoHasPuntoVenta automaticamente desde el producto cuando lo necesitemos
-     */
+    // Relación uno a muchos con la entidad ProductoHasPuntoVenta.
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "idProducto")
     private Set<ProductoHasPuntoVenta> productoPuntosVentas;
 
+    /**
+     * Constructor por defecto.
+     */
     public Producto() {
     }
+
+    // Métodos getter y setter.
 
     public Long getId() {
         return id;
@@ -167,9 +163,6 @@ public class Producto {
         this.productoPuntosVentas = productoPuntosVentas;
     }
 
-    /**
-     *
-     */
     public int getColorProductosId() {
         return colorProductosId;
     }

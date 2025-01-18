@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio para gestionar las relaciones entre Facturas y Productos.
+ */
 @Service
 public class FacturaHasProductoService {
 
@@ -30,34 +33,41 @@ public class FacturaHasProductoService {
     @Autowired
     private ProductoHasPuntoVentaService productoHasPuntoVentaService;
 
-    private void actualizarTotalFactura(Long idFactura, Long idProducto, int cantidad){
+    /**
+     * Actualiza el total y los impuestos de una factura al agregar un producto.
+     *
+     * @param idFactura El ID de la factura.
+     * @param idProducto El ID del producto.
+     * @param cantidad La cantidad de productos añadidos.
+     */
+    private void actualizarTotalFactura(Long idFactura, Long idProducto, int cantidad) {
         Optional<Factura> facturaOpt = facturaRepository.findById(idFactura);
         Optional<Producto> productoOpt = productoRepository.findById(idProducto);
 
-        if(facturaOpt.isEmpty()){
+        if (facturaOpt.isEmpty()) {
             throw new RuntimeException("Error actualizando la factura: " + idFactura);
-            /**
-             * TODO devolver respuesta en el controller
-             */
-        }
-        else if(productoOpt.isEmpty()){
+        } else if (productoOpt.isEmpty()) {
             throw new RuntimeException("Error encontrando el producto: " + idProducto);
-            /**
-             * TODO devolver respuesta en el controller
-             */
-        }
-        else{
+        } else {
             Factura factura = facturaOpt.get();
             Producto producto = productoOpt.get();
-            Long totlaAnterior = factura.getTotal();
-            Long nuevoValor = (totlaAnterior + producto.getPrecioUnitario()) * cantidad;
+            Long totalAnterior = factura.getTotal();
+            Long nuevoValor = totalAnterior + producto.getPrecioUnitario() * cantidad;
             factura.setTotal(nuevoValor);
             double impuestos = factura.getTotal() * 0.16;
             factura.setTotalImpuesto((long) impuestos);
         }
     }
 
-    public void anadirProductoFactura(Long idPuntoVenta, Long idFactura, Long idProducto, int cantidad){
+    /**
+     * Añade un producto a una factura y actualiza el inventario del punto de venta.
+     *
+     * @param idPuntoVenta El ID del punto de venta.
+     * @param idFactura El ID de la factura.
+     * @param idProducto El ID del producto.
+     * @param cantidad La cantidad de productos añadidos.
+     */
+    public void anadirProductoFactura(Long idPuntoVenta, Long idFactura, Long idProducto, int cantidad) {
         FacturaHasProducto facturaHasProducto = new FacturaHasProducto();
         facturaHasProducto.setIdFactura(idFactura);
         facturaHasProducto.setIdProducto(idProducto);
@@ -68,34 +78,45 @@ public class FacturaHasProductoService {
         actualizarTotalFactura(idFactura, idProducto, cantidad);
     }
 
-    public void anadirProductosFactura(List<FacturaHasProductoDTO> listadoProductos){
-
-        Iterable<FacturaHasProducto> iterable = listadoProductos.stream().map( dto -> {
-                            productoHasPuntoVentaService.restarUnidadProductoPuntoVenta(dto.getIdProducto(), dto.getIdPuntoVenta());
-                            actualizarTotalFactura(dto.getIdFactura(), dto.getIdProducto(), dto.getCantidad());    //Aprovechamos el bucle para actualizar el total, TODO probables problemas de rendimiento
-                            return new FacturaHasProducto(dto);
-                        })                                          //Mapeamos DTO a Entidad
-                              .collect(Collectors.toList());      //Convertimos a iterable
+    /**
+     * Añade múltiples productos a una factura.
+     * También actualiza los totales e inventarios correspondientes.
+     *
+     * @param listadoProductos Lista de productos a añadir.
+     */
+    public void anadirProductosFactura(List<FacturaHasProductoDTO> listadoProductos) {
+        Iterable<FacturaHasProducto> iterable = listadoProductos.stream()
+                .map(dto -> {
+                    productoHasPuntoVentaService.restarUnidadProductoPuntoVenta(dto.getIdProducto(), dto.getIdPuntoVenta());
+                    actualizarTotalFactura(dto.getIdFactura(), dto.getIdProducto(), dto.getCantidad());
+                    return new FacturaHasProducto(dto);
+                })
+                .collect(Collectors.toList());
         facturaHasProductoRepository.saveAll(iterable);
     }
 
-    public boolean removeItem(Long idFactura, Long idProducto){
-    if(facturaRepository.existsById(idProducto)){
-      throw new IllegalArgumentException("La factura no existe",new Exception("404"));
-    }
-    if(!facturaHasProductoRepository.existsByIdFacturaAndIdProducto(idFactura,idProducto)){
-      throw new IllegalArgumentException("El producto no corresponde a esa factura",new Exception("404"));
-    }
+    /**
+     * Elimina un producto de una factura.
+     *
+     * @param idFactura El ID de la factura.
+     * @param idProducto El ID del producto.
+     * @return {@code true} si el producto fue eliminado correctamente, de lo contrario {@code false}.
+     */
+    public boolean removeItem(Long idFactura, Long idProducto) {
+        if (!facturaRepository.existsById(idFactura)) {
+            throw new IllegalArgumentException("La factura no existe", new Exception("404"));
+        }
+        if (!facturaHasProductoRepository.existsByIdFacturaAndIdProducto(idFactura, idProducto)) {
+            throw new IllegalArgumentException("El producto no corresponde a esa factura", new Exception("404"));
+        }
 
-    FacturaHasProducto factura = facturaHasProductoRepository.findByIdFacturaAndIdProducto(idFactura,idProducto).orElseThrow();
-    try {
-      facturaHasProductoRepository.delete(factura);
-      return true;
-    } catch (Exception e) {
-      return false;
+        FacturaHasProducto factura = facturaHasProductoRepository.findByIdFacturaAndIdProducto(idFactura, idProducto)
+                .orElseThrow();
+        try {
+            facturaHasProductoRepository.delete(factura);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
-    
-    
-  }
-
 }

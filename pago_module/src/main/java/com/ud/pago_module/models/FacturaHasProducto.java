@@ -5,46 +5,60 @@ import com.ud.pago_module.models.dtos.FacturaHasProductoDTO;
 
 import jakarta.persistence.*;
 
+/**
+ * Entidad que representa la relación entre una factura y un producto.
+ * Contiene información sobre la cantidad de un producto asociado a una factura específica.
+ */
 @Entity
-@Table(name = "facturas_has_productos", schema = "artesanias_bogota")
+@Table(name = "facturas_has_productos", schema = "artesanias_bogota") // Especifica la tabla y el esquema en la base de datos.
 public class FacturaHasProducto {
 
+    // Identificador único de la relación.
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Estrategia de generación automática para la clave primaria.
     private Long id;
 
+    // Identificador de la factura asociada.
     @Column(name = "facturas_id", nullable = false)
     private Long idFactura;
 
-    /**
-     * TODO
-     * Tenemos un error en donde se crea un bucle infinito entre la relacion FacturaHasProducto - Factura
-     * Deberia solucionarse con el fetch LAZY, pero no es asi
-     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las Factura automaticamente desde FacturaHasProducto cuando lo necesitemos
-     */
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    // Relación con la entidad Factura.
+    @JsonIgnore // Evita la serialización de la factura para prevenir problemas de bucles infinitos.
+    @ManyToOne(fetch = FetchType.LAZY) // Relación muchos a uno con la factura.
     @JoinColumn(name = "facturas_id", insertable = false, updatable = false)
     private Factura factura;
 
+    // Identificador del producto asociado.
     @Column(name = "productos_id", nullable = false)
     private Long idProducto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    // Relación con la entidad Producto.
+    @ManyToOne(fetch = FetchType.LAZY) // Relación muchos a uno con el producto.
     @JoinColumn(name = "productos_id", insertable = false, updatable = false)
     private Producto producto;
 
+    // Cantidad del producto asociada a la factura.
     @Column(name = "cantidad", nullable = false)
     private int cantidad;
 
+    /**
+     * Constructor por defecto.
+     */
     public FacturaHasProducto() {
     }
 
+    /**
+     * Constructor que inicializa los datos a partir de un DTO.
+     *
+     * @param dto El DTO con los datos de la relación.
+     */
     public FacturaHasProducto(FacturaHasProductoDTO dto) {
         this.idFactura = dto.getIdFactura();
         this.idProducto = dto.getIdProducto();
         this.cantidad = dto.getCantidad();
     }
+
+    // Métodos getter y setter.
 
     public Long getId() {
         return id;

@@ -6,63 +6,75 @@ import jakarta.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
-@Entity
-@Table(name="facturas", schema = "artesanias_bogota")
+/**
+ * Entidad que representa una factura en el sistema.
+ * Contiene información sobre el usuario, los productos, la transacción asociada y los totales.
+ */
+@Entity // Marca esta clase como una entidad JPA.
+@Table(name = "facturas", schema = "artesanias_bogota") // Especifica la tabla y el esquema en la base de datos.
 public class Factura {
 
+    // Identificador único de la factura.
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Estrategia de generación automática para la clave primaria.
     private Long id;
 
+    // Fecha y hora de emisión de la factura.
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="fecha_emision", nullable = false)
+    @Column(name = "fecha_emision", nullable = false)
     private Date fechaEmision;
 
-    @Column(name="total", nullable = false)
+    // Total de la factura.
+    @Column(name = "total", nullable = false)
     private Long total;
 
-    @Column(name="total_impuesto", nullable = false)
+    // Total de impuestos aplicados en la factura.
+    @Column(name = "total_impuesto", nullable = false)
     private Long totalImpuesto;
 
-    @Column(name="total_descuento")
+    // Total de descuentos aplicados en la factura.
+    @Column(name = "total_descuento")
     private Long totaldescuento;
 
-    @Column(name="usuarios_documento", nullable = false)
+    // Documento del usuario asociado a la factura.
+    @Column(name = "usuarios_documento", nullable = false)
     private String idUsuarioDocumento;
 
-    @Column(name ="estado", nullable = false)
+    // Estado actual de la factura.
+    @Column(name = "estado", nullable = false)
     private String estado;
 
-    /**
-     * TODO
-     * Tenemos un error en donde se crea un bucle infinito entre la relacion Usuario - Factura
-     * Deberia solucionarse con el fetch LAZY, pero no es asi
-     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las Usuario automaticamente desde Factura cuando lo necesitemos
-     */
+    // Relación con el usuario asociado a la factura (mapeo con clave externa).
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuarios_documento", insertable = false, updatable = false)
     private Usuario usuarioDocumento;
 
-    @Column(name="transacciones_id")
+    // Identificador de la transacción asociada a la factura.
+    @Column(name = "transacciones_id")
     private Long transaccionId;
 
     /**
-     * TODO
-     * Tenemos un error en donde se crea un bucle infinito entre la relacion Transaccion - Factura
-     * Deberia solucionarse con el fetch LAZY, pero no es asi
-     * forzamos esto para evitar el bucle en la respuesta, pero no podriamos cargar las Transaccion automaticamente desde el producto cuando lo necesitemos
+     * Relación con la transacción asociada a la factura.
+     * Nota: Existe un problema con la carga de esta relación que puede causar un bucle infinito.
+     * Para evitarlo, se utiliza `@JsonIgnore` y `FetchType.LAZY`.
      */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "transacciones_id", insertable = false, updatable = false)
     private Transaccion transaccion;
 
+    // Relación uno a muchos con los productos asociados a la factura.
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "idFactura")
     private Set<FacturaHasProducto> productosFacturas;
 
+    /**
+     * Constructor por defecto.
+     */
     public Factura() {
     }
+
+    // Métodos getter y setter.
 
     public Long getId() {
         return id;
@@ -124,16 +136,16 @@ public class Factura {
         return transaccionId;
     }
 
-    public void setTransaccionId(Long transacionId) {
-        this.transaccionId = transacionId;
+    public void setTransaccionId(Long transaccionId) {
+        this.transaccionId = transaccionId;
     }
 
     public Transaccion getTransaccion() {
         return transaccion;
     }
 
-    public void setTransaccion(Transaccion transacion) {
-        this.transaccion = transacion;
+    public void setTransaccion(Transaccion transaccion) {
+        this.transaccion = transaccion;
     }
 
     public Set<FacturaHasProducto> getProductosFacturas() {
@@ -144,10 +156,11 @@ public class Factura {
         this.productosFacturas = productosFacturas;
     }
 
-    public String getEstado(){
-      return this.estado;
+    public String getEstado() {
+        return this.estado;
     }
-    public void setEstado(String estado){
-      this.estado = estado;
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }

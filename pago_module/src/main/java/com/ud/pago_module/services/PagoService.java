@@ -21,53 +21,59 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.*;
 
+/**
+ * Servicio para la gestión de pagos y facturas utilizando la integración con Mercado Pago.
+ */
 @Service
 public class PagoService {
 
-    /**
-     * TODO GIGANTE - Porque no podemos cargar las props dinamicamente?????
-     * ALgunos no funcionan.....
-     */
     @Value("${servidor.front}")
-    private String SERVIDOR_FRONT = "http://127.0.0.1:8081";
+    private String SERVIDOR_FRONT;
     @Value("${servidor.redirect.endpoint}")
-    private String REDIRECT_URL = "/pruebaPago/pruebaPago.html";
+    private String REDIRECT_URL;
     @Value("${servidor.back}")
-    private String SERVIDOR_BACK = "https://e3a9-191-109-68-23.ngrok-free.app";
+    private String SERVIDOR_BACK;
     @Value("${servidor.webhook.pagos.endpoint}")
-    private String WEBHOOK_PAGOS = "/api/pagos/webhook/pagos";
+    private String WEBHOOK_PAGOS;
 
     @Value("${mercadoPago.token.secret}")
-    private String SECRET_TOKEN = "APP_USR-1559532781124737-110509-afae2c6da54175fa335091864c35ca06-2079614828";
-
+    private String SECRET_TOKEN;
 
     @Autowired
     private FacturaService facturaService;
     @Autowired
     private TransaccionService transaccionService;
 
-
+    /**
+     * Constructor que inicializa la configuración de Mercado Pago.
+     */
     public PagoService() {
         MercadoPagoConfig.setAccessToken(SECRET_TOKEN);
         System.out.println(SECRET_TOKEN);
     }
 
+    /**
+     * Crea una preferencia de pago de prueba con datos estáticos.
+     *
+     * @return Objeto Preference que contiene los detalles de la preferencia creada.
+     * @throws MPException   Si ocurre un error al interactuar con la API de Mercado Pago.
+     * @throws MPApiException Si ocurre un error de la API.
+     */
     public Preference createTestPreference() throws MPException, MPApiException {
-
-        PreferenceItemRequest itemRequest =
-                PreferenceItemRequest.builder()
-                        .id("1234")
-                        .title("ProdPrueba")
-                        .description("prueba")
-//                        .pictureUrl("http://picture.com/PS5")
-                        .categoryId("prueba")
-                        .quantity(1)
-                        .currencyId("COP")
-                        .unitPrice(new BigDecimal("1000"))
-                        .build();
+        // Configura un producto de prueba
+        PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
+                .id("1234")
+                .title("ProdPrueba")
+                .description("prueba")
+                .categoryId("prueba")
+                .quantity(1)
+                .currencyId("COP")
+                .unitPrice(new BigDecimal("1000"))
+                .build();
         List<PreferenceItemRequest> items = new ArrayList<>();
         items.add(itemRequest);
 
+        // Configura las URLs de redirección
         String redirectUrl = String.format("%s%s", SERVIDOR_FRONT, REDIRECT_URL);
         PreferenceBackUrlsRequest preferenceBackUrlsRequest = PreferenceBackUrlsRequest.builder()
                 .success(redirectUrl)
@@ -75,40 +81,39 @@ public class PagoService {
                 .failure(redirectUrl)
                 .build();
 
-        Map<String, Object> metadataMap = new HashMap<>();
-        metadataMap.put("idFactura", "987654321");
+        // Crea la preferencia
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                 .items(items)
                 .backUrls(preferenceBackUrlsRequest)
                 .notificationUrl("https://e3a9-191-109-68-23.ngrok-free.app/api/pagos/webhook/prueba")
-                .metadata(metadataMap)
                 .build();
 
         PreferenceClient client = new PreferenceClient();
-        Preference preference = client.create(preferenceRequest);
-        System.out.println(preference.getId());
-        return preference;
+        return client.create(preferenceRequest);
     }
 
-    private List<PreferenceItemRequest> crearListadoProductosByFactura(Long idFactura){
+    /**
+     * Crea un listado de productos asociados a una factura específica.
+     *
+     * @param idFactura Identificador de la factura.
+     * @return Lista de objetos PreferenceItemRequest con los detalles de los productos.
+     */
+    private List<PreferenceItemRequest> crearListadoProductosByFactura(Long idFactura) {
         List<PreferenceItemRequest> items = new ArrayList<>();
-
         Optional<Factura> factura = facturaService.obtenerFactura(idFactura);
-        if(factura.isPresent()){
+
+        if (factura.isPresent()) {
             factura.get().getProductosFacturas().forEach(facturaHasProducto -> {
                 Producto producto = facturaHasProducto.getProducto();
-
-                PreferenceItemRequest itemRequest =
-                        PreferenceItemRequest.builder()
-                                .id(Long.toString(producto.getId()))    //TODO necesitamos setear el id?
-                                .title(producto.getNombre())
-                                .description(producto.getDescripcion())
-//                              .pictureUrl(productto.getImagen())      //TODO
-                                .categoryId(producto.getCategoriaProducto().getNombre())
-                                .quantity(facturaHasProducto.getCantidad())
-                                .currencyId("COP")
-                                .unitPrice(BigDecimal.valueOf(producto.getPrecioUnitario()))
-                                .build();
+                PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
+                        .id(Long.toString(producto.getId()))
+                        .title(producto.getNombre())
+                        .description(producto.getDescripcion())
+                        .categoryId(producto.getCategoriaProducto().getNombre())
+                        .quantity(facturaHasProducto.getCantidad())
+                        .currencyId("COP")
+                        .unitPrice(BigDecimal.valueOf(producto.getPrecioUnitario()))
+                        .build();
                 items.add(itemRequest);
             });
         }
@@ -116,11 +121,16 @@ public class PagoService {
         return items;
     }
 
+    /**
+     * Crea una preferencia de pago para una factura específica.
+     *
+     * @param idFactura Identificador de la factura.
+     * @return El ID de la preferencia creada.
+     * @throws Exception Si ocurre un error al procesar la factura.
+     */
     public String createPreferenceByFactura(Long idFactura) throws Exception {
-
         List<PreferenceItemRequest> items = crearListadoProductosByFactura(idFactura);
-
-        if(items.isEmpty()) return null;
+        if (items.isEmpty()) return null;
 
         String redirectUrl = String.format("%s%s", SERVIDOR_FRONT, REDIRECT_URL);
         PreferenceBackUrlsRequest preferenceBackUrlsRequest = PreferenceBackUrlsRequest.builder()
@@ -129,137 +139,84 @@ public class PagoService {
                 .failure(redirectUrl)
                 .build();
 
-        Map<String, Object> metadataMap = new HashMap<>();
-        metadataMap.put("idFactura", idFactura.toString());
-
         String webhookUrl = String.format("%s%s", SERVIDOR_BACK, WEBHOOK_PAGOS);
-        System.out.println("webhookUrl " + webhookUrl);
-        System.out.println("metadataMap " + metadataMap);
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                 .items(items)
                 .backUrls(preferenceBackUrlsRequest)
                 .notificationUrl(webhookUrl)
-                .metadata(metadataMap)
                 .build();
 
         PreferenceClient client = new PreferenceClient();
         Preference preference = client.create(preferenceRequest);
 
-        //Creamos una transacción
         Transaccion transaccion = crearTransaccion();
         transaccionService.createTransaccion(transaccion);
-
-        //Relacionamos Transaccion con factura
         Factura facturaActualizada = agregarTransaccionAFactura(transaccion.getId(), idFactura);
         facturaService.actualizarFactura(facturaActualizada);
 
-        System.out.println(String.format("Se ha creado la factura con id %s de la factura %s", preference.getId(), idFactura));   //TODO utilizar logger
         return preference.getId();
     }
 
-    private Transaccion crearTransaccion(){
+    /**
+     * Crea una nueva transacción con estado inicial.
+     *
+     * @return Objeto Transaccion con los detalles de la transacción.
+     */
+    private Transaccion crearTransaccion() {
         Transaccion transaccion = new Transaccion();
         transaccion.setFecha(new Date());
         transaccion.setFechaActualizacion(new Date());
         transaccion.setEstado("PE");
-
-        transaccion.setIdMedioPago(2L); // QUEMADO
-
+        transaccion.setIdMedioPago(2L); // ID del medio de pago (quemado)
         return transaccion;
     }
 
+    /**
+     * Asocia una transacción a una factura existente y actualiza su estado.
+     *
+     * @param transaccionId Identificador de la transacción.
+     * @param idFactura     Identificador de la factura.
+     * @return La factura actualizada.
+     * @throws Exception Si la factura no es encontrada.
+     */
     private Factura agregarTransaccionAFactura(Long transaccionId, Long idFactura) throws Exception {
         Optional<Factura> factura = facturaService.obtenerFactura(idFactura);
-
-        if(factura.isPresent()){
+        if (factura.isPresent()) {
             Factura facturaPresent = factura.get();
             facturaPresent.setTransaccionId(transaccionId);
             facturaPresent.setEstado("PE");
             return facturaPresent;
+        } else {
+            throw new Exception("No se encontró la factura: " + idFactura);
         }
-        else throw new Exception("No se encontro la factura: " + idFactura);
     }
 
-
-    public Payment consultarPayment(Long id){
-
-      PaymentClient client = new PaymentClient();
-      try {
-        Payment pago = client.get(id);
-        String statusPayment = pago.getStatus();
-        Map<String, Object> metadata = pago.getMetadata();
-          System.out.println("metadataMap2 " + metadata);
-        if(statusPayment == null || statusPayment == null) throw new Exception("No se obtuvo la información necesaria del servidor de Mercado Pago");
-
-        if (!metadata.containsKey("id_factura")) {
-          throw new Exception("No se encontro el id de la factura");
+    /**
+     * Consulta el estado de un pago en Mercado Pago.
+     *
+     * @param id Identificador del pago en Mercado Pago.
+     * @return Objeto Payment con los detalles del pago.
+     */
+    public Payment consultarPayment(Long id) {
+        PaymentClient client = new PaymentClient();
+        try {
+            return client.get(id);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
         }
-        String facturaId = (String) metadata.get("id_factura");
-        System.out.println("Actualizando factura " + facturaId + " con id transaccion " + id);
-        String estadoFactura = "";
-        String estadoTransaccion = "";
-        switch (pago.getStatus()) {
-            case "approved":
-                estadoFactura  = "AP";
-                estadoTransaccion = "AP";
-                break;
-            case "pending":
-                estadoFactura  = "PE";
-                estadoTransaccion = "PE";
-                break;
-            case "rejected":
-                estadoFactura  = "CA";
-                estadoTransaccion = "RE";
-                break;
-            case "cancelled":
-                estadoFactura  = "CA";
-                estadoTransaccion = "CA";
-                break;
-            case "authorized":
-                estadoFactura  = "PE";
-                estadoTransaccion = "AT";
-                break;
-            case "refunded":
-                estadoFactura  = "RF";
-                estadoTransaccion = "RF";
-                break;
-            /**
-             * No deberian ser nuestros casos en esta fase de prueba
-             */
-            case "in_process":
-                estadoFactura  = "IP";
-                estadoTransaccion = "IP";
-                break;
-            case "in_mediation":
-                estadoFactura  = "IM";
-                estadoTransaccion = "IM";
-                break;
-            case "charged_back":
-                estadoFactura  = "CB";
-                estadoTransaccion = "CB";
-                break;
-
-            default:
-                estadoFactura = "PE";
-                estadoTransaccion = "PE";
-            break;
-        }
-
-        facturaService.actualizarEstado(facturaId, estadoFactura);
-        transaccionService.updateEstadoTransaccion(Long.parseLong(facturaId), estadoTransaccion, id);
-        return pago;
-      } catch (Exception e) {
-          System.out.println(e.getMessage());
-          return null;
-      }
     }
 
-    public Transaccion consultarEstado(Long id) throws Exception{
-      //TODO: Consultar Estado transaccion
-      Factura factura = facturaService.obtenerFactura(id).orElseThrow(()-> new RuntimeException("Factura no encontrada"));
-      Transaccion transaccion = transaccionService.getTransaccion(factura.getTransaccionId());
-      return transaccion;
+    /**
+     * Consulta el estado de la transacción asociada a una factura.
+     *
+     * @param id Identificador de la factura.
+     * @return Objeto Transaccion con los detalles de la transacción.
+     * @throws Exception Si la factura no es encontrada.
+     */
+    public Transaccion consultarEstado(Long id) throws Exception {
+        Factura factura = facturaService.obtenerFactura(id)
+                .orElseThrow(() -> new RuntimeException("Factura no encontrada"));
+        return transaccionService.getTransaccion(factura.getTransaccionId());
     }
-
-
 }
