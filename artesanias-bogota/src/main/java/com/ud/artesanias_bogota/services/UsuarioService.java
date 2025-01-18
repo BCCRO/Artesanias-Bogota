@@ -178,7 +178,7 @@ public class UsuarioService {
               .direccion(request.getDireccion())
               .contrasenia(passEncode.encode(request.getContrasenia()))
               .email(request.getEmail())
-              .idRol(2)       //TODO Quemado
+              .idRol(2)
               .activo(true)
               .build();
 //      Rol cliente = rolRepo.findByRolIgnoreCase("cliente")

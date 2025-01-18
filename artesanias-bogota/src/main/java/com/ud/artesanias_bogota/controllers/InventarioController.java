@@ -82,7 +82,6 @@ public class InventarioController {
             System.out.println("No se encontró el producto en el inventario - ID producto: " + idProducto);
             return ResponseEntity.noContent().build();
         } else {
-            //TODO Provisiona, debemois crear el DTO
             Map<String, Object> mapResponse = new HashMap<>();
             int auxTotalInventario = 0;
             for(ProductoHasPuntoVenta productoHasPuntoVenta : listProductoPuntoVenta){
