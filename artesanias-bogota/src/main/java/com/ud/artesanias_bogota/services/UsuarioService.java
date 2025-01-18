@@ -1,19 +1,14 @@
 package com.ud.artesanias_bogota.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ud.artesanias_bogota.models.Rol;
 import com.ud.artesanias_bogota.models.Usuario;
 import com.ud.artesanias_bogota.models.dtos.UsuarioDTO;
 import com.ud.artesanias_bogota.models.responses.RegisterResponse;
-//import com.ud.artesanias_bogota.repositories.RolHasUserRepository;
-import com.ud.artesanias_bogota.repositories.RolRepository;
 import com.ud.artesanias_bogota.repositories.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
@@ -29,7 +24,6 @@ public class UsuarioService {
 
   private final PasswordEncoder passEncode;
   private final UsuarioRepository userRepo;
-  private final RolRepository rolRepo;
 //  private final RolHasUserRepository userRolRepo;
 
   /**
