@@ -1,6 +1,8 @@
 package com.ud.artesanias_bogota.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -67,6 +69,29 @@ public class InventarioController {
         } else {
             // Retorna la lista de productos filtrada con estado 200 (OK).
             return ResponseEntity.ok(listProductoPuntoVenta);
+        }
+    }
+
+    @GetMapping(value = "/obtener-inventario-total-by-producto/{idProducto}", produces = "application/json") // Define un endpoint para obtener inventario por ID de producto.
+    public ResponseEntity<?> getInventarioTotalByProducto(@PathVariable Long idProducto) {
+        // Obtiene la lista de inventario filtrada por el ID del producto.
+        List<ProductoHasPuntoVenta> listProductoPuntoVenta = productoHasPuntoVentaService.getProductosHasPuntoVentaByIdProducto(idProducto);
+
+        // Verifica si la lista está vacía y retorna un estado 204 (Sin contenido) si no hay datos.
+        if (listProductoPuntoVenta.isEmpty()) {
+            System.out.println("No se encontró el producto en el inventario - ID producto: " + idProducto);
+            return ResponseEntity.noContent().build();
+        } else {
+            //TODO Provisiona, debemois crear el DTO
+            Map<String, Object> mapResponse = new HashMap<>();
+            int auxTotalInventario = 0;
+            for(ProductoHasPuntoVenta productoHasPuntoVenta : listProductoPuntoVenta){
+                auxTotalInventario += productoHasPuntoVenta.getCantidad();
+            }
+            mapResponse.put("idProducto", idProducto);
+            mapResponse.put("totalInventario", auxTotalInventario);
+            // Retorna la lista de productos filtrada con estado 200 (OK).
+            return ResponseEntity.ok(mapResponse);
         }
     }
 
