@@ -1,7 +1,6 @@
 package com.ud.login_module.models.dtos;
 
 import java.util.Date;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

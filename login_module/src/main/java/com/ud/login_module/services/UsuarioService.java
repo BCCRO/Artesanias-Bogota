@@ -1,20 +1,14 @@
 package com.ud.login_module.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ud.login_module.User.Rol;
-//import com.ud.login_module.User.RolHasUsuario;
 import com.ud.login_module.User.Usuario;
 import com.ud.login_module.models.dtos.UsuarioDTO;
 import com.ud.login_module.models.responses.RegisterResponse;
-//import com.ud.login_module.repositories.RolHasUserRepository;
-import com.ud.login_module.repositories.RolRepository;
 import com.ud.login_module.repositories.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
@@ -29,7 +23,6 @@ public class UsuarioService {
 
   private final PasswordEncoder passEncode;
   private final UsuarioRepository userRepo;
-  private final RolRepository rolRepo;
 //  private final RolHasUserRepository userRolRepo;
 
   /**
@@ -184,7 +177,7 @@ public class UsuarioService {
               .direccion(request.getDireccion())
               .contrasenia(passEncode.encode(request.getContrasenia()))
               .email(request.getEmail())
-              .idRol(2)       //TODO Quemado
+              .idRol(2) 
               .activo(true)
               .build();
 //      Rol cliente = rolRepo.findByRolIgnoreCase("cliente")
