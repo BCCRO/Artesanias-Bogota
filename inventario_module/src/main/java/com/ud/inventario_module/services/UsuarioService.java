@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.services;
+package com.ud.inventario_module.services;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,10 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ud.artesanias_bogota.models.Usuario;
-import com.ud.artesanias_bogota.models.dtos.UsuarioDTO;
-import com.ud.artesanias_bogota.models.responses.RegisterResponse;
-import com.ud.artesanias_bogota.repositories.UsuarioRepository;
+import com.ud.inventario_module.models.Usuario;
+import com.ud.inventario_module.models.dtos.UsuarioDTO;
+import com.ud.inventario_module.models.responses.RegisterResponse;
+import com.ud.inventario_module.repositories.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

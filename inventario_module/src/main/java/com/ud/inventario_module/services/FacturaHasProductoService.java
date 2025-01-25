@@ -1,14 +1,15 @@
-package com.ud.artesanias_bogota.services;
+package com.ud.inventario_module.services;
 
-import com.ud.artesanias_bogota.models.Factura;
-import com.ud.artesanias_bogota.models.FacturaHasProducto;
-import com.ud.artesanias_bogota.models.Producto;
-import com.ud.artesanias_bogota.models.dtos.FacturaHasProductoDTO;
-import com.ud.artesanias_bogota.repositories.FacturaHasProductoRepository;
-import com.ud.artesanias_bogota.repositories.FacturaRepository;
-import com.ud.artesanias_bogota.repositories.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.ud.inventario_module.models.Factura;
+import com.ud.inventario_module.models.FacturaHasProducto;
+import com.ud.inventario_module.models.Producto;
+import com.ud.inventario_module.models.dtos.FacturaHasProductoDTO;
+import com.ud.inventario_module.repositories.FacturaHasProductoRepository;
+import com.ud.inventario_module.repositories.FacturaRepository;
+import com.ud.inventario_module.repositories.ProductoRepository;
 
 import java.util.List;
 import java.util.Optional;

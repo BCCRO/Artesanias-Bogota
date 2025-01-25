@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.services;
+package com.ud.inventario_module.services;
 
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import com.ud.artesanias_bogota.models.dtos.EmailDTO;
+import com.ud.inventario_module.models.dtos.EmailDTO;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

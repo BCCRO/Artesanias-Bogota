@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.controllers;
+package com.ud.inventario_module.controllers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ud.artesanias_bogota.models.dtos.EmailDTO;
-import com.ud.artesanias_bogota.services.EmailService;
+import com.ud.inventario_module.models.dtos.EmailDTO;
+import com.ud.inventario_module.services.EmailService;
 
 import jakarta.mail.MessagingException;
 

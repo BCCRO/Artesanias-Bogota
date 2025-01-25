@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.services;
+package com.ud.inventario_module.services;
 
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
@@ -10,9 +10,10 @@ import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.preference.Preference;
-import com.ud.artesanias_bogota.models.Factura;
-import com.ud.artesanias_bogota.models.Producto;
-import com.ud.artesanias_bogota.models.Transaccion;
+import com.ud.inventario_module.models.Factura;
+import com.ud.inventario_module.models.Producto;
+import com.ud.inventario_module.models.Transaccion;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

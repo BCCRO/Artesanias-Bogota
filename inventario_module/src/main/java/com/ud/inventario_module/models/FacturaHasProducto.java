@@ -1,7 +1,7 @@
-package com.ud.artesanias_bogota.models;
+package com.ud.inventario_module.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ud.artesanias_bogota.models.dtos.FacturaHasProductoDTO;
+import com.ud.inventario_module.models.dtos.FacturaHasProductoDTO;
 import jakarta.persistence.*;
 
 /**

@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.controllers;
+package com.ud.inventario_module.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
-import com.ud.artesanias_bogota.models.Transaccion;
-import com.ud.artesanias_bogota.models.request.PaymentNotification;
-import com.ud.artesanias_bogota.services.PagoService;
+import com.ud.inventario_module.models.Transaccion;
+import com.ud.inventario_module.models.request.PaymentNotification;
+import com.ud.inventario_module.services.PagoService;
 
 @RestController // Declara esta clase como un controlador REST para manejar solicitudes relacionadas con pagos.
 @RequestMapping("/api/pagos") // Define la ruta base "/api/pagos" para las solicitudes dirigidas a este controlador.

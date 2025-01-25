@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.models.responses;
+package com.ud.inventario_module.models.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

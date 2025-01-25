@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.models;
+package com.ud.inventario_module.models;
 
 import jakarta.persistence.*;
 import java.util.Date;

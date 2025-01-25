@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota;
+package com.ud.inventario_module;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.controllers;
+package com.ud.inventario_module.controllers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ud.artesanias_bogota.models.ProductoHasPuntoVenta;
-import com.ud.artesanias_bogota.models.dtos.ProductoPuntoVentaDTO;
-import com.ud.artesanias_bogota.services.ProductoHasPuntoVentaService;
+import com.ud.inventario_module.models.ProductoHasPuntoVenta;
+import com.ud.inventario_module.models.dtos.ProductoPuntoVentaDTO;
+import com.ud.inventario_module.services.ProductoHasPuntoVentaService;
 
 @RestController // Declara esta clase como un controlador REST para manejar solicitudes HTTP relacionadas con el inventario.
 @RequestMapping("/api/inventario") // Define la ruta base "/api/inventario" para las solicitudes dirigidas a este controlador.

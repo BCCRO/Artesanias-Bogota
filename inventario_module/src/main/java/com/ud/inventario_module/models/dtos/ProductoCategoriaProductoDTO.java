@@ -1,7 +1,7 @@
-package com.ud.artesanias_bogota.models.dtos;
+package com.ud.inventario_module.models.dtos;
 
-import com.ud.artesanias_bogota.models.CategoriaProducto;
-import com.ud.artesanias_bogota.models.Producto;
+import com.ud.inventario_module.models.CategoriaProducto;
+import com.ud.inventario_module.models.Producto;
 
 /**
  * DTO (Data Transfer Object) para manejar la información combinada de un producto

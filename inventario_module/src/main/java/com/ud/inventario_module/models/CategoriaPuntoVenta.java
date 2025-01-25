@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.models;
+package com.ud.inventario_module.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.models.dtos;
+package com.ud.inventario_module.models.dtos;
 
 import java.util.Date;
 import lombok.AllArgsConstructor;

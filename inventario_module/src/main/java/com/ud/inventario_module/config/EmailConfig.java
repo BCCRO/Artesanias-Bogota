@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.config;
+package com.ud.inventario_module.config;
 
 import java.util.Properties;
 

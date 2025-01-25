@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.controllers;
+package com.ud.inventario_module.controllers;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ud.artesanias_bogota.models.Factura;
-import com.ud.artesanias_bogota.models.dtos.FacturaDTO;
-import com.ud.artesanias_bogota.models.dtos.FacturaHasProductoDTO;
-import com.ud.artesanias_bogota.models.responses.ServerErrorResponse;
-import com.ud.artesanias_bogota.services.FacturaHasProductoService;
-import com.ud.artesanias_bogota.services.FacturaService;
+import com.ud.inventario_module.models.Factura;
+import com.ud.inventario_module.models.dtos.FacturaDTO;
+import com.ud.inventario_module.models.dtos.FacturaHasProductoDTO;
+import com.ud.inventario_module.models.responses.ServerErrorResponse;
+import com.ud.inventario_module.services.FacturaHasProductoService;
+import com.ud.inventario_module.services.FacturaService;
 
 @RestController // Declara esta clase como un controlador REST para manejar solicitudes relacionadas con facturas.
 @RequestMapping("/api/facturas") // Define la ruta base "/api/facturas" para las solicitudes dirigidas a este controlador.

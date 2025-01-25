@@ -1,7 +1,7 @@
-package com.ud.artesanias_bogota.repositories;
+package com.ud.inventario_module.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.ud.artesanias_bogota.models.Transaccion;
+import com.ud.inventario_module.models.Transaccion;
 import java.util.List;
 import java.util.Optional;
 

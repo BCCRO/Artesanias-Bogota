@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.models.request;
+package com.ud.inventario_module.models.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

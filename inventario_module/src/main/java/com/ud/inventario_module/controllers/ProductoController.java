@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.controllers;
+package com.ud.inventario_module.controllers;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ud.artesanias_bogota.models.Producto;
-import com.ud.artesanias_bogota.models.dtos.ProductoDTO;
-import com.ud.artesanias_bogota.services.ProductoService;
+import com.ud.inventario_module.models.Producto;
+import com.ud.inventario_module.models.dtos.ProductoDTO;
+import com.ud.inventario_module.services.ProductoService;
 
 @RestController // Declara esta clase como un controlador REST para manejar solicitudes relacionadas con productos.
 @RequestMapping("/api/productos") // Define la ruta base "/api/productos" para las solicitudes dirigidas a este controlador.

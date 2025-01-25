@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.services;
+package com.ud.inventario_module.services;
 
 import java.util.Date;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ud.artesanias_bogota.models.Transaccion;
-import com.ud.artesanias_bogota.repositories.TransaccionRepository;
+import com.ud.inventario_module.models.Transaccion;
+import com.ud.inventario_module.repositories.TransaccionRepository;
 
 /**
  * Servicio para la gestión de transacciones.

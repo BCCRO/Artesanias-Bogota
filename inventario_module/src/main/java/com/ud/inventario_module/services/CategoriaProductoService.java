@@ -1,9 +1,10 @@
-package com.ud.artesanias_bogota.services;
+package com.ud.inventario_module.services;
 
-import com.ud.artesanias_bogota.models.CategoriaProducto;
-import com.ud.artesanias_bogota.repositories.CategoriaProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.ud.inventario_module.models.CategoriaProducto;
+import com.ud.inventario_module.repositories.CategoriaProductoRepository;
 
 import java.util.List;
 import java.util.Optional;

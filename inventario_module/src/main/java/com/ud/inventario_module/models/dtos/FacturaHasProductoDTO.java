@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.models.dtos;
+package com.ud.inventario_module.models.dtos;
 
 /**
  * DTO (Data Transfer Object) para manejar la relación entre una factura y sus productos.

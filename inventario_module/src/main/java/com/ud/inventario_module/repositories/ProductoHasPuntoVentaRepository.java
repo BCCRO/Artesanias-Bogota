@@ -1,6 +1,6 @@
-package com.ud.artesanias_bogota.repositories;
+package com.ud.inventario_module.repositories;
 
-import com.ud.artesanias_bogota.models.ProductoHasPuntoVenta;
+import com.ud.inventario_module.models.ProductoHasPuntoVenta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

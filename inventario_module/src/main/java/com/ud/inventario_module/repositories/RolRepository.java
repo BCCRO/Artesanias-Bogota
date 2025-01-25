@@ -1,11 +1,11 @@
-package com.ud.artesanias_bogota.repositories;
+package com.ud.inventario_module.repositories;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ud.artesanias_bogota.models.Rol;
+import com.ud.inventario_module.models.Rol;
 
 /**
  * Repositorio para manejar operaciones CRUD y consultas personalizadas para la entidad {@link Rol}.

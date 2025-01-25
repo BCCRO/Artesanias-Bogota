@@ -1,10 +1,10 @@
-package com.ud.artesanias_bogota.services;
-
-import com.ud.artesanias_bogota.models.Factura;
-import com.ud.artesanias_bogota.repositories.FacturaRepository;
+package com.ud.inventario_module.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.ud.inventario_module.models.Factura;
+import com.ud.inventario_module.repositories.FacturaRepository;
 
 import java.util.Date;
 import java.util.Optional;

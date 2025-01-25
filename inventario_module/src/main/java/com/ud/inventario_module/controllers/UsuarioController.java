@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.controllers;
+package com.ud.inventario_module.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ud.artesanias_bogota.models.dtos.UsuarioDTO;
-import com.ud.artesanias_bogota.models.responses.RegisterResponse;
-import com.ud.artesanias_bogota.models.responses.ServerErrorResponse;
-import com.ud.artesanias_bogota.services.UsuarioService;
+import com.ud.inventario_module.models.dtos.UsuarioDTO;
+import com.ud.inventario_module.models.responses.RegisterResponse;
+import com.ud.inventario_module.models.responses.ServerErrorResponse;
+import com.ud.inventario_module.services.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
 

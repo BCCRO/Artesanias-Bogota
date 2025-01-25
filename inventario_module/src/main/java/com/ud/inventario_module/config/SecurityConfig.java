@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.config;
+package com.ud.inventario_module.config;
 
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

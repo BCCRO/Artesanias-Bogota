@@ -13,9 +13,9 @@
   </parent>
 
   <groupId>com.ud</groupId>
-  <artifactId>artesanias-bogota</artifactId>
+  <artifactId>inventario_module</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>artesanias-bogota</name>
+  <name>inventario_module</name>
   <description>Ecommerce Artesanias Bogota</description>
 
   <properties>
