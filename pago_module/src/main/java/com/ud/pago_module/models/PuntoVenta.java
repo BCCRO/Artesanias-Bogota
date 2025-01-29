@@ -40,6 +40,13 @@ public class PuntoVenta {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "idPuntoVenta")
     private Set<ProductoHasPuntoVenta> puntoVentaProductos;
 
+    //Dirección del punto de venta en formato de longitud y latitud
+    @Column(name = "longitud")
+    private Double longitud;
+
+    @Column(name = "latitud")
+    private Double latitud;
+
     // Identificador de la categoría del punto de venta.
     @Column(name = "categorias_puntos_venta_id", nullable = false)
     private String idCategoriaPuntoVenta;

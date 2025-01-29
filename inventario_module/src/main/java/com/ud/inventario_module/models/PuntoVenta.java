@@ -47,6 +47,13 @@ public class PuntoVenta {
     // Identificador de la categoría asociada al punto de venta.
     @Column(name = "categorias_puntos_venta_id", nullable = false)
     private String idCategoriaPuntoVenta;
+    
+    //Dirección del punto de venta en formato de longitud y latitud
+    @Column(name = "longitud")
+    private Double longitud;
+
+    @Column(name = "latitud")
+    private Double latitud;
 
     // Relación con la categoría del punto de venta.
     @ManyToOne(fetch = FetchType.LAZY)
