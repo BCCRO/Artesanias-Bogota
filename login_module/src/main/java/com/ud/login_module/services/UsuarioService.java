@@ -283,6 +283,23 @@ public class UsuarioService {
   }
 
   /**
+   * Cambia la contraseña de un usuario
+   * 
+   * @param id documento del usuario
+   * @param password la antigua contraseña del usuario
+   * @param newPassword la nueva contraseña del usuario
+   * @return {@code true} si el cambio de contraseña fue exitoso.
+   */
+
+  public boolean updatePassword(String id, String oldPassword, String newPassword){
+    Usuario user = userRepo.findById(id).orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
+    if(!(passEncode.matches(user.getContrasenia(), oldPassword))) throw new IllegalArgumentException("La contraseña antigua no coincide");
+    user.setContrasenia(passEncode.encode(newPassword));
+    userRepo.save(user);
+    return true;
+  }
+
+  /**
    * Construye el nombre completo de un usuario.
    * 
    * @param usuario usuario del que se generará el nombre completo.
