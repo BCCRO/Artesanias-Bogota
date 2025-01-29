@@ -79,6 +79,13 @@ public class Usuario implements UserDetails {
     @Column(name = "activo", nullable = false)
     private boolean activo;
 
+    //Dirección del usuario en formato de longitud y latitud
+    @Column(name = "longitud")
+    private Double longitud;
+
+    @Column(name = "latitud")
+    private Double latitud;
+
     // Relación uno a muchos con los roles asignados al usuario.
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
     private Set<RolHasUsuario> rolesUsuario;

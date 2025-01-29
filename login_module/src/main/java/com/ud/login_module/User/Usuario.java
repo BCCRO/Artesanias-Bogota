@@ -79,6 +79,14 @@ public class Usuario implements UserDetails {
 
     @Column(name = "rol", nullable = false)
     private int idRol;
+
+    //Dirección del usuario en formato de longitud y latitud
+    @Column(name = "longitud")
+    private Double longitud;
+
+    @Column(name = "latitud")
+    private Double latitud;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "rol", insertable = false, updatable = false)
