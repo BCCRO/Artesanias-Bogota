@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ud.login_module.models.dtos.PasswordDTO;
 import com.ud.login_module.models.dtos.UsuarioDTO;
 import com.ud.login_module.models.responses.RegisterResponse;
 import com.ud.login_module.models.responses.ServerErrorResponse;
@@ -63,7 +64,7 @@ public class UsuarioController {
    * @return Información del usuario actualizado o un mensaje de error.
    */
   @PutMapping(value = "/update", produces = "application/json")
-  public ResponseEntity<?> putMethodName(@RequestParam String id, @RequestBody UsuarioDTO request) {
+  public ResponseEntity<?> updateUser(@RequestParam String id, @RequestBody UsuarioDTO request) {
     try {
       UsuarioDTO updatedUser = userService.updateUser(id, request);
       return ResponseEntity.ok(updatedUser);
@@ -131,5 +132,35 @@ public class UsuarioController {
     } catch (Exception e) {
       return ResponseEntity.internalServerError().body("Ocurrió un error inesperado");
     }
+  }
+
+  /**
+   * Actualiza la contraseña de un usuario
+   * @param id UD del usuario
+   * @param request Cupooer que contiene la nueva contraseña
+   * @return Mensaje de exito o error, dependidendo del resultado
+   */
+
+  @PutMapping(value="/change_password/{id}")
+  public ResponseEntity<?> updatePassword(@PathVariable String id, @RequestBody PasswordDTO request) {
+      try {
+        boolean res = userService.updatePassword(id, request.getPassword(), request.getNewPassword());
+        if (!res) throw new Exception("No se puedo actualizar la contraseña");
+        return ResponseEntity.ok("Se modifico la contraseña con exito");
+      }catch(IllegalArgumentException e){
+        return ResponseEntity
+        .status(409)
+        .body(ServerErrorResponse.builder()
+        .statusCode(409)
+        .message(e.getMessage())
+        .build());
+      }catch (Exception e) {
+        return ResponseEntity
+        .status(500)
+        .body(ServerErrorResponse.builder()
+        .statusCode(500)
+        .message(e.getMessage())
+        .build());
+      }
   }
 }
