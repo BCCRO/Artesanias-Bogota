@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ud.inventario_module.models.ProductoHasPuntoVenta;
 import com.ud.inventario_module.models.dtos.ProductoPuntoVentaDTO;
 import com.ud.inventario_module.services.ProductoHasPuntoVentaService;
+import com.ud.inventario_module.services.PuntoVentaService;
 
 @RestController // Declara esta clase como un controlador REST para manejar solicitudes HTTP relacionadas con el inventario.
 @RequestMapping("/api/inventario") // Define la ruta base "/api/inventario" para las solicitudes dirigidas a este controlador.
@@ -24,6 +25,9 @@ public class InventarioController {
 
     @Autowired // Inyecta la dependencia del servicio que maneja la relación entre productos y puntos de venta.
     private ProductoHasPuntoVentaService productoHasPuntoVentaService;
+
+    @Autowired
+    private PuntoVentaService puntoVenta;
 
     @PostMapping(value = "/actualizar-inventario/producto-puntoventa", produces = "application/json") // Define un endpoint para actualizar el inventario basado en el producto y el punto de venta.
     public ResponseEntity<String> actualizarInventarioByPorductoAndPuntoVenta(@RequestBody ProductoPuntoVentaDTO productoPuntoVentaDTO) {
@@ -108,4 +112,18 @@ public class InventarioController {
             return ResponseEntity.ok(listProductoPuntoVenta);
         }
     }
+
+  //Obtiene la lista de puntos de venta cercanos a un usuario
+  @GetMapping("/puntos_cercanos/{userId}")
+  public ResponseEntity<?> getPuntosCercanos(@PathVariable String userId){
+    try {
+      return ResponseEntity.ok(puntoVenta.puntosCercanos(userId));
+    } catch(RuntimeException e){
+      if(e.getMessage().equals("Usuario no encontrado")) return ResponseEntity.status(404).body(e.getMessage());
+      return ResponseEntity.status(500).body(e.getMessage());
+    }catch (Exception e) {
+    return ResponseEntity.status(500).body(e.getMessage());
+
+    }
+  }
 }
