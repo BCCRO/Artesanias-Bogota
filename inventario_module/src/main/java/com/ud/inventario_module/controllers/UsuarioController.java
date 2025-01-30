@@ -62,7 +62,7 @@ public class UsuarioController {
   public ResponseEntity<?> putMethodName(@RequestParam String id, @RequestBody UsuarioDTO request) {
     try {
       UsuarioDTO updatedUser = userService.updateUser(id, request);
-      return ResponseEntity.ok(updatedUser);
+      return ResponseEntity.status(201).body(updatedUser);
     } catch (IllegalArgumentException e) {
       return ResponseEntity.status(409).body(ServerErrorResponse.builder()
         .statusCode(409)
@@ -89,9 +89,9 @@ public class UsuarioController {
   public ResponseEntity<?> createUsuario(@RequestBody UsuarioDTO request) {
     RegisterResponse res = userService.create(request);
     if (res.getStatusCode() != 200) {
-      return ResponseEntity.internalServerError().body(res);
+      return ResponseEntity.status(res.getStatusCode()).body(res);
     }
-    return ResponseEntity.ok(res);
+    return ResponseEntity.status(201).body(res);
   }
 
   /**
@@ -125,4 +125,6 @@ public class UsuarioController {
       return ResponseEntity.internalServerError().body("Ocurrió un error inesperado");
     }
   }
+
+
 }
