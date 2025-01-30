@@ -1,5 +1,7 @@
 package com.ud.login_module.services;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,6 +94,7 @@ public class UsuarioService {
    * @return respuesta de registro con detalles del resultado.
    */
   public RegisterResponse create(UsuarioDTO request) {
+    
     try {
       if (userRepo.existsByDocumento(request.getDocumento())) {
         throw new IllegalArgumentException("Ya existe un usuario con el documento proporcionado");
@@ -103,6 +106,9 @@ public class UsuarioService {
         throw new IllegalArgumentException("Ya existe un usuario con el teléfono proporcionado");
       }
 
+      double[] coords = GeocodificacionService.getCoordinates(request.getDireccion());
+      //System.out.println(Arrays.toString(coords));
+
       Usuario usuario = Usuario.builder()
         .documento(request.getDocumento())
         .fechaNacimiento(request.getFechaNacimiento())
@@ -113,6 +119,8 @@ public class UsuarioService {
         .segundoApellido(request.getSegundoApellido())
         .fechaCreacion(request.getFechaCreacion())
         .direccion(request.getDireccion())
+        .longitud(coords[1])
+        .latitud(coords[0])
         .contrasenia(passEncode.encode(request.getContrasenia()))
         .email(request.getEmail())
               .idRol(request.getRol())
@@ -165,6 +173,7 @@ public class UsuarioService {
       if (userRepo.existsByTelefono(request.getTelefono())) {
         throw new IllegalArgumentException("Ya existe un usuario con el teléfono proporcionado");
       }
+      double[] coords = GeocodificacionService.getCoordinates(request.getDireccion());
       Usuario usuario = Usuario.builder()
               .documento(request.getDocumento())
               .fechaNacimiento(request.getFechaNacimiento())
@@ -175,6 +184,8 @@ public class UsuarioService {
               .segundoApellido(request.getSegundoApellido())
               .fechaCreacion(request.getFechaCreacion())
               .direccion(request.getDireccion())
+              .longitud(coords[1])
+              .latitud(coords[0])
               .contrasenia(passEncode.encode(request.getContrasenia()))
               .email(request.getEmail())
               .idRol(2) 
@@ -235,7 +246,12 @@ public class UsuarioService {
       }
       usuario.setTelefono(request.getTelefono());
     }
-    if (request.getDireccion() != null) usuario.setDireccion(request.getDireccion());
+    if (request.getDireccion() != null){
+      double[] coords = GeocodificacionService.getCoordinates(request.getDireccion());
+      usuario.setDireccion(request.getDireccion());
+      usuario.setLongitud(coords[1]);
+      usuario.setLatitud(coords[0]);
+    } 
     if (request.getEmail() != null) {
       if (userRepo.existsByEmail(request.getEmail())) {
         throw new IllegalArgumentException("Ya existe un usuario con el email proporcionado");
