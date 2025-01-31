@@ -1,4 +1,4 @@
-package com.ud.artesanias_bogota.report_module;
+package com.ud.report_module.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

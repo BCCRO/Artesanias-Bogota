@@ -119,17 +119,8 @@ public class UsuarioService {
               .idRol(request.getRol())
         .activo(true)
         .build();
-
-//      List<Rol> roles = request.getRol().stream()
-//        .map(rol -> rolRepo.findByRolIgnoreCase(rol)
-//          .orElseThrow(() -> new IllegalArgumentException("Rol no existente: " + rol)))
-//        .toList();
-
+        
       userRepo.save(usuario);
-//      roles.forEach(rol -> {
-//        RolHasUsuario rolUsuario = new RolHasUsuario(usuario, rol);
-//        rolRepo.save(rolUsuario);
-//      });
 
       return RegisterResponse.builder()
         .statusCode(200)
@@ -181,15 +172,6 @@ public class UsuarioService {
               .idRol(2)
               .activo(true)
               .build();
-//      Rol cliente = rolRepo.findByRolIgnoreCase("cliente")
-//              .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
-//      List<Rol> roles = new ArrayList<>();
-//      roles.add(cliente);
-      userRepo.save(usuario);
-//      roles.forEach(rol -> {
-//        RolHasUsuario rolUsuario = new RolHasUsuario(usuario,rol);
-//        userRolRepo.save(rolUsuario);
-//      });
 
       return RegisterResponse.builder()
               .statusCode(200)
@@ -243,17 +225,7 @@ public class UsuarioService {
       }
       usuario.setEmail(request.getEmail());
     }
-//    if (request.getRoles() != null) {
-//      usuario.getRolesUsuario().forEach(rol -> userRolRepo.delete(rol));
-//      List<Rol> roles = request.getRoles().stream()
-//        .map(rol -> rolRepo.findByRolIgnoreCase(rol)
-//          .orElseThrow(() -> new RuntimeException("Rol no encontrado: " + rol)))
-//        .toList();
-//      roles.forEach(rol -> {
-//        RolHasUsuario rolUsuario = new RolHasUsuario(usuario, rol);
-//        userRolRepo.save(rolUsuario);
-//      });
-//    }
+
     userRepo.save(usuario);
     return UsuarioDTO.builder()
       .primerNombre(usuario.getPrimerNombre())
@@ -264,9 +236,6 @@ public class UsuarioService {
       .email(usuario.getEmail())
       .direccion(usuario.getDireccion())
             .rol(usuario.getIdRol())
-//      .roles(usuario.getRolesUsuario().stream()
-//        .map(rol -> rol.getRol().getRol())
-//        .toList())
       .build();
   }
 
