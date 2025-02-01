@@ -27,16 +27,17 @@ public class PuntoVentaService {
      */
     public PuntoVentaDTO getPuntoVentaById(Long id) {
         Optional<PuntoVenta> puntoVenta = puntoVentaRepository.findById(id);
-        return puntoVenta.map(p -> new PuntoVentaDTO(
-                p.getId(),
-                p.getNombre(),
-                p.getDireccion(),
-                p.getCiudad(),
-                p.getDepartamento(),
-                p.getCategoriaPuntosVentaId(),
-                p.getLongitud(),
-                p.getLatitud()
-        )).orElse(null);
+        return puntoVenta.map(p -> PuntoVentaDTO.builder()
+                .id( p.getId())
+                .nombre(p.getNombre())
+                .direccion(p.getDireccion())
+                .ciudad(p.getCiudad())
+                .departamento(p.getDepartamento())
+                .categoriaPuntosVentaId(Integer.parseInt(p.getIdCategoriaPuntoVenta()))
+                .latitud(p.getLatitud())
+                .longitud(p.getLongitud())
+                .build()
+        ).orElse(null);
     }
 
     /**
@@ -47,16 +48,17 @@ public class PuntoVentaService {
     public List<PuntoVentaDTO> getAllPuntosVenta() {
         List<PuntoVenta> puntosVenta = puntoVentaRepository.findAll();
         return puntosVenta.stream()
-                .map(p -> new PuntoVentaDTO(
-                        p.getId(),
-                        p.getNombre(),
-                        p.getDireccion(),
-                        p.getCiudad(),
-                        p.getDepartamento(),
-                        p.getCategoriaPuntosVentaId(),
-                        p.getLongitud(),
-                        p.getLatitud()
-                ))
+                .map(p -> PuntoVentaDTO.builder()
+                        .id( p.getId())
+                        .nombre(p.getNombre())
+                        .direccion(p.getDireccion())
+                        .ciudad(p.getCiudad())
+                        .departamento(p.getDepartamento())
+                        .categoriaPuntosVentaId(Integer.parseInt(p.getIdCategoriaPuntoVenta()))
+                        .latitud(p.getLatitud())
+                        .longitud(p.getLongitud())
+                        .build()
+                )
                 .collect(Collectors.toList());
     }
 }

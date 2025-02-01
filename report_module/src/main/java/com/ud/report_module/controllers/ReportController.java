@@ -31,7 +31,7 @@ public class ReportController {
             @RequestParam String fechaInicio,
             @RequestParam String fechaFin) {
         
-        String pdfPath = reportService.generarReporte(puntosVentaIds, fechaInicio, fechaFin);
+        String pdfPath = reportService.generateReport(puntosVentaIds, fechaInicio, fechaFin);
         return ResponseEntity.ok(pdfPath);
     }
 }
