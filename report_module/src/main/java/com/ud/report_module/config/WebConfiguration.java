@@ -1,4 +1,4 @@
-package com.ud.pago_module;
+package com.ud.report_module.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
