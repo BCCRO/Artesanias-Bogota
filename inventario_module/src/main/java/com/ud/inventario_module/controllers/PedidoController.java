@@ -1,6 +1,7 @@
 package com.ud.inventario_module.controllers;
 
 import com.ud.inventario_module.models.Pedido;
+import com.ud.inventario_module.models.dtos.CreatePedidoDTO;
 import com.ud.inventario_module.models.dtos.PedidoDTO;
 import com.ud.inventario_module.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,15 @@ public class PedidoController {
 
     @Autowired
     private PedidoService pedidoService;
+
+    @PostMapping("/create-pedido")
+    public ResponseEntity<Pedido> createPedido(@RequestBody CreatePedidoDTO createPedidoDTO) throws Exception {
+
+        Pedido pedido = pedidoService.createPedido(createPedidoDTO.getIdFactura(), createPedidoDTO.getIdPuntosVenta(), createPedidoDTO.getLatEntrega(), createPedidoDTO.getLongEntrega());
+
+
+        return ResponseEntity.ok(pedido);
+    }
 
     @GetMapping("/pedido-by-factura/{idFactura}")
     public ResponseEntity<List<Pedido>> pedidoByFactura(@PathVariable Long idFactura) throws Exception {

@@ -3,6 +3,7 @@ package com.ud.inventario_module.services;
 import com.ud.inventario_module.models.Pedido;
 import com.ud.inventario_module.repositories.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,9 @@ public class PedidoService {
 
     @Autowired
     private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private PedidoAsyncService pedidoAsyncService;
 
     public List<Pedido> findPedidoByIdFactura(Long idFactura){
         return pedidoRepository.findPedidoByIdFactura(idFactura);
@@ -31,7 +35,7 @@ public class PedidoService {
         else throw new RuntimeException(String.format("No se encontro ningun pedido con el id %s", idPedido));
     }
 
-    public void createPedido(Long idFactura, Long idPuntoVenta, Double latEntrega, Double longEntrega){
+    public Pedido createPedido(Long idFactura, Long idPuntoVenta, Double latEntrega, Double longEntrega) throws InterruptedException {
         Pedido pedido = new Pedido();
         pedido.setIdFactura(idFactura);
         pedido.setIdPuntosVenta(idPuntoVenta);
@@ -39,7 +43,13 @@ public class PedidoService {
         pedido.setLongEntrega(longEntrega);
         pedido.setEstado("PR");         //Preparacion
 
-        pedidoRepository.save(pedido);
+        pedido = pedidoRepository.save(pedido);
+
+        pedidoAsyncService.updateStateAutomatically(pedido, "PE", 180000L);
+
+        pedidoAsyncService.updateStateAutomatically(pedido, "CO", 360000L);
+
+        return pedido;
     }
 
 }

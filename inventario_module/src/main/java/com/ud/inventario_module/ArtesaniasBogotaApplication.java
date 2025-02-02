@@ -2,6 +2,7 @@ package com.ud.inventario_module;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * Clase principal de la aplicación Artesanías Bogotá.
@@ -11,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * todos los componentes necesarios para la ejecución del proyecto.
  */
 @SpringBootApplication
+@EnableAsync
 public class ArtesaniasBogotaApplication {
 
     /**
