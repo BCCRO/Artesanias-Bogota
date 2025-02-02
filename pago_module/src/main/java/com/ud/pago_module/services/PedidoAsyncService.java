@@ -1,5 +1,7 @@
 package com.ud.pago_module.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ud.pago_module.models.Factura;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,11 +35,38 @@ public class PedidoAsyncService {
 
         ResponseEntity<String> userResponse = restTemplate.getForEntity(urlGetUsuarios, String.class);
 
+        Double latitud = null;
+        Double longitud = null;
+        try {
+          if (userResponse.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException("Error al obtener el usuario");
+          }
+
+          String responseBody = userResponse.getBody();
+          System.out.println("Respuesta JSON: " + responseBody);
+
+          ObjectMapper objectMapper = new ObjectMapper();
+          JsonNode rootNode = objectMapper.readTree(responseBody);
+
+          // Extraer latitud y longitud
+          latitud = rootNode.get("latitud").asDouble();
+          longitud = rootNode.get("longitud").asDouble();
+
+          System.out.println("Latitud: " + latitud);
+          System.out.println("Longitud: " + longitud);
+        } catch (Exception e) {
+          // TODO: handle exception
+        }
+        
+
+      
+
+
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("idFactura", factura.getId());
         requestBody.put("idPuntosVenta", 1);        //todo quemado
-        requestBody.put("latEntrega", idFactura);
-        requestBody.put("longEntrega", idFactura);
+        requestBody.put("latEntrega", latitud);
+        requestBody.put("longEntrega", longitud);
 
         try {
             Thread.sleep(180000);
