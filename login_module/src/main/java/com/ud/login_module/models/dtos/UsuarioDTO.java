@@ -55,4 +55,10 @@ public class UsuarioDTO {
 
   // Lista de roles asignados al usuario.
   Integer rol;
+
+  //Latitud del usuario
+  Double latitud;
+
+  //Longitud del usuario
+  Double longitud;
 }
