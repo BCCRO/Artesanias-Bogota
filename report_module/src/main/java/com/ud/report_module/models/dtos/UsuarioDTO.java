@@ -55,5 +55,5 @@ public class UsuarioDTO {
     private Double latitud;
 
     // Identificador del rol asociado al usuario.
-    private Long rol;
+    private int rol;
 }

@@ -11,7 +11,7 @@ import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.knowm.xchart.*;
-import org.knowm.xchart.BitmapEncoder;
+import org.knowm.xchart.internal.chartpart.Chart;
 import org.knowm.xchart.style.PieStyler;
 import org.knowm.xchart.style.Styler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,8 +84,16 @@ public class ReportService {
     // Método para obtener los 10 productos más o menos vendidos
     private List<ProductoDTO> getTopProductos(List<Long> puntosVenta, String fechaInicio, String fechaFin, boolean masVendidos) {
         List<ProductoDTO> productos = productoRepository.findAll().stream()
-                .map(p -> new ProductoDTO(p.getNombre(), p.getImagen(), p.getPrecioUnitario(),
-                        p.getDescripcion(), p.getCalificacion(), p.getIdCategoriaProducto()))
+                .map(p -> ProductoDTO.builder()
+                          .id(p.getId())
+                          .nombre(p.getNombre())
+                          .imagen(p.getImagen())
+                          .precioUnitario(p.getPrecioUnitario())
+                          .descripcion(p.getDescripcion())
+                          .calificacion(p.getCalificacion())
+                          .idCategoriaProducto(p.getIdCategoriaProducto())
+                          .build()
+                )
                 .collect(Collectors.toList());
 
         return productos.stream()
@@ -124,7 +132,7 @@ public class ReportService {
     // Agregar gráfico al PDF
     private void addChartToPDF(PDDocument document, Object chart) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        BitmapEncoder.saveBitmap((Chart<?>) chart, baos, BitmapEncoder.BitmapFormat.PNG);
+        BitmapEncoder.saveBitmap((Chart<?,?>) chart, baos, BitmapEncoder.BitmapFormat.PNG);
         PDImageXObject image = PDImageXObject.createFromByteArray(document, baos.toByteArray(), "chart");
         PDPage page = new PDPage();
         document.addPage(page);
@@ -138,10 +146,22 @@ public class ReportService {
         List<UsuarioDTO> usuarios = usuarioRepository.findAll().stream()
                 .filter(u -> u.getFechaCreacion().toString().compareTo(fechaInicio) >= 0 &&
                         u.getFechaCreacion().toString().compareTo(fechaFin) <= 0)
-                .map(u -> new UsuarioDTO(u.getDocumento(), u.getFechaNacimiento(), u.getTelefono(),
-                        u.getPrimerNombre(), u.getSegundoNombre(), u.getPrimerApellido(),
-                        u.getSegundoApellido(), u.getFechaCreacion(), u.getDireccion(),
-                        u.getEmail(), u.isActive()))
+                .map(u -> UsuarioDTO.builder()
+                      .primerNombre(u.getPrimerNombre())
+                      .segundoNombre(u.getSegundoNombre())
+                      .primerApellido(u.getPrimerApellido())
+                      .segundoApellido(u.getSegundoApellido())
+                      .documento(u.getDocumento())
+                      .email(u.getEmail())
+                      .fechaCreacion(u.getFechaCreacion())
+                      .fechaNacimiento(u.getFechaNacimiento())
+                      .direccion(u.getDireccion())
+                      .telefono(u.getTelefono())
+                      .activo(u.isActivo())
+                      .latitud(u.getLatitud())
+                      .longitud(u.getLongitud())
+                      .rol(u.getIdRol())
+                      .build())
                 .collect(Collectors.toList());
 
         PDPage page = new PDPage();

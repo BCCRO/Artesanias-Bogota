@@ -1,9 +1,15 @@
 package com.ud.report_module.models.dtos;
 
+import lombok.Builder;
+import lombok.Data;
+
 /**
  * DTO (Data Transfer Object) para representar los datos de un producto.
  * Se utiliza para transferir información entre diferentes capas de la aplicación.
  */
+
+@Data
+@Builder
 public class ProductoDTO {
 
     // Identificador único del producto
@@ -51,64 +57,6 @@ public class ProductoDTO {
         this.precioUnitario = precioUnitario;
         this.descripcion = descripcion;
         this.calificacion = calificacion;
-        this.idCategoriaProducto = idCategoriaProducto;
-    }
-
-    // Getters y Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
-
-    public Long getPrecioUnitario() {
-        return precioUnitario;
-    }
-
-    public void setPrecioUnitario(Long precioUnitario) {
-        this.precioUnitario = precioUnitario;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public int getCalificacion() {
-        return calificacion;
-    }
-
-    public void setCalificacion(int calificacion) {
-        this.calificacion = calificacion;
-    }
-
-    public int getIdCategoriaProducto() {
-        return idCategoriaProducto;
-    }
-
-    public void setIdCategoriaProducto(int idCategoriaProducto) {
         this.idCategoriaProducto = idCategoriaProducto;
     }
 }
