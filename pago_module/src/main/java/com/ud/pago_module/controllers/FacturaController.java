@@ -83,7 +83,7 @@ public class FacturaController {
     public ResponseEntity<Void> agregarProducto(@RequestBody FacturaHasProductoDTO facturaHasProductoDTO) {
         try {
             facturaHasProductoService.anadirProductoFactura(
-                facturaHasProductoDTO.getIdPuntoVenta(),
+//                facturaHasProductoDTO.getIdPuntoVenta(),
                 facturaHasProductoDTO.getIdFactura(),
                 facturaHasProductoDTO.getIdProducto(),
                 facturaHasProductoDTO.getCantidad()

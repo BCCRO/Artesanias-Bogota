@@ -1,7 +1,12 @@
 package com.ud.pago_module.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.core.ParameterizedTypeReference;
 
 import com.ud.pago_module.models.Factura;
 import com.ud.pago_module.models.FacturaHasProducto;
@@ -10,8 +15,10 @@ import com.ud.pago_module.models.dtos.FacturaHasProductoDTO;
 import com.ud.pago_module.repositories.FacturaHasProductoRepository;
 import com.ud.pago_module.repositories.FacturaRepository;
 import com.ud.pago_module.repositories.ProductoRepository;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -32,6 +39,14 @@ public class FacturaHasProductoService {
 
     @Autowired
     private ProductoHasPuntoVentaService productoHasPuntoVentaService;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Value("${servidor.loginModule}")
+    private String loginModule;
+    @Value("${servidor.inventarioModule}")
+    private String inventarioModule;
 
     /**
      * Actualiza el total y los impuestos de una factura al agregar un producto.
@@ -59,15 +74,65 @@ public class FacturaHasProductoService {
         }
     }
 
+
+    /**
+     * Obtenemos el punto de venta mas cercanos al usuario de la factura
+     * @param idFactura     id de la factura a la cual agregaremos el producto
+     * @return              latitud y longitud del usuario
+     */
+    private Long getPuntoVentaCercano(Long idFactura){
+
+        Optional<Factura> facturaOpt = facturaRepository.findById(idFactura);
+
+        if(facturaOpt.isPresent()){
+            Factura factura = facturaOpt.get();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            /**
+             * TODO necesitamos settear el token dinamicamnete
+             */
+            headers.setBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuLnBlcmV6QGV4YW1wbGUuY29tIiwiaWF0IjoxNzM4NzIxNDkxLCJleHAiOjE3Mzg3MjI5MzF9.lAxt95FdvtJ9I-_lxN845jdnFzc1tYYKRt8ZqtZrd48");
+
+            String urlGetPuntosCercanos = String.format("%s/api/inventario/puntos_cercanos/%s", inventarioModule, factura.getIdUsuarioDocumento());
+
+            HttpEntity httpEntity = new HttpEntity(headers);
+            ResponseEntity<List<String>> userResponse = restTemplate.exchange(urlGetPuntosCercanos, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<String>>() {});
+
+            try {
+                if (userResponse.getStatusCode() != HttpStatus.OK) {
+                    throw new RuntimeException("Error al obtener el el puntto de venta mas cercano");
+                }
+
+                /**
+                 * TODO, deberiamos validar la existencia en punto de venta
+                 */
+                List<String> arrayPuntosVenta = userResponse.getBody();
+                return Long.parseLong(arrayPuntosVenta.get(0));
+
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+
+        }
+        /**
+         * todo Crear manejador de errores cuando no encontre la factura
+         */
+        return null;
+    }
+
+
     /**
      * Añade un producto a una factura y actualiza el inventario del punto de venta.
      *
-     * @param idPuntoVenta El ID del punto de venta.
      * @param idFactura El ID de la factura.
      * @param idProducto El ID del producto.
      * @param cantidad La cantidad de productos añadidos.
      */
-    public void anadirProductoFactura(Long idPuntoVenta, Long idFactura, Long idProducto, int cantidad) {
+    public void anadirProductoFactura(Long idFactura, Long idProducto, int cantidad) {
+
+        Long idPuntoVenta = getPuntoVentaCercano(idFactura);
+
         FacturaHasProducto facturaHasProducto = new FacturaHasProducto();
         facturaHasProducto.setIdFactura(idFactura);
         facturaHasProducto.setIdProducto(idProducto);
@@ -85,9 +150,12 @@ public class FacturaHasProductoService {
      * @param listadoProductos Lista de productos a añadir.
      */
     public void anadirProductosFactura(List<FacturaHasProductoDTO> listadoProductos) {
+
+        Long idPuntoVenta = null;
+
         Iterable<FacturaHasProducto> iterable = listadoProductos.stream()
                 .map(dto -> {
-                    productoHasPuntoVentaService.restarUnidadProductoPuntoVenta(dto.getIdProducto(), dto.getIdPuntoVenta());
+                    productoHasPuntoVentaService.restarUnidadProductoPuntoVenta(dto.getIdProducto(), idPuntoVenta);
                     actualizarTotalFactura(dto.getIdFactura(), dto.getIdProducto(), dto.getCantidad());
                     return new FacturaHasProducto(dto);
                 })

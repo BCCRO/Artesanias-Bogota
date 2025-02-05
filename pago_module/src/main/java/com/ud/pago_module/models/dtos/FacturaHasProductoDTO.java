@@ -7,7 +7,7 @@ package com.ud.pago_module.models.dtos;
 public class FacturaHasProductoDTO {
 
     // Identificador del punto de venta asociado.
-    private Long idPuntoVenta;
+//    private Long idPuntoVenta;
 
     // Identificador de la factura.
     private Long idFactura;
@@ -29,18 +29,18 @@ public class FacturaHasProductoDTO {
      *
      * @return El identificador del punto de venta.
      */
-    public Long getIdPuntoVenta() {
-        return idPuntoVenta;
-    }
+//    public Long getIdPuntoVenta() {
+//        return idPuntoVenta;
+//    }
 
     /**
      * Establece el identificador del punto de venta asociado.
      *
      * @param idPuntoVenta El identificador del punto de venta.
      */
-    public void setIdPuntoVenta(Long idPuntoVenta) {
-        this.idPuntoVenta = idPuntoVenta;
-    }
+//    public void setIdPuntoVenta(Long idPuntoVenta) {
+//        this.idPuntoVenta = idPuntoVenta;
+//    }
 
     /**
      * Obtiene el identificador de la factura.
