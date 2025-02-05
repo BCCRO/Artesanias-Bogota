@@ -1,4 +1,4 @@
-package com.ud.pago_module.config;
+package com.ud.report_module.config;
 
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

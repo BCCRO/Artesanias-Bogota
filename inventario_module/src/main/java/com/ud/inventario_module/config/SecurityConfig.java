@@ -10,6 +10,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
@@ -40,8 +42,10 @@ public class SecurityConfig {
       .csrf(csrf -> csrf.disable()) // Desactiva la protección contra CSRF.
       .authorizeHttpRequests(authRequest ->
         authRequest
-          .requestMatchers("/**") // Permite el acceso a todos los endpoints.
-          .permitAll()
+                .requestMatchers("/api/productos/productos", "/api/productos/producto/**")
+                    .permitAll()
+                .anyRequest() // Restringe el acceso a todos los endpoints.
+                    .authenticated()
       )
       .oauth2ResourceServer(oauth2 -> oauth2
         .jwt(jwt -> jwt.decoder(jwtDecoder())) // Configura el decoder para tokens JWT.

@@ -38,10 +38,12 @@ public class SecurityConfig {
         // Deshabilita la protección CSRF, ya que no es necesaria para APIs REST.
         .csrf(csrf -> csrf.disable())
         // Configura las reglas de autorización para las solicitudes HTTP.
-        .authorizeHttpRequests(authRequest -> 
-            authRequest
-                .requestMatchers("/auth/**").permitAll() // Permite el acceso a todas las rutas bajo "/auth/**".
-                .requestMatchers("/**").permitAll() // Permite el acceso a todos los demás endpoints.
+        .authorizeHttpRequests(authRequest ->
+                authRequest
+                      .requestMatchers("/auth/login", "/api/email_auth", "/api/usuarios/create", "/api/usuarios/create/cliente")
+                        .permitAll()
+                      .anyRequest() // Restringe el acceso a todos los endpoints.
+                        .authenticated()
         )
         .build(); // Construye y retorna la cadena de filtros configurada.
   }
