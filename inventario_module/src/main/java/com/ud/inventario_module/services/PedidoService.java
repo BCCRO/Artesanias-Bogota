@@ -45,9 +45,9 @@ public class PedidoService {
 
         pedido = pedidoRepository.save(pedido);
 
-        pedidoAsyncService.updateStateAutomatically(pedido, "PE", 180000L);
+        pedidoAsyncService.updateStateAutomatically(pedido, "PE", 180000L);     //Pendiente
 
-        pedidoAsyncService.updateStateAutomatically(pedido, "CO", 360000L);
+        pedidoAsyncService.updateStateAutomatically(pedido, "CO", 360000L);     //Completado
 
         return pedido;
     }

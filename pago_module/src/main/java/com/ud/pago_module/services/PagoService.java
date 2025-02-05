@@ -40,6 +40,9 @@ public class PagoService {
     private String SECRET_TOKEN;
 
     @Autowired
+    private FacturaAsyncService facturaAsyncService;
+
+    @Autowired
     private FacturaService facturaService;
     @Autowired
     private TransaccionService transaccionService;
@@ -153,6 +156,9 @@ public class PagoService {
         transaccionService.createTransaccion(transaccion);
         Factura facturaActualizada = agregarTransaccionAFactura(transaccion.getId(), idFactura);
         facturaService.actualizarFactura(facturaActualizada);
+
+        //Cambiamos de estado automaticamente
+        facturaAsyncService.updateStateAutomatically(facturaActualizada, "CO", 180000L);
 
         return preference.getId();
     }
