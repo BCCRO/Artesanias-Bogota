@@ -13,6 +13,9 @@ import com.ud.pago_module.models.dtos.FacturaHasProductoDTO;
 import com.ud.pago_module.models.responses.ServerErrorResponse;
 import com.ud.pago_module.services.FacturaHasProductoService;
 import com.ud.pago_module.services.FacturaService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 /**
  * Controlador REST para gestionar facturas.
@@ -158,4 +161,11 @@ public class FacturaController {
                     .build());
         }
     }
+
+    @GetMapping("/obtener-token")
+    public String getMethodName() {
+      facturaHasProductoService.anadirProductoFactura(null, null, 0);
+      return new String();
+    }
+    
 }

@@ -15,6 +15,9 @@ import com.ud.pago_module.models.dtos.FacturaHasProductoDTO;
 import com.ud.pago_module.repositories.FacturaHasProductoRepository;
 import com.ud.pago_module.repositories.FacturaRepository;
 import com.ud.pago_module.repositories.ProductoRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -47,6 +50,9 @@ public class FacturaHasProductoService {
     private String loginModule;
     @Value("${servidor.inventarioModule}")
     private String inventarioModule;
+
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * Actualiza el total y los impuestos de una factura al agregar un producto.
@@ -82,8 +88,9 @@ public class FacturaHasProductoService {
      */
     private Long getPuntoVentaCercano(Long idFactura){
 
+        
+        String token = (String) request.getAttribute("authtoken");
         Optional<Factura> facturaOpt = facturaRepository.findById(idFactura);
-
         if(facturaOpt.isPresent()){
             Factura factura = facturaOpt.get();
 
@@ -92,8 +99,7 @@ public class FacturaHasProductoService {
             /**
              * TODO necesitamos settear el token dinamicamnete
              */
-            headers.setBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuLnBlcmV6QGV4YW1wbGUuY29tIiwiaWF0IjoxNzM4NzIxNDkxLCJleHAiOjE3Mzg3MjI5MzF9.lAxt95FdvtJ9I-_lxN845jdnFzc1tYYKRt8ZqtZrd48");
-
+            headers.setBearerAuth(token);
             String urlGetPuntosCercanos = String.format("%s/api/inventario/puntos_cercanos/%s", inventarioModule, factura.getIdUsuarioDocumento());
 
             HttpEntity httpEntity = new HttpEntity(headers);
