@@ -48,24 +48,8 @@ public class Producto {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "categorias_productos_id", insertable = false, updatable = false)
     private CategoriaProducto categoriaProducto;
-
-    // Identificador del color asociado al producto.
-    @Column(name = "color_productos_id", nullable = false)
-    private int colorProductosId;
-
-    // Identificador del oficio asociado al producto.
-    @Column(name = "oficio_id", nullable = false)
-    private int oficioId;
-
-    // Identificador de la colección asociada al producto.
-    @Column(name = "coleccion_productos_id", nullable = false)
-    private int coleccionProductosId;
-
-    // Identificador del artista asociado al producto.
-    @Column(name = "artistas_productos_id", nullable = false)
-    private int artistasProductosId;
-
     // Relación uno a muchos con la entidad FacturaHasProducto.
+
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "idProducto")
     private Set<FacturaHasProducto> facturasProducto;
@@ -161,37 +145,5 @@ public class Producto {
 
     public void setProductoPuntosVentas(Set<ProductoHasPuntoVenta> productoPuntosVentas) {
         this.productoPuntosVentas = productoPuntosVentas;
-    }
-
-    public int getColorProductosId() {
-        return colorProductosId;
-    }
-
-    public void setColorProductosId(int colorProductosId) {
-        this.colorProductosId = colorProductosId;
-    }
-
-    public int getOficioId() {
-        return oficioId;
-    }
-
-    public void setOficioId(int oficioId) {
-        this.oficioId = oficioId;
-    }
-
-    public int getColeccionProductosId() {
-        return coleccionProductosId;
-    }
-
-    public void setColeccionProductosId(int coleccionProductosId) {
-        this.coleccionProductosId = coleccionProductosId;
-    }
-
-    public int getArtistasProductosId() {
-        return artistasProductosId;
-    }
-
-    public void setArtistasProductosId(int artistasProductosId) {
-        this.artistasProductosId = artistasProductosId;
     }
 }
