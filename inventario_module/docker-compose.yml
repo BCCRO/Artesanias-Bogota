@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  inventario-module:
+    build: .
+    container_name: inventario-module
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+
+  login-module:
+    build: ./../login_module
+    container_name: login-module
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  pago-module:
+    build: ./../login_module
+    container_name: pago-module
+    ports:
+      - "8083:8083"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
