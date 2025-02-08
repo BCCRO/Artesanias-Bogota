@@ -163,4 +163,9 @@ public class UsuarioController {
         .build());
       }
   }
+
+  @GetMapping("/healthcheck")
+  public ResponseEntity<?> getHealthCheck(){
+    return ResponseEntity.ok("The Login Module is UP");
+  }
 }
