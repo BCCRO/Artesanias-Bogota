@@ -12,13 +12,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfiguration implements WebMvcConfigurer {
 
     /**
-     * Configura las reglas CORS para todos los endpoints de la aplicación.
-     *
-     * @param registry Objeto {@link CorsRegistry} utilizado para definir las reglas de CORS.
+     * Configura las políticas de CORS para permitir solicitudes de orígenes cruzados.
+     * 
+     * @param registry el registro utilizado para agregar configuraciones de mapeo de CORS.
      */
+    @SuppressWarnings("null")
     @Override
-    public void addCorsMappings(@SuppressWarnings("null") CorsRegistry registry) {
-        // Permitir todas las solicitudes desde cualquier origen y con cualquier método HTTP.
-        registry.addMapping("/**").allowedMethods("*").allowedOrigins("*");
-    }
+    public void addCorsMappings(CorsRegistry registry) {
+        // Permite solicitudes de cualquier origen ("**") con todos los métodos HTTP permitidos ("*").
+        registry.addMapping("/**")
+                .allowedMethods("*")
+                .allowedOrigins("*");
+  }
 }

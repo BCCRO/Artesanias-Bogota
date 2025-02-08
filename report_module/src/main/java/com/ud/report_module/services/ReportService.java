@@ -48,6 +48,7 @@ public class ReportService {
      * @return Ruta del archivo PDF generado.
      */
     public String generateReport(List<Long> puntosVenta, String fechaInicio, String fechaFin) {
+        System.out.println("Se esta generando el reporte");
         try {
             PDDocument document = new PDDocument();
 

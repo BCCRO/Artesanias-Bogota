@@ -1,11 +1,11 @@
 package com.ud.report_module.controllers;
 
+import com.ud.report_module.models.dtos.ReportDTO;
 import com.ud.report_module.services.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
  * Controlador para gestionar la generación de reportes descriptivos de ventas.
@@ -25,13 +25,16 @@ public class ReportController {
      * @param fechaFin Fecha de fin del rango de consulta (formato YYYY-MM-DD).
      * @return Ruta del archivo PDF generado.
      */
-    @GetMapping("/generar")
-    public ResponseEntity<String> generarReporte(
-            @RequestParam List<Long> puntosVentaIds,
-            @RequestParam String fechaInicio,
-            @RequestParam String fechaFin) {
-        
-        String pdfPath = reportService.generateReport(puntosVentaIds, fechaInicio, fechaFin);
+
+    @PostMapping("/generar")
+    public ResponseEntity<String> generarReporte(@RequestBody ReportDTO request) {
+      try {
+        System.out.println("entramos");
+        String pdfPath = reportService.generateReport(request.getPuntosVentaIds(), request.getFechaInicio(), request.getFechaFin());
         return ResponseEntity.ok(pdfPath);
+      } catch (Exception e) {
+        System.out.println(e);
+        return ResponseEntity.internalServerError().body("Something went wrong");
+      }
     }
 }
