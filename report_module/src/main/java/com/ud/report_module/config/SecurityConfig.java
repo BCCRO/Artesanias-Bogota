@@ -38,6 +38,7 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable()) // Deshabilita la protección CSRF.
         .authorizeHttpRequests(authRequest -> 
             authRequest
+                .requestMatchers("/api/reportes/healthcheck").permitAll()
                 .anyRequest().authenticated() // Restrige acceso a todos los endpoints.
         )
         .oauth2ResourceServer(oauth2 -> oauth2

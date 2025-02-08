@@ -42,7 +42,7 @@ public class SecurityConfig {
       .csrf(csrf -> csrf.disable()) // Desactiva la protección contra CSRF.
       .authorizeHttpRequests(authRequest ->
         authRequest
-                .requestMatchers("/api/productos/productos", "/api/productos/producto/**")
+                .requestMatchers("/api/productos/productos", "/api/productos/producto/**", "/api/inventario/healthcheck")
                     .permitAll()
                 .anyRequest() // Restringe el acceso a todos los endpoints.
                     .authenticated()

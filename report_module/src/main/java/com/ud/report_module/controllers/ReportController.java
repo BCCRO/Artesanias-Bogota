@@ -37,4 +37,9 @@ public class ReportController {
         return ResponseEntity.internalServerError().body("Something went wrong");
       }
     }
+
+    @GetMapping("/healthcheck")
+    public ResponseEntity<?> getHealthCheck(){
+      return ResponseEntity.ok("The Report Module is UP");
+    }
 }
