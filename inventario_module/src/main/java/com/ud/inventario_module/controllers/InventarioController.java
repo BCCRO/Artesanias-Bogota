@@ -126,4 +126,9 @@ public class InventarioController {
 
     }
   }
+
+  @GetMapping("/healthcheck")
+  public ResponseEntity<?> getHealthCheck(){
+    return ResponseEntity.ok("The Module is UP");
+  }
 }

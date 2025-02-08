@@ -38,7 +38,8 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable()) // Deshabilita la protección CSRF.
         .authorizeHttpRequests(authRequest -> 
             authRequest
-                .anyRequest().authenticated() // Restrige acceso a todos los endpoints.
+              .requestMatchers("/api/pagos/healthcheck").permitAll()
+              .anyRequest().authenticated() // Restrige acceso a todos los endpoints.
         )
         .oauth2ResourceServer(oauth2 -> oauth2
             .jwt(jwt -> jwt.decoder(jwtDecoder())) // Configura el decodificador JWT.

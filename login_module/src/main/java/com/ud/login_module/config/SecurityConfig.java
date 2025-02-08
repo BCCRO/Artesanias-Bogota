@@ -40,7 +40,7 @@ public class SecurityConfig {
         // Configura las reglas de autorización para las solicitudes HTTP.
         .authorizeHttpRequests(authRequest ->
                 authRequest
-                      .requestMatchers("/auth/login", "/api/email_auth", "/api/usuarios/create", "/api/usuarios/create/cliente")
+                      .requestMatchers("/auth/login", "/api/email_auth", "/api/usuarios/create", "/api/usuarios/create/cliente","/api/usuarios/healthcheck")
                         .permitAll()
                       .anyRequest() // Restringe el acceso a todos los endpoints.
                         .authenticated()

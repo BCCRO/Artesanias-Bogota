@@ -96,4 +96,9 @@ public class PagoController {
             return ResponseEntity.internalServerError().body("Algo inesperado sucedió");
         }
     }
+
+    @GetMapping("/healthcheck")
+    public ResponseEntity<?> getHealthCheck(){
+      return ResponseEntity.ok("The Pago Module is UP");
+    }
 }
