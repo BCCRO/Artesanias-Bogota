@@ -3,8 +3,14 @@ package com.ud.report_module.controllers;
 import com.ud.report_module.models.dtos.ReportDTO;
 import com.ud.report_module.services.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.File;
 
 
 /**
@@ -17,6 +23,32 @@ public class ReportController {
 
     @Autowired
     private ReportService reportService;
+
+    @Value("${report.file.dir}")
+    private String reportFileDir;
+
+    @GetMapping("/descargar-reporte")
+    public ResponseEntity<FileSystemResource> descargarReporte(@RequestParam String nombreArchivo) {
+
+        String pathFile = String.format("%s/%s", reportFileDir, nombreArchivo);
+
+        System.out.println(pathFile);
+
+        File archivo = new File(pathFile);
+
+        if (!archivo.exists()) {
+            System.out.println("El archivo no existe");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
+        FileSystemResource recurso = new FileSystemResource(archivo);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + archivo.getName());
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(recurso);
+    }
 
     /**
      * Genera un reporte en PDF con estadísticas de ventas de productos.

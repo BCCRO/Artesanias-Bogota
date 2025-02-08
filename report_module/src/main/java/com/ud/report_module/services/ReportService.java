@@ -36,7 +36,7 @@ public class ReportService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Value("report.file.dir")
+    @Value("${report.file.dir}")
     private String reportFileDir;
 
     /**
