@@ -15,6 +15,7 @@ import org.knowm.xchart.internal.chartpart.Chart;
 import org.knowm.xchart.style.PieStyler;
 import org.knowm.xchart.style.Styler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -34,6 +35,9 @@ public class ReportService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Value("report.file.dir")
+    private String reportFileDir;
 
     /**
      * Genera un reporte en PDF con las ventas y la ubicación de usuarios en un período de tiempo específico.
@@ -70,7 +74,7 @@ public class ReportService {
             addWatermark(document, "Artesanías Bogotá LTDA");
 
             // Guardar el PDF
-            String filePath = "./reporte_artesanias.pdf";
+            String filePath = String.format("%s/reporte_artesanias.pdf", reportFileDir);
             document.save(filePath);
             document.close();
             return filePath;
