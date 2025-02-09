@@ -1,7 +1,5 @@
 package com.ud.pago_module.services;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -21,7 +19,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -86,6 +83,7 @@ public class FacturaHasProductoService {
      * @param idFactura     id de la factura a la cual agregaremos el producto
      * @return              latitud y longitud del usuario
      */
+    @SuppressWarnings("rawtypes")
     private Long getPuntoVentaCercano(Long idFactura){
 
         
@@ -96,12 +94,10 @@ public class FacturaHasProductoService {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            /**
-             * TODO necesitamos settear el token dinamicamnete
-             */
             headers.setBearerAuth(token);
             String urlGetPuntosCercanos = String.format("%s/api/inventario/puntos_cercanos/%s", inventarioModule, factura.getIdUsuarioDocumento());
 
+            @SuppressWarnings("unchecked")
             HttpEntity httpEntity = new HttpEntity(headers);
             ResponseEntity<List<String>> userResponse = restTemplate.exchange(urlGetPuntosCercanos, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<String>>() {});
 
@@ -110,14 +106,10 @@ public class FacturaHasProductoService {
                     throw new RuntimeException("Error al obtener el el puntto de venta mas cercano");
                 }
 
-                /**
-                 * TODO, deberiamos validar la existencia en punto de venta
-                 */
                 List<String> arrayPuntosVenta = userResponse.getBody();
                 return Long.parseLong(arrayPuntosVenta.get(0));
 
             } catch (Exception e) {
-                // TODO: handle exception
             }
 
         }
