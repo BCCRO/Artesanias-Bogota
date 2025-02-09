@@ -59,10 +59,11 @@ public class ReportService {
             addWatermark(document, "Artesanías Bogotá LTDA");
 
             String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String filePath = "./reporte_artesanias_" + timestamp + ".pdf";
+            String fileName = "reporte_artesanias"+ timestamp;
+            String filePath = "./"+ fileName + ".pdf";
             document.save(filePath);
             document.close();
-            return filePath;
+            return fileName;
 
         } catch (IOException e) {
             e.printStackTrace();
