@@ -1,10 +1,7 @@
 package com.ud.report_module.services;
 
 import com.ud.report_module.models.dtos.ProductoDTO;
-import com.ud.report_module.models.dtos.UsuarioDTO;
 import com.ud.report_module.repositories.ProductoRepository;
-import com.ud.report_module.repositories.UsuarioRepository;
-
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
@@ -17,9 +14,11 @@ import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.io.*;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,9 +26,6 @@ public class ReportService {
 
     @Autowired
     private ProductoRepository productoRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
 
     public String generateReport(List<Long> puntosVenta, String fechaInicio, String fechaFin) {
         System.out.println("Generando el reporte...");
@@ -55,7 +51,6 @@ public class ReportService {
             addChartToPDF(document, barChartMasVendidos);
             addChartToPDF(document, barChartMenosVendidos);
 
-            addUserLocationsToPDF(document, fechaInicio, fechaFin);
             addWatermark(document, "Artesanías Bogotá LTDA");
 
             String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -109,12 +104,15 @@ public class ReportService {
         PieChart chart = new PieChartBuilder().width(800).height(600).title(title).build();
         chart.getStyler().setLegendPosition(PieStyler.LegendPosition.OutsideE);
         chart.getStyler().setHasAnnotations(true);
-        chart.getStyler().setAnnotationType(PieStyler.AnnotationType.Value);
-        chart.getStyler().setDrawAllAnnotations(true);
+        chart.getStyler().setAnnotationType(PieStyler.AnnotationType.LabelAndValue);
         chart.getStyler().setPlotBackgroundColor(Color.WHITE);
 
+        @SuppressWarnings("deprecation")
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
+
         for (ProductoDTO producto : productos) {
-            chart.addSeries(producto.getNombre(), producto.getPrecioUnitario());
+            String label = producto.getNombre() + " - " + currencyFormat.format(producto.getPrecioUnitario());
+            chart.addSeries(label, producto.getPrecioUnitario());
         }
         return chart;
     }
@@ -125,7 +123,13 @@ public class ReportService {
         chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNW);
         chart.getStyler().setHasAnnotations(true);
 
-        List<String> nombres = productos.stream().map(ProductoDTO::getNombre).collect(Collectors.toList());
+        @SuppressWarnings("deprecation")
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
+
+        List<String> nombres = productos.stream()
+                .map(p -> p.getNombre() + " - " + currencyFormat.format(p.getPrecioUnitario()))
+                .collect(Collectors.toList());
+
         List<Long> ventas = productos.stream().map(ProductoDTO::getPrecioUnitario).collect(Collectors.toList());
 
         chart.addSeries("Ventas", nombres, ventas);
@@ -140,36 +144,6 @@ public class ReportService {
         document.addPage(page);
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
             contentStream.drawImage(image, 100, 200, 400, 300);
-        }
-    }
-
-    private void addUserLocationsToPDF(PDDocument document, String fechaInicio, String fechaFin) throws IOException {
-        @SuppressWarnings("unused")
-        List<UsuarioDTO> usuarios = usuarioRepository.findAll().stream()
-                .filter(u -> u.getFechaCreacion().toString().compareTo(fechaInicio) >= 0 &&
-                        u.getFechaCreacion().toString().compareTo(fechaFin) <= 0)
-                .map(u -> UsuarioDTO.builder()
-                        .primerNombre(u.getPrimerNombre())
-                        .segundoNombre(u.getSegundoNombre())
-                        .primerApellido(u.getPrimerApellido())
-                        .segundoApellido(u.getSegundoApellido())
-                        .documento(u.getDocumento())
-                        .email(u.getEmail())
-                        .fechaCreacion(u.getFechaCreacion())
-                        .direccion(u.getDireccion())
-                        .latitud(u.getLatitud())
-                        .longitud(u.getLongitud())
-                        .build())
-                .collect(Collectors.toList());
-
-        PDPage page = new PDPage();
-        document.addPage(page);
-        try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-            contentStream.beginText();
-            contentStream.newLineAtOffset(100, 700);
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
-            contentStream.showText("Ubicación de Usuarios:");
-            contentStream.endText();
         }
     }
 
