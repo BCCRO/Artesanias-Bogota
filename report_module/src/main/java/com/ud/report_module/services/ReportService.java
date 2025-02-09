@@ -101,6 +101,7 @@ public class ReportService {
                 .collect(Collectors.toList());
     }
 
+    @SuppressWarnings("deprecation")
     private PieChart createPieChart(List<ProductoDTO> productos, String title) {
         PieChart chart = new PieChartBuilder().width(800).height(600).title(title).build();
         chart.getStyler().setLegendPosition(PieStyler.LegendPosition.OutsideE);
@@ -108,7 +109,6 @@ public class ReportService {
         chart.getStyler().setAnnotationType(PieStyler.AnnotationType.LabelAndValue);
         chart.getStyler().setPlotBackgroundColor(Color.WHITE);
 
-        @SuppressWarnings("deprecation")
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
 
         for (ProductoDTO producto : productos) {
@@ -118,13 +118,13 @@ public class ReportService {
         return chart;
     }
 
+    @SuppressWarnings("deprecation")
     private CategoryChart createBarChart(List<ProductoDTO> productos, String title) {
         CategoryChart chart = new CategoryChartBuilder().width(800).height(600).title(title).xAxisTitle("Productos").yAxisTitle("Ventas").build();
         chart.getStyler().setChartBackgroundColor(Color.decode("#f5f5dc"));
         chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNW);
         chart.getStyler().setHasAnnotations(true);
 
-        @SuppressWarnings("deprecation")
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
 
         List<String> nombres = productos.stream()
