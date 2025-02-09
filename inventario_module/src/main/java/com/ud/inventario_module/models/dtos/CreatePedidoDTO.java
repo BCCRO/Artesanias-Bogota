@@ -1,7 +1,5 @@
 package com.ud.inventario_module.models.dtos;
 
-import jakarta.persistence.Column;
-
 public class CreatePedidoDTO {
 
     private Long idFactura;

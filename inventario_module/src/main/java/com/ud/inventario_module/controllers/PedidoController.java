@@ -5,8 +5,6 @@ import com.ud.inventario_module.models.dtos.CreatePedidoDTO;
 import com.ud.inventario_module.models.dtos.PedidoDTO;
 import com.ud.inventario_module.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
