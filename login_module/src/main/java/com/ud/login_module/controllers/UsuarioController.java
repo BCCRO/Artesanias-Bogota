@@ -34,7 +34,14 @@ public class UsuarioController {
    */
   @GetMapping("/list")
   public ResponseEntity<?> getUsuariosList() {
-    return ResponseEntity.ok(userService.getAllUsers());
+    try {
+      return ResponseEntity.ok(userService.getAllUsers());
+    } catch (Exception e) {
+      // TODO: handle exception
+      System.out.println(e);
+      return ResponseEntity.internalServerError().body("paso algo raro");
+    }
+    
   }
 
   /**
