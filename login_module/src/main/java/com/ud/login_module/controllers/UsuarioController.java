@@ -130,6 +130,7 @@ public class UsuarioController {
   @PutMapping("/status/{id}")
   public ResponseEntity<?> requestMethodName(@PathVariable String id) {
     try {
+      userService.changeUserStatus(id);
       return ResponseEntity.ok("El estado del usuario se ha cambiado con éxito");
     } catch (RuntimeException e) {
       return ResponseEntity.status(404).body(ServerErrorResponse.builder()
