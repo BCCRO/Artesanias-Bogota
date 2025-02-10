@@ -47,7 +47,7 @@ public class JwtService {
         .setClaims(extraClaims) // Agrega claims personalizados al token.
         .setSubject(user.getUsername()) // Establece el nombre de usuario como sujeto del token.
         .setIssuedAt(new Date(System.currentTimeMillis())) // Establece la fecha de emisión del token.
-        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) // Establece la fecha de expiración (24 minutos después de la emisión).
+        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Establece la fecha de expiración (24 minutos después de la emisión).
         .signWith(getKey(), SignatureAlgorithm.HS256) // Firma el token utilizando la clave secreta y el algoritmo HS256.
         .compact(); // Construye el token como una cadena compacta.
   }
