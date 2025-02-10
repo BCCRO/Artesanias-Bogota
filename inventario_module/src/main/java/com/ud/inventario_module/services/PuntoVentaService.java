@@ -35,4 +35,8 @@ public class PuntoVentaService {
     }
     return GeocodificacionService.getSortedPointsByProximity(puntosCoordenadas, coordenadasUsuario);
   }
+
+  public List<PuntoVenta> getPuntosVenta(){
+    return puntoVentaRepo.findAll();
+  }
 }

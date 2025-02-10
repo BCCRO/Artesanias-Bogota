@@ -131,4 +131,14 @@ public class InventarioController {
   public ResponseEntity<?> getHealthCheck(){
     return ResponseEntity.ok("The Module is UP");
   }
+
+  @GetMapping("/puntos-venta/list")
+  public ResponseEntity<?> getPuntosVentaList(){
+    try {
+      return ResponseEntity.ok(puntoVenta.getPuntosVenta());
+    } catch (Exception e) {
+      System.out.println(e);
+      return ResponseEntity.internalServerError().body("Something went wrong");
+    }
+  }
 }
