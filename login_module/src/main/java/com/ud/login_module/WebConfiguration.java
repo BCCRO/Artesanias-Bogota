@@ -22,7 +22,7 @@ public class WebConfiguration implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("https://artesaniasbogota-frontend.onrender.com")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("Authorization", "Content-Type", "Accept")
-                .allowCredentials(true);
+                .allowedHeaders("*");
+                //.allowCredentials(true);
     }
 }
