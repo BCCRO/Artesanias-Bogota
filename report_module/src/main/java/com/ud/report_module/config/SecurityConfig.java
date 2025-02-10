@@ -47,7 +47,6 @@ public class SecurityConfig {
     source.registerCorsConfiguration("/**", config);
 
     return http
-        .cors(cors -> cors.configurationSource(source))
         .csrf(csrf -> csrf.disable()) // Deshabilita la protección CSRF.
         .authorizeHttpRequests(authRequest -> 
             authRequest
