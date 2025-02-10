@@ -36,9 +36,11 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http
+      .cors(cors -> cors.disable())
       .csrf(csrf -> csrf.disable()) // Desactiva la protección contra CSRF.
       .authorizeHttpRequests(authRequest ->
         authRequest
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permite preflight requests
                 .requestMatchers("/api/productos/productos", "/api/productos/producto/**", "/api/inventario/healthcheck")
                     .permitAll()
                 .anyRequest() // Restringe el acceso a todos los endpoints.
