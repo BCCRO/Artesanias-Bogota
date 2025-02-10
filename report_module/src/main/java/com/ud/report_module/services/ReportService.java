@@ -1,9 +1,7 @@
 package com.ud.report_module.services;
 
-import com.ud.report_module.models.dtos.FacturaDTO;
 import com.ud.report_module.models.dtos.ProductoDTO;
 import com.ud.report_module.models.dtos.UsuarioDTO;
-import com.ud.report_module.repositories.FacturaRepository;
 import com.ud.report_module.repositories.ProductoRepository;
 import com.ud.report_module.repositories.UsuarioRepository;
 
