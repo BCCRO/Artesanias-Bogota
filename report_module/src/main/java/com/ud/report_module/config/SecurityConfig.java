@@ -45,8 +45,8 @@ public class SecurityConfig {
         .authorizeHttpRequests(authRequest -> 
             authRequest
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permite preflight requests
-                .requestMatchers("/**").permitAll()
-//                .anyRequest().authenticated() // Restrige acceso a todos los endpoints.
+                .requestMatchers("/api/reportes/healthcheck", "/api/reportes/descargar-reporte").permitAll()
+                .anyRequest().authenticated() // Restrige acceso a todos los endpoints.
         )
         .oauth2ResourceServer(oauth2 -> oauth2
             .jwt(jwt -> jwt.decoder(jwtDecoder())) // Configura el decodificador JWT.
