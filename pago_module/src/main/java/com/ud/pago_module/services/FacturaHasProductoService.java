@@ -149,10 +149,9 @@ public class FacturaHasProductoService {
      */
     public void anadirProductosFactura(List<FacturaHasProductoDTO> listadoProductos) {
 
-        Long idPuntoVenta = null;
-
         Iterable<FacturaHasProducto> iterable = listadoProductos.stream()
                 .map(dto -> {
+                    Long idPuntoVenta = getPuntoVentaCercano(dto.getIdFactura());
                     productoHasPuntoVentaService.restarUnidadProductoPuntoVenta(dto.getIdProducto(), idPuntoVenta);
                     actualizarTotalFactura(dto.getIdFactura(), dto.getIdProducto(), dto.getCantidad());
                     return new FacturaHasProducto(dto);

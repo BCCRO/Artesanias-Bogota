@@ -36,8 +36,8 @@ public class PagoService {
     @Value("${servidor.webhook.pagos.endpoint}")
     private String WEBHOOK_PAGOS;
 
-    @Value("${mercadoPago.token.secret}")
-    private String SECRET_TOKEN;
+//    @Value("${mercadoPago.token.secret}") //TODO no funciona el inject
+    private String SECRET_TOKEN = "APP_USR-1559532781124737-110509-afae2c6da54175fa335091864c35ca06-2079614828";
 
     @Autowired
     private FacturaAsyncService facturaAsyncService;
@@ -52,7 +52,7 @@ public class PagoService {
      */
     public PagoService() {
         MercadoPagoConfig.setAccessToken(SECRET_TOKEN);
-        System.out.println(SECRET_TOKEN);
+        System.out.println("SECRET_TOKEN " + SECRET_TOKEN);
     }
 
     /**
