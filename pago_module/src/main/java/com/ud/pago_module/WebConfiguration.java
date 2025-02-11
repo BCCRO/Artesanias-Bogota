@@ -20,9 +20,9 @@ public class WebConfiguration implements WebMvcConfigurer {
     public void addCorsMappings(@SuppressWarnings("null") CorsRegistry registry) {
         // Permitir todas las solicitudes desde cualquier origen y con cualquier método HTTP.
         registry.addMapping("/**")
-                .allowedOrigins("https://artesaniasbogota-frontend.onrender.com")
+                .allowedOrigins("https://artesaniasbogota-frontend.onrender.com","*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("Authorization", "Content-Type", "Accept")
-                .allowCredentials(true);
+                .allowedHeaders("Authorization", "Content-Type", "Accept");
+                //.allowCredentials(true);
     }
 }
