@@ -53,4 +53,14 @@ public class PedidoController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<?> getPedidos(){
+      try {
+        return ResponseEntity.ok(pedidoService.getPedidosList());
+      } catch (Exception e) {
+        System.err.println(e);
+        return ResponseEntity.internalServerError().body("Algo salio mal bro");
+      }
+    }
+
 }

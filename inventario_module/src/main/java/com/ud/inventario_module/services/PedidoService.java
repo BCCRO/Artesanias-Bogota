@@ -21,6 +21,10 @@ public class PedidoService {
         return pedidoRepository.findPedidoByIdFactura(idFactura);
     }
 
+    public List<Pedido> getPedidosList(){
+      return pedidoRepository.findAll();
+    }
+
     public void updateEstadoPedido(Long idPedido, String estado){
 
         Optional<Pedido> pedidoOpt = pedidoRepository.findById(idPedido);
